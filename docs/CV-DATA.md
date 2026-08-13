@@ -244,3 +244,78 @@ Treacle's discovery changes the ranking. Proposed order:
 
 `xpenselab` and Meridian move to the ledger's top rows. This is the first version of the list where the
 professional work outranks the repos, which is the correct outcome now that the CV is known.
+
+---
+
+# The product family, 13 Aug 2026
+
+Four domains supplied by Tushar: `labynator.com`, `xpenselab.com`, `hyredlab.com`, `memrylab.com`.
+All are blocked by the sandbox HTTP proxy and none are indexed in search, so they were verified by DNS
+resolution instead.
+
+| Domain | Resolves to | Host | Status |
+| --- | --- | --- | --- |
+| `labynator.com` | 216.198.79.1 | Vercel | Live |
+| `memrylab.com` | 216.198.79.1 | Vercel | Live |
+| `hyredlab.com` | 216.198.79.1 | Vercel | Live |
+| `xpenselab.com` | 35.219.200.8 | Google Cloud | Live, consistent with its Firebase stack |
+| `mytreacle.com` | 2600:9000:... | AWS CloudFront | Live, consistent with "auto-deploy to AWS App Runner" |
+| `tusharlaad.com` | 216.198.79.1 | Vercel | Live, and years out of date |
+| `edytlab.app` | no record | | Not provisioned, matching its README |
+| `decipher.website` | **no record** | | **Dead.** See below. |
+
+## LabyNator is a product house, and the naming is systematic
+
+This is the most important structural finding in the whole brief. These are not scattered side
+projects. There is a parent lab and a branded family under it:
+
+```
+LabyNator            labynator.com        the lab
+  MemryLab           memrylab.com         memory timeline, Rust + Tauri
+  XpenseLab          xpenselab.com        personal finance, Next + Firebase
+  HyredLab           hyredlab.com         job tracker, Next + Gemini
+  edytlab            edytlab.app          audio editor, Rust DSP (domain pending)
+Treacle              mytreacle.com        the outlier, built for a separate venture
+```
+
+The LinkedIn entry that cut off at "an independent software lab and parent" is now legible: LabyNator
+is the parent company, and every product carries the `Lab` suffix.
+
+**Design consequence.** The earlier revisions framed the work as "23 repos, pick the best five". That
+framing undersells it badly. The correct framing is that he **founded a software lab and shipped four
+products under one brand**, plus a fifth for another company. The site's work section should present
+the lab and its portfolio, not a flat project list. Range and follow-through are the argument, and the
+shared naming makes that argument on its own.
+
+This also strengthens the positioning line. Not "I build things", but something closer to running a
+one-person product studio while holding down a founding engineering role.
+
+## Two corrections to earlier revisions
+
+1. **xpenselab IS deployed.** Rev 3 recorded "not deployed" from the README, which has no demo link.
+   The site is live at `xpenselab.com` on Google Cloud. Its README needs the link added.
+2. **The Meridian and HyredLab conflict resolves to HyredLab.** The product ships at `hyredlab.com`
+   and LinkedIn calls it HyredLab. The `job-hunt-dashboard` README still calls it Meridian and points
+   at `meridian-job-sync.vercel.app`. **The README is the stale one** and should be updated to match
+   the product and the family naming.
+
+## Broken link to fix first
+
+`decipher.website` **does not resolve**. It is advertised as the live demo in the
+`end-to-end-encrypted-chat-app` README, and it is listed as a project on the current `tusharlaad.com`.
+A dead demo link is worse than no demo link: it reads as abandonment, and it is currently on the site
+recruiters find. Either restore the domain or strip the reference from both places before anything
+else ships.
+
+## Revised featured set, final
+
+1. **LabyNator**, the lab itself, presented as the frame rather than a sixth product.
+2. **Treacle**, `mytreacle.com`. Solo-built consumer app on iOS and Android, publicly verifiable.
+3. **MemryLab**, `memrylab.com`. Rust and Tauri, hexagonal architecture, 12 stars, shipped installer.
+4. **edytlab**. Rust DSP with local ML, 237 commits. Deepest code, no domain yet.
+5. **Appsatile platform work.** Not a repo. The 7-layer system, sub-millisecond latency, five
+   developers. Written from the CV.
+6. **wayfinder**. Unity XR on real planetary terrain.
+
+`HyredLab` and `XpenseLab` sit directly under the lab as shipped products rather than case studies, so
+the family reads complete without four more long-form pages.
