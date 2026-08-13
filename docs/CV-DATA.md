@@ -319,3 +319,61 @@ else ships.
 
 `HyredLab` and `XpenseLab` sit directly under the lab as shipped products rather than case studies, so
 the family reads complete without four more long-form pages.
+
+---
+
+# Education, received 13 Aug 2026
+
+Two of the five entries captured. Both carry attached media (dissertation pages, a recommendation
+letter).
+
+### Newcastle University
+**MSc Advanced Computer Science**, Computer Science. Sep 2023 to Aug 2024.
+**Grade: Distinction (71.6).**
+
+Relevant modules: Engineering for AI (Big Data), Cloud Computing, Information Security and
+Cryptography, System Security, Secure Software Development, Advanced Programming in Java.
+Skills tagged: Azure Databricks, Information Security, +4.
+
+Dissertation: LLM-driven identification of job intent, technologies and teams. PDF pages are attached
+to the LinkedIn entry and the repo is `LLM-Driven-Identification-of-Job-Intent-Technologies-and-Teams`.
+
+### Symbiosis Institute of Computer Studies and Research (SICSR)
+**Bachelor of Computer Application (BCA)**, Computer Science. Jun 2020 to Jun 2023.
+**Grade: 7.68/10 GPA.**
+
+Activities: Vice President of the Student Council and Cultural Club, Orator's Club, CURSOR College
+Magazine. A first-year lecturer's recommendation letter is attached, written to support the
+postgraduate application.
+
+**Three further education entries exist and are still uncaptured.**
+
+## The timeline now resolves
+
+| Period | Study | Work |
+| --- | --- | --- |
+| 2020 to 2023 | BCA at SICSR, Pune | Build My Site (Mar 2020 to Mar 2023), OceanFrogs, Poems India |
+| Sep 2023 to Aug 2024 | MSc at Newcastle, Distinction | Hexis Lab (Apr to Jun 2024) |
+| Jun 2024 to Mar 2026 | | Appsatile Software Group, founding software engineer (data) |
+| Nov 2025 to Apr 2026 | | LabyNator founded, Treacle built (Jan to Mar 2026) |
+
+Two years of professional work since the MSc, three founding titles inside them, and a shipped product
+family alongside a full-time role.
+
+**The coursework and the work line up, which is worth saying on the site.** Information Security and
+Cryptography plus Secure Software Development explains the end-to-end encrypted chat app and the
+AES-256 work in Treacle. Engineering for AI (Big Data) and Cloud Computing explains the Appsatile data
+platform and the Kubernetes work. This is not a CV where the degree is decoration.
+
+## One honesty note for the copy
+
+He is roughly two years post-MSc. The current live site calls him a "Software Architect", which will
+read as overclaiming to anyone who checks the dates, and the dates are right there on LinkedIn.
+"Founding Software Engineer" is his actual title and is stronger precisely because it is verifiable.
+The site should lead with what he has shipped and let the reader draw the seniority conclusion.
+
+## Confirmed by Joel's recommendation
+
+Employer is written as **Appsatile Ltd**, Solutions team, supporting applications including **CFP**.
+Combined with the Companies House record for Appsatile Software Group Ltd, use "Appsatile" as the
+display name on the site.
