@@ -294,7 +294,7 @@ export function Experience() {
         <div className="pt-10">
           <Label>Before that</Label>
           {rest.map((r) => (
-            <RoleRow key={r.org} role={r} compact />
+            <RoleRow key={r.org} role={r} compact={r.kind === "earlier"} />
           ))}
         </div>
 

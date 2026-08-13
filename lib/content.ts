@@ -315,6 +315,24 @@ export const roles: Role[] = [
     ],
   },
   {
+    org: "OceanFrogs",
+    title: "Data Engineer and Web Developer",
+    from: "Jul 2022",
+    to: "Oct 2023",
+    location: "Pune, then remote from Newcastle",
+    kind: "engineering",
+    summary:
+      "Started on WordPress builds, moved onto the data team, ended up owning the enrichment pipelines and the APIs on top of them. Stayed on freelance for two months after moving to the UK.",
+    points: [
+      "Migrated technographics labeling from SQL to Python regular expressions, cutting processing time fourfold and lifting accuracy by half.",
+      "Built a machine learning keyword extraction engine using NLP that raised tagging efficiency by 80 percent.",
+      "Designed and deployed REST APIs on FastAPI, Docker and NGINX over EC2, increasing data enrichment throughput by 60 percent.",
+      "Built and maintained the ETL pipelines behind business intelligence enrichment, in Python with Selenium, Pandas and BeautifulSoup on EC2.",
+      "Owned the Data Enrichment API product end to end, on FastAPI, NGINX, MSSQL and Docker over EC2.",
+      "Overhauled the website deployment process for an 80 percent cut in deployment time, and ran the training that let the team pick it up.",
+    ],
+  },
+  {
     org: "Build My Site",
     title: "Founder",
     from: "Mar 2020",
@@ -345,6 +363,7 @@ export const education: Study[] = [
     award: "BCA Computer Science",
     from: "Jun 2020",
     to: "Jun 2023",
+    grade: "7.68 GPA",
     detail:
       "Vice President of the student council and cultural club. Orator's club, college magazine.",
   },

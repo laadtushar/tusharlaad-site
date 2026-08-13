@@ -441,3 +441,76 @@ Fixing the LinkedIn entry matters more than the site entry, and the site entry i
   ],
 }
 ```
+
+---
+
+# OceanFrogs and education, resolved from the LinkedIn export
+
+The `laadtushar/portfolio-site` repo contains a `LinkedinExport/` directory with the full profile
+export: `experience.html`, `education.html`, `project.html`, `Profile.csv` and the recommendations.
+That answered everything outstanding. No more guessing from search snippets.
+
+## OceanFrogs was two positions, 1 yr 7 mos total
+
+### Data Engineer and Web Developer
+Full-time. **Jul 2022 to Aug 2023 (1 yr 2 mos).** Pune, Maharashtra, India.
+
+- Developed and maintained ETL data pipelines in Python with Selenium, Pandas and BeautifulSoup on
+  EC2, for the business intelligence domain
+- Implemented a machine learning keyword extraction engine using NLP that **increased tagging
+  efficiency by 80%**
+- Migrated technographics labeling from SQL to Python regex, a **400% reduction in processing time
+  and a 50% increase in accuracy**
+- Designed and deployed REST APIs using Docker, FastAPI and NGINX on EC2, a **60% increase in data
+  enrichment**
+- Instrumental in launching Team Maps Business Intelligence by setting up data pipelines
+- Developed a priority order stored procedure for rearranging platform data, **increasing client
+  interaction by 20%**
+- Generated data visualisations and reports in Google Looker Studio and Data Studio
+- Developed scripts for an inbound lead qualifier product, automating lead qualification
+- Overhauled the website deployment process for an **80% reduction in deployment time**
+- Delivered AppSmith applications for internal use, reducing developer dependency for data
+  availability
+- PHP and WordPress development, plus site speed optimisation through CDN and caching
+
+### Data Engineer
+Freelance. **Sep 2023 to Oct 2023 (2 mos).** Newcastle upon Tyne, remote.
+
+- Owner for the Data Enrichment API product, built with FastAPI, NGINX, MSSQL and Docker, deployed on
+  AWS EC2
+- Maintaining ETL data pipelines behind business intelligence enrichment
+
+**The detail worth keeping:** he moved to Newcastle for the MSc in September 2023 and OceanFrogs kept
+him on freelance for two more months. Being retained across an emigration says more than a line of
+self-description.
+
+This also confirms the earlier inference and disproves the "2022 to 2024" figure that one search
+result reported. Both positions are now in `lib/content.ts` as a single entry running Jul 2022 to
+Oct 2023, with the six strongest points.
+
+## Education, all five entries
+
+| Institution | Award | Dates | Grade |
+| --- | --- | --- | --- |
+| Newcastle University | MSc Advanced Computer Science | Sep 2023 to Aug 2024 | Distinction, 71.6 |
+| Symbiosis Institute of Computer Studies and Research | BCA Computer Science | Jun 2020 to Jun 2023 | 7.68/10 GPA |
+| Vikhe Patil Memorial School | A Levels, Business/Commerce | Apr 2018 to Apr 2020 | 82.2% |
+| Lokseva e School and Jr. College | High School | Apr 2016 to Apr 2018 | 82.4% |
+| The Shishukunj International School, Indore | Junior School to 8th class | Apr 2005 to Apr 2016 | |
+
+Also attached to the BCA entry: two academic letters of recommendation, from Dr. Anuja Bokhare and
+Dr. Rajashree Jain.
+
+**Only the top two go on the site.** School entries below A Level dilute a CV for someone holding a
+Distinction MSc, and the junior school entry running to 2016 mainly advertises his age. They are
+recorded here for completeness, not omitted by accident. The same argument applies to LinkedIn: the
+Shishukunj entry is worth deleting there too.
+
+## Skills recorded against the MSc
+
+Azure Databricks, Information Security, Security System Design, PySpark, React.js, Firebase.
+
+## Still outstanding
+
+LabyNator does not appear in the export, which predates it. The truncated description ("an independent
+software lab and parent...") is still unresolved, and it is now the only gap left.
