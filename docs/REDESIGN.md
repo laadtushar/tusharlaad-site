@@ -182,3 +182,82 @@ accent. Graphite `#0A0C0E` / `#14171A`, ink `#E4E7E9`, status green `#4E9A6A` / 
 
 **Archive** (Rev 1). Prose-first, serif throughout, cool bone paper `#DEDFD8` / `#EEEFEA`, ink
 `#191B18`, deep ivy `#2F5E43`. *Dropped — no writing cadence.*
+
+---
+
+# Rev 4 addendum: skills audit and real CV data
+
+Two changes since Rev 3.
+
+## Applied skills
+
+- [`pbakaus/impeccable`](https://github.com/pbakaus/impeccable), Apache 2.0. Craft floor, mode
+  taxonomy, browser-surface reflexes.
+- [`leonxlnx/taste-skill`](https://github.com/leonxlnx/taste-skill), MIT. Brief inference, three
+  dials, AI-tell bans, pre-flight matrix.
+
+**Design read:** a developer personal hub for recruiters and hiring engineers, with a technical
+instrument language, leaning toward Next 16 and Tailwind v4 with Geist and Geist Mono, real product
+imagery, and one authored motion moment. Impeccable mode is **Persuade** with a Read sub-surface,
+not Experience.
+
+**Dials:** `DESIGN_VARIANCE 6` (matches the developer-portfolio preset), `MOTION_INTENSITY 4` (one
+under preset, the CV should not compete with itself), `VISUAL_DENSITY 6` (two over preset,
+deliberately, because a hub carries a CV and a ledger).
+
+### Audit failures and fixes
+
+| Rule | Source | Verdict | Fix |
+| --- | --- | --- | --- |
+| Real images | taste-skill 4.8 | FAIL | The Console was text plus a sparkline. Four visual products were being shown as none. Screenshots are now load-bearing and the grid has a tall image cell. |
+| Bento background diversity | taste-skill 4.7 | FAIL | Every tile was the same flat panel. Project and hero cells now carry imagery. |
+| Decorative status dots | taste-skill 9.F | FAIL | Four dots, only one carried real state. Availability flag survives; project status becomes a word. |
+| Middle dot rationing | taste-skill 9.F | FAIL | Max one per line. Metadata now uses columns. |
+| Monospace as costume | impeccable craft floor | PARTIAL | Mono restricted to figures, dates, stack and code. Titles move to Geist. |
+| Sparkline as content | impeccable craft floor | PARTIAL | Survives only as real fetched data; loses its own tile. |
+| Numbered phases | taste-skill 9.F | FAIL | "Phase 01" banned. Steps named by their verb. |
+| Eyebrow restraint | both | FAIL | Impeccable bans it outright, taste-skill caps at one per three sections. The brief had nine. All removed. |
+| Em-dash ban | taste-skill 9.G | FAIL | Zero tolerance. Removed everywhere, and the rule carries into site copy. |
+| Serif as display face | taste-skill 4.1 | FAIL | "Creative brief equals serif" is the most-tested AI tell. Brief and site both set in Geist. |
+
+Passing already: one accent under 80% saturation (amber `#E5A03C` at 76%), shape consistency lock
+(radius zero throughout), cards omitted for rule separation, no pure black, Geist over Inter.
+
+### Additions from the impeccable craft floor
+
+- **Browser surfaces.** Text selection, caret, scrollbars, focus rings, underline offset and tabular
+  numerals all themed from the palette. Named as the cheapest signal a page was built rather than
+  assembled, and the one models skip most reliably.
+- **Tinted secondary text.** On coloured surfaces, tint from that hue, never grey.
+- **Motion past transform and opacity.** Clip-path wipe on image cells instead of another fade.
+- **Type floor.** Body measure 65 to 75ch, display capped at 6rem, tracking floor -0.04em.
+
+## The CV changes the positioning
+
+See `docs/CV-DATA.md` for the full transcription. The headline finding: **four founding or founder
+titles** (LabyNator, Treacle, Appsatile, Build My Site). The Rev 2 and Rev 3 framing of "data
+engineer whose GitHub says builder" was wrong. The through-line is someone who takes a system from
+nothing to production alone, and the repos are the same behaviour in public rather than a competing
+identity.
+
+Consequences:
+
+- Tagline states one claim instead of reconciling two. Register: "I take systems from nothing to
+  production, usually alone."
+- GitHub vanity figures (23 repos, 6 languages) are replaced by verifiable CV metrics:
+  sub-millisecond latency from a 3-tier cache, 165 properties and 8,395 expenses recovered, 109 API
+  routes, a 32-dimension matching model, 30,000 regulatory data points, a 5-dev team led.
+- **Recommendations become a layer.** Five public, two from managers. Suleiman's is the strongest
+  because it describes a specific technical decision rather than character.
+- The CV layer needs to render **three concurrent roles** without looking like an error, and groups
+  into three chunks rather than a ten-row hairline list.
+
+## Still open
+
+1. What currently deploys tusharlaad.com. The domain is live and indexed; this repo is empty.
+2. Education. Five entries on LinkedIn, none captured. No degree titles or years.
+3. OceanFrogs is missing from the experience section although three recommendations place him there
+   for over a year. Worth fixing on LinkedIn as well as here.
+4. Screenshots, now a blocking step. Wayfinder needs an on-device capture only he can take.
+5. Meridian or HyredLab. The repo and live demo say one, LinkedIn says the other.
+6. Whether LabyNator is the parent company over Treacle and the rest.
