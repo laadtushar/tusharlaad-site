@@ -377,3 +377,67 @@ The site should lead with what he has shipped and let the reader draw the senior
 Employer is written as **Appsatile Ltd**, Solutions team, supporting applications including **CFP**.
 Combined with the Companies House record for Appsatile Software Group Ltd, use "Appsatile" as the
 display name on the site.
+
+---
+
+# OceanFrogs search results, 13 Aug 2026
+
+Searched for the missing role. FinalScout, ZoomInfo and Datanyze all index it but all three
+are blocked by the sandbox proxy, so everything below comes from search result content.
+
+## Confirmed across multiple sources
+
+- **Title: "Data Engineer & Web Developer"**, the wording used consistently in the people-data
+  listings that index LinkedIn.
+- **Trajectory:** started as a WordPress website developer, took on the data engineer role, built
+  REST APIs. This comes from Vinay Mehendi's recommendation and matches the broker listings.
+- **Duration: "over a year"**, from Srujan P's recommendation, which is also quoted on the current
+  tusharlaad.com.
+- **Work:** data pipelines, REST APIs, Docker, data scraping, data mining, data labeling, analytics
+  and ML, SQL Server stored procedures, team training, documentation practices.
+
+## Single-source and unverified
+
+One search synthesis returned **"Data Engineer at OceanFrogs Pvt from 2022-2024"**, apparently from
+the ZoomInfo employee directory. It appears once, in one result, and could not be checked against the
+source. **Do not put this on the site as fact.**
+
+The 2024 end looks wrong against everything else known. Recommendations cluster on 8 Sep, 20 Sep and
+2 Nov 2023, which is the pattern of someone leaving, and the Newcastle MSc started Sep 2023 with a
+move to the UK. A span of roughly mid-2022 to autumn 2023 fits "over a year", fits the recommendation
+cluster, and fits the BCA at SICSR in Pune (Jun 2020 to Jun 2023). Broker records frequently carry
+stale end dates.
+
+**Needed from Tushar: the start month and end month.** Everything else for this entry is ready.
+
+## Noise to ignore
+
+The listings place him in **Milpitas, California**. That is OceanFrogs' US headquarters, which data
+brokers stamp onto every employee record. He was in Pune.
+
+## The real problem this surfaced
+
+The role is **absent from his LinkedIn experience section** while three public recommendations on the
+same profile point at it, one of them from a manager who says "over a year at OceanFrogs". A reader
+who notices that sees either a gap or an inconsistency, and it is the sort of thing recruiters do
+notice.
+
+Fixing the LinkedIn entry matters more than the site entry, and the site entry is a one-line change to
+`lib/content.ts` once the dates exist:
+
+```ts
+{
+  org: "OceanFrogs",
+  title: "Data Engineer and Web Developer",
+  from: "<month> 2022",
+  to: "<month> 2023",
+  location: "Pune, India",
+  kind: "engineering",
+  summary: "Started on WordPress builds, moved onto the data team, ended up owning pipelines and APIs.",
+  points: [
+    "Built data pipelines and REST APIs, containerised with Docker.",
+    "Worked across data scraping, mining, labeling and analytics feeding ML workflows.",
+    "Ran training sessions for the team and set the documentation practices.",
+  ],
+}
+```
