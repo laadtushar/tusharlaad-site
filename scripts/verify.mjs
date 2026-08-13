@@ -1,6 +1,6 @@
 import { chromium } from "playwright";
 
-const BASE = "http://localhost:3113";
+const BASE = "http://localhost:3000";
 const OUT = "/tmp/claude-0/-home-user-tusharlaad-site/be5df31a-dc5a-5229-a729-628f250d1b0a/scratchpad/shots";
 const fails = [];
 const note = (m) => fails.push(m);
