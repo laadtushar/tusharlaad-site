@@ -1,184 +1,184 @@
 # tusharlaad.com — Redesign Brief
 
-**Date:** 13 Aug 2026 · **Rev 2 — rescoped from portfolio to personal hub** · **Phase:** design, no
-implementation yet · **Blocked on:** CV data
+**Date:** 13 Aug 2026 · **Rev 3 — audited against all 23 repos and the public profile** · **Phase:**
+design, no implementation yet · **Blocked on:** employment/education dates, and what currently deploys
+the live domain
 
-Not a project portfolio. The canonical page for Tushar Laad — CV, profile, links, work, everything —
-with this site as the source of truth that LinkedIn and a PDF are copies of, rather than the other
-way round.
-
-- **Subject:** Tushar Laad — systems, data & applied-AI engineer
-- **Reader:** a recruiter with 30 seconds; an engineer who then clicks through
-- **The page's job:** be the one link you send instead of four
-- **Raw material:** 23 public repos across Rust, TypeScript, Python, C# — plus a CV not yet supplied
+- **Subject:** Tushar Laad — Founding Software Engineer, Also Software Group
+- **Location:** Newcastle upon Tyne, UK · Newcastle University
+- **LinkedIn:** https://www.linkedin.com/in/tusharlaad2002/
+- **Evidence base:** 23 repos, ~1,300 commits, 4 live demos
 
 ---
 
-## 1. What changed from Rev 1
+## 1. Audit findings
 
-Rev 1 designed a portfolio. The correction — that this should carry the CV, profile and everything,
-not just repos — is structural, not stylistic. A portfolio strips everything that isn't a project; a
-hub holds work, career history, education, identity and outbound links *at different weights on one
-surface*. Opposite instincts.
+### tusharlaad.com is already live
 
-Two consequences:
+Indexed as "Tushar Laad | Data Engineer & Software Architect", with an about section, skills and
+client testimonials. **This repo is a bare `create-next-app`**, so something else is serving that
+domain — most likely the `portfolio-site` fork of `bryantcodesart`. Both `tusharlaad.com` and
+`linkedin.com` are blocked by the sandbox egress proxy, so neither could be read directly; the profile
+details above come from search results. **Needs confirming before the domain is repointed.**
 
-1. The tile grid from **Signal** turns out to be right for the real brief — not because tiles are
-   fashionable, but because it's the one layout that holds heterogeneous content without pretending
-   it's a list.
-2. Signal's original thesis (live GitHub metrics) is far too thin to carry a CV. Same visual
-   language, rebuilt on a foundation that holds. That's **Console**.
+### The featured set was wrong in Rev 1 and Rev 2
 
-**Archive is out** — no writing habit, so a prose-first site is off the table and `/writing` stays a
-stub. **Build Log** isn't wasted: its dense dated ledger becomes the project index inside Console,
-which is the job it was best at.
+`spark-streaming-job-market` was ranked second in both earlier revisions on the strength of its
+description (Kafka, Spark, Redis, lambda architecture). Read properly it has **7 commits** and a
+dashboard on `localhost:8505` with no deployment. It moves to the ledger. The genuinely heavy work was
+in repos previously filed as minor — `edytlab` (237 commits), `xpenselab` (335), `wayfinder`.
 
-## 2. Research findings, and where the brief overrides them
+### Two repos on the profile are forks
 
-The 2026 literature is written about *portfolios*. Most still applies; two findings now cut the other
-way.
+`pluely` (257 commits) is a fork of `iamsrikanthnani/pluely`; `frappe_mcp_server` (84) is a fork of
+`kiran-harbak`. Both substantial and worth listing as contributions, but they must be labelled.
+An engineer reading the site will check, and an unlabelled fork costs more trust than the repo earns.
 
-| Finding | Consequence |
-| --- | --- |
-| Two clicks (demo + repo) beat a paragraph | Demo + repo on every entry, both working. |
-| ~~One page, projects only~~ | **Overridden.** One page, but layered — summary first, CV and index beneath. |
-| ~~Four or five sections, no more~~ | **Overridden carefully.** More content, but only *three* depths of attention. |
-| Dark mode is table stakes, not differentiation | Ship both; make light mode genuinely good — recruiters print things. |
-| Bento is the baseline (~67% of top SaaS homepages) | Tiles must earn their size from real content, never decoration. |
-| Sites not published on day one mostly never launch | Layer 1 ships alone if it has to. |
-| A polished site pointing at bare repos loses the reader | Repo descriptions and READMEs are part of this job. |
-| A hub's failure mode is staleness, not ugliness | One dated `/now` line, cheap enough to actually update. |
+## 2. Full inventory
 
-## 3. Information architecture — three depths, one page
+Ranked by substance rather than description. Commit counts are the rough proxy; live demos and real
+architecture decide the tiers.
 
-A CV is linear and dense; a dashboard is spatial and sparse. Jamming them together is how these sites
-usually fail. The fix: they aren't peers. Tiles are a **summary layer** answering "who is this and is
-he any good" in about eight seconds; everything dense sits underneath.
+### Featured — full case study
 
-### Layer 1 — The console
+| Repo | Commits | Stack | Live | Read |
+| --- | ---: | --- | --- | --- |
+| `edytlab` | 237 | Rust, Tauri 2, symphonia, fundsp, ONNX, Demucs, Whisper | DNS pending | Conversational audio editor — describe an edit in English, an agent plans and renders it. Pure-Rust DSP with local ML. **Deepest technical work.** |
+| `MemryLab` | 109 | Rust, Tauri 2, React 19, SQLite FTS5, D3, 9 LLM providers | memrylab.com | Strict hexagonal architecture, 30+ source adapters, 8-stage analysis pipeline, hybrid BM25 + vector search on device. Shipped installer, 12★, MIT. **The one with outside validation.** |
+| `xpenselab` | 335 | Next 16, Firebase, Genkit, Gemini, Stripe | not deployed | Largest codebase. Subscriptions, GDPR, client-side encryption with recovery codes, EMI tracking, expense splitting. **Proof of finishing** — deploy it. |
+| `wayfinder` | — | Unity 6 LTS, OpenXR, Vulkan, C#, GDAL/QGIS | Play Store pending | Space exploration for Samsung Galaxy XR on real Mars/Moon terrain. 72 fps on device, 72 passing tests, hands-only. **Nobody else's portfolio has this.** |
+| `job-hunt-dashboard` | 75 | Next 16, Postgres, Prisma, Gemini 2.0 Flash, NextAuth | meridian-job-sync.vercel.app | Ships as "Meridian". Multi-agent extraction with a reflexion loop that critiques its own output. **Easiest to demo in an interview.** |
 
-Above the fold, tiles only. Identity and availability · what you're doing *now* · real stack · live
-repo and activity figures · three featured projects. Nothing longer than two lines.
+### Ledger — one dense row each
 
-### Layer 2 — The CV
+| Repo | Commits | Stack | Live | Note |
+| --- | ---: | --- | --- | --- |
+| `end-to-end-encrypted-chat-app` | 117 | Vite, Firebase, WebCrypto | decipher.website | Asymmetric key management plus steganography, IEEE-style paper and video in repo. Borderline feature. |
+| `samspace` | 34 | Next 14, Vercel Blob, Vitest | samspace.vercel.app | Real client work — therapy practice site, intake forms, admin dashboard, AES-256-GCM at rest. **The only thing built for someone else.** |
+| `rust-pair-teach` | 22 | TypeScript, VS Code API | .vsix | Rust tutor extension that refuses to write your code. README honestly flags untested thresholds. |
+| `spark-streaming-job-market` | 7 | PySpark, Kafka, Redis, Parquet | localhost | Lambda architecture, hot and cold paths. Demoted from featured. |
+| `LLM-Driven-Job-Intent` | 1 | PDF only | — | The Newcastle dissertation. Belongs in *education*, not the project ledger. |
+| `fact-checker-AI-Skill` | 2 | Markdown, Python linter | — | Packaged Claude skill for sourced fact-checking. Small but current. |
+| `pitchPerfect` | 14 | Python, ADB, OpenCV, Tesseract | demo video | Hinge automation via screen capture, ORB matching, OCR. Genuine CV pipeline; recommendation is still to leave it off. |
+| `SubspaceSynth` | 42 | Next, Firebase Studio | — | Effectively an unmodified starter template. |
 
-Full career history as web content, not an embedded PDF: experience, education, and an honest skills
-block grouped by domain. No percentage bars or star ratings — they read as padding to anyone
-technical.
+### Forks — list as contributions, labelled
 
-**This is the part that can't be written yet.** 23 repos are known; roles, dates, employers,
-education and location are not. This is the one real blocker.
+| Repo | Commits | Upstream | Live |
+| --- | ---: | --- | --- |
+| `pluely` | 257 | `iamsrikanthnani/pluely`, GPL-3.0 | pluely.com |
+| `frappe_mcp_server` | 84 | `kiran-harbak` | — |
 
-### Layer 3 — The ledger
+### Off the site
 
-Everything else built, as dense dated rows with stack and status — Build Log's good idea surviving as
-a component.
+`erpnext`, `frappe_docker` (upstream clones, no divergence); `attendax`, `Crypto`, `Riv`,
+`mental-model`, `frappe-cumbrian-dreams` (coursework-era or empty).
 
-- **Featured (3 tiles):** `MemryLab` · `spark-streaming-job-market` · `job-hunt-dashboard`
-- **Ledger rows:** `edytlab` · `samspace` · `pluely` · `SubspaceSynth` · `wayfinder` ·
-  `rust-pair-teach` · `fact-checker-AI-Skill` · `LLM-Driven-Job-Intent` · `frappe_mcp_server` ·
-  `xpenselab` · `end-to-end-encrypted-chat-app`
-- **Not linked:** forks (`erpnext`, `frappe_docker`, the `portfolio-site` fork), coursework repos
-  (`attendax`, `Crypto`), empty shells (`Riv`, `mental-model`). `pitchPerfect` is a coin flip in
-  front of a recruiter — recommendation is to leave it off the ledger and keep it on GitHub.
+## 3. The positioning problem
 
-### Elsewhere — outbound
+The CV and the GitHub describe two different engineers.
 
-One footer block with every profile that's actually yours. The point of a hub is that this list
-exists in exactly one place.
+- **Professional identity:** data engineering — Founding Software Engineer at Also Software Group,
+  Azure Databricks, PySpark, ETL pipelines, REST APIs, Docker, plus a Newcastle dissertation on
+  LLM job-intent extraction.
+- **GitHub identity:** Rust systems work, native apps, XR, shipped consumer product. ~1,300 commits.
 
-## 4. Direction — Console
+Leading only on data engineering buries the strongest evidence; leading only on side projects reads as
+hobbyist and discards the paid track record. **The layered structure resolves this without
+compromise** — which is the strongest argument for it:
+
+> Layer 1 shows the builder (edytlab, MemryLab, xpenselab — range and depth in eight seconds).
+> Layer 2 shows the professional (Also Software Group, the data-engineering track, Newcastle, in full).
+
+The tagline must do both jobs in one line — closer to *"Data engineer. I build and ship native tools
+in Rust."* than to either half alone.
+
+## 4. Information architecture — three depths, one page
+
+A CV is linear and dense; a dashboard is spatial and sparse. Sites that try to be both usually fail by
+treating them as peers. Here they aren't: the tiles are a summary layer, everything dense sits beneath.
+
+1. **The console** — tiles only. Identity and availability, a dated `/now` line, real stack, live repo
+   and activity figures, featured projects. Nothing longer than two lines.
+2. **The CV** — employment, education, dissertation, skills grouped by domain. Web content, not an
+   embedded PDF. No percentage bars.
+3. **The ledger** — everything else as dense dated rows, including a labelled contributions block for
+   the two forks.
+
+## 5. Direction — Console
 
 > One surface you operate everything from.
 
-Keeps Signal's instrument language — cold slate, phosphor amber on every figure, square-cornered
-tiles separated by rules rather than floating cards — but the tiles carry a person, not a metrics
-wall.
+Signal's instrument language, re-founded on content that can carry a CV.
 
-- **Palette:** cold slate near-black `#06090D` / `#10161D`, ink `#D6DEE6`, **phosphor amber**
-  `#E5A03C` reserved for live and dated values. Green `#4FA574` and red `#C4553D` strictly semantic.
-  Full light theme for reading and printing.
+- **Palette:** cold slate near-black `#06090D` / `#10161D`, ink `#D6DEE6`, **phosphor amber** `#E5A03C`
+  reserved for live and dated values. Green `#4FA574` and red `#C4553D` strictly semantic. Full light
+  theme for reading and printing.
 - **Type:** mono for every label, figure and stack chip, with tabular numerals so dates and counts
-  sit in true columns. A grotesque takes over entirely for CV prose, where mono would be unreadable
-  at length.
-- **Layout:** tile grid above, hairline-ruled rows below. Square corners, no shadows, no accent bars.
-  Tile size set by content weight — MemryLab is bigger because it earned it.
-- **Motion:** one orchestrated load — figures count up, sparkline draws, tiles settle in a short
-  stagger. Then nothing moves. Fully disabled under `prefers-reduced-motion`.
-- **Cost:** 4–5 days once CV data exists.
-- **Risk:** amber figures must be real. A hand-typed "23 repos" that's wrong in a month is worse than
-  no tile — every number is fetched or dated.
+  align. A grotesque takes over entirely for CV prose.
+- **Layout:** tile grid above, hairline-ruled rows below. Square corners, no shadows. Tile size follows
+  content weight.
+- **Motion:** one orchestrated load — figures count up, sparkline draws, tiles settle. Then nothing
+  moves. Disabled under `prefers-reduced-motion`.
+- **Cost:** 5–6 days (five case studies rather than three, plus CV layer, print route, GitHub fetch).
+- **Risk:** amber figures must be real — every number fetched or dated, never hand-typed.
 
-## 5. Architecture — one file is the source of truth
+## 6. Architecture — one file is the source of truth
 
-A single typed `content.ts` object (profile, links, experience, education, skills, projects) is read
-by **four** outputs:
-
-1. the homepage
-2. the `/cv` page
-3. a print stylesheet that produces the PDF
-4. JSON-LD `Person` structured data, so search engines resolve the name to this page
-
-The practical payoff: no separately maintained résumé file ever again. Change a date once and the
-page, the printed CV and the search result move together. Today that's four places, and they will
-drift.
+A single typed `content.ts` (profile, links, experience, education, skills, projects) renders **four**
+outputs: the homepage, the `/cv` route, a print stylesheet that produces the PDF, and JSON-LD `Person`
+data so search resolves the name to this site.
 
 | Route | Contains |
 | --- | --- |
-| `/` | All three layers — console tiles, CV, ledger, outbound links. One page, one scroll. |
-| `/cv` | The CV alone, print-optimised. ⌘P gives a clean one-page PDF with no site chrome. This *is* the résumé file. |
-| `/work/[slug]` | Case studies for the three featured projects: problem → approach → the hard part → outcome. |
-| `/writing` | Stubbed. Pipeline exists, nothing in the nav. |
+| `/` | All three layers — console, CV, ledger, outbound links. One page, one scroll. |
+| `/cv` | The CV alone, print-optimised. ⌘P gives a clean PDF with no site chrome. This *is* the résumé file. |
+| `/work/[slug]` | Five case studies: edytlab, MemryLab, xpenselab, wayfinder, Meridian. |
+| `/writing` | Stubbed — pipeline exists, nothing in the nav. |
 
-Stack unchanged: **Next 16, React 19, Tailwind v4, TypeScript**, on Vercel. Additions are deliberately
-few — two self-hosted faces via `next/font/local` (no CDN dependency, no layout shift), GitHub figures
-fetched at build with ISR so they refresh without a deploy, and a print stylesheet.
+Stack unchanged: **Next 16, React 19, Tailwind v4, TypeScript** on Vercel. Additions: two self-hosted
+faces via `next/font/local`, GitHub figures fetched at build with ISR, print stylesheet.
 
-## 6. Order of work
+## 7. Order of work
 
-1. **The content model** — define and fill `content.ts`. Needs CV data. Gates everything else.
+1. **The content model** — define and fill `content.ts`. Needs the dates. Gates everything else.
 2. **Design system** — tokens, two typefaces, type scale, semantic status colours, light and dark.
-   Verified on one tile and one CV row before building at scale.
 3. **Layer 1, the console** — tile grid, identity, now, stack, featured work, GitHub fetch.
    Deployable on its own.
-4. **Layers 2 and 3** — CV section, project ledger, outbound links, then `/cv` with the print
-   stylesheet.
-5. **Case studies and launch** — three `/work` pages, JSON-LD, OG images, sitemap, accessibility and
-   Lighthouse pass before the domain points at it.
+4. **Layers 2 and 3** — CV section, ledger, contributions, outbound links, then `/cv` with print.
+5. **Case studies and launch** — five `/work` pages, JSON-LD, OG images, sitemap, accessibility and
+   Lighthouse pass before the domain moves.
 
-## 7. Open questions
+## 8. Open questions
 
-1. **Your CV, in any form.** Roles, employers, dates, education, location. An existing résumé, a
-   LinkedIn export, or rough notes — structuring it is the easy part. **Blocks phase 1.**
-2. **Actual links, and the domain.** LinkedIn URL, public email, anything else. The GitHub profile
-   has no links at all right now. Confirm the domain is `tusharlaad.com`.
-3. **Does Console land now that it carries a CV?** If the tile language still feels right, build it.
-   If it now reads too cold for career history, the palette warms.
-4. **Open to work — and should the site say so?** The availability tile is effective only if it's
-   true and gets turned off later.
-5. **Do any projects have live demos?** Demo links outrank descriptions. If nothing is deployed,
-   deploying two beats anything done to the CSS.
-6. **Are `edytlab` or `samspace` ready to feature?** Both touched today; either may displace
-   `job-hunt-dashboard` in the featured three.
+1. **What currently deploys tusharlaad.com?** The domain is live and indexed but this repo is empty.
+   Is it the `portfolio-site` fork, and is there content on it worth keeping?
+2. **Employment and education dates.** Employer, title, university and dissertation topic are known;
+   no dates, no degree title, no earlier roles. Both proxy blocks prevent reading them.
+3. **Two lines per role on what changed.** "Built data pipelines" is a duty; "cut the nightly ETL from
+   six hours to forty minutes" is an outcome. Highest-leverage thing to write.
+4. **Can `xpenselab` and `edytlab` be deployed?** Four demos are already live; the two biggest and
+   deepest repos are the ones without.
+5. **Is the availability tile true, and does `pitchPerfect` stay off?** Recommendations: yes and yes.
 
 ## Sources
 
-- [Software Engineer Portfolio Website: 10 Best Examples (2026)](https://sitesplaced.com/blog/best-portfolio-website-for-software-engineers) — sitesplaced
-- [Software Engineer Portfolios: 15+ Well-Designed Examples (2026)](https://www.sitebuilderreport.com/inspiration/software-engineer-portfolios) — SiteBuilderReport
-- [Top 8 Developer Portfolio Websites to Inspire You in 2026](https://www.gola.supply/blog/developer-portfolio-websites) — Gola
-- [15 Best Developer Portfolio Examples 2026](https://myseera.com/blog/best-developer-portfolio-templates-2026) — Myseera
-- [bchiang7/v4](https://github.com/bchiang7/v4) · [ibelick/nim](https://github.com/ibelick/nim) · [dillionverma/portfolio](https://github.com/dillionverma/portfolio) · [topic: nextjs-portfolio](https://github.com/topics/nextjs-portfolio) · [topic: terminal-portfolio](https://github.com/topics/terminal-portfolio)
-- [Designing Bento Grids That Actually Work (2026)](https://www.saasframe.io/blog/designing-bento-grids-that-actually-work-a-2026-practical-guide) — SaaSFrame
-- [Portfolio design trends for 2026](https://elements.envato.com/learn/portfolio-trends) — Envato Elements
+- Profile: [linkedin.com/in/tusharlaad2002](https://www.linkedin.com/in/tusharlaad2002/) (proxy-blocked;
+  details via search results) · [github.com/laadtushar](https://github.com/laadtushar) — all 23
+  repositories read individually
+- Live demos verified in READMEs: memrylab.com · meridian-job-sync.vercel.app · samspace.vercel.app ·
+  decipher.website · pluely.com (fork)
+- [Software Engineer Portfolio Website: 10 Best Examples (2026)](https://sitesplaced.com/blog/best-portfolio-website-for-software-engineers) · [SiteBuilderReport](https://www.sitebuilderreport.com/inspiration/software-engineer-portfolios) · [Gola](https://www.gola.supply/blog/developer-portfolio-websites) · [Myseera](https://myseera.com/blog/best-developer-portfolio-templates-2026)
+- [bchiang7/v4](https://github.com/bchiang7/v4) · [ibelick/nim](https://github.com/ibelick/nim) · [dillionverma/portfolio](https://github.com/dillionverma/portfolio) · [topic: nextjs-portfolio](https://github.com/topics/nextjs-portfolio)
+- [Designing Bento Grids That Actually Work (2026)](https://www.saasframe.io/blog/designing-bento-grids-that-actually-work-a-2026-practical-guide) · [Envato portfolio trends 2026](https://elements.envato.com/learn/portfolio-trends)
 
 ---
 
-### Appendix — directions considered and set aside (Rev 1)
+### Appendix — directions set aside
 
-**Build Log.** Dense dated ledger, sticky identity rail, status colour instead of a brand accent.
-Graphite `#0A0C0E` / `#14171A`, ink `#E4E7E9`, status green `#4E9A6A` / amber `#C3903F`. Cheapest and
-longest-lived, but a project-only structure. *Its ledger survives as Layer 3.*
+**Build Log** (Rev 1). Dense dated ledger, sticky identity rail, status colour instead of a brand
+accent. Graphite `#0A0C0E` / `#14171A`, ink `#E4E7E9`, status green `#4E9A6A` / amber `#C3903F`.
+*Its ledger survives as layer 3.*
 
-**Archive.** Prose-first, serif throughout, cool bone paper `#DEDFD8` / `#EEEFEA`, ink `#191B18`, deep
-ivy `#2F5E43`. Strongest identity of the three, but depends on a monthly writing cadence. *Dropped —
-no writing habit.*
+**Archive** (Rev 1). Prose-first, serif throughout, cool bone paper `#DEDFD8` / `#EEEFEA`, ink
+`#191B18`, deep ivy `#2F5E43`. *Dropped — no writing cadence.*
