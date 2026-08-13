@@ -156,3 +156,91 @@ fake-precision rule:
 - 30,000+ European Commission regulatory data points (Hexis Lab)
 - 5-dev team led, 20+ page platform specification (Appsatile)
 - 10+ agency clients, 90+ PageSpeed scores (Build My Site)
+
+---
+
+# Public footprint sweep, 13 Aug 2026
+
+Web search across GitHub, LinkedIn and the open web. Several domains (LinkedIn, tusharlaad.com,
+mytreacle.com, sessionize.com, YouTube, Companies House) are blocked by the sandbox egress proxy, so
+the findings below come from search result content rather than direct reads. Marked accordingly.
+
+## The live site is years out of date
+
+`tusharlaad.com` is indexed as "Tushar Laad | Data Engineer & Software Architect" and carries
+testimonials plus a project list. The projects it shows are:
+
+- Decipher, the end-to-end encrypted chat app, with demo video, code and paper
+- A PHP attendance and leave CMS (`attendax`)
+- A Selenium browser automation script for booking COVID-19 vaccination slots
+- A Flutter hybrid web-view application
+- Management systems for a bike showroom, a book shop, a bus tourism company and a pizza store
+- A Cricket Score Archive System with database connectivity
+
+**Every one of these predates 2024.** The site contains nothing about Appsatile, Treacle, LabyNator,
+MemryLab, edytlab, wayfinder or xpenselab. It presents a student who built CRUD apps, while the actual
+record is someone who architected a 7-layer data platform, led five developers, and shipped an
+AI-native dating app solo.
+
+This is the strongest single argument for the rebuild, and it reframes the urgency: the current site is
+not merely dated, it is actively arguing against him.
+
+## Employer name resolved
+
+**Appsatile Software Group Ltd**, company number 13815407, incorporated 23 December 2021, registered at
+163 Alexandra Road, Gateshead, Tyne and Wear, NE8 1RB. A related entity, **Appsatile PM Ltd** (14736046,
+incorporated 16 March 2023), shares the address and holds a UK visa sponsor licence.
+
+Earlier revisions of this brief recorded the employer as "Also Software Group", taken from a search
+snippet that had truncated "Appsatile Software Group". Corrected.
+
+## Treacle is live and public
+
+**https://www.mytreacle.com/** is up, positioned as "Your AI dating companion". Per its description,
+the app builds a profile through organic conversation rather than forms, and debriefs with the user
+after dates to learn what worked.
+
+This matters more than any repo: it is a **publicly shipped consumer product** that he architected and
+built alone, verifiable by anyone. It belongs in the featured set, and it is the strongest possible
+support for the founding-engineer positioning.
+
+## A publication exists
+
+Decipher ships with an IEEE-style paper, **"Advancing Chat Security: Asymmetric Encryption for Scalable
+Web Applications"**, plus a demo video, live at `decipher.website`. This should be a publications entry
+on the CV, not just a project row. NEEDS CONFIRMING: whether it was formally published or is a
+self-authored write-up.
+
+## Other profiles found
+
+| Profile | URL | Status |
+| --- | --- | --- |
+| YouTube channel | `youtube.com/channel/UCtPkBKOuMpph-L5D3QgAK2w` | Exists under his name. Content unknown, proxy-blocked. NEEDS CONFIRMING whether it is technical and worth linking. |
+| Sessionize speaker profile | `sessionize.com/tushar/` | Indexed as "Tushar Laad's Speaker Profile", but the bio reads "a senior developer working with diverse clients on business applications and architecture consulting", which does not match. **Probably a different Tushar Laad.** NEEDS CONFIRMING. |
+| Facebook | `facebook.com/tushar.laad.3/` | Personal. Not for the site. |
+
+`LabyNator` has no web presence at all: no site, no Companies House entry surfaced, no mentions. It
+exists only as a LinkedIn role.
+
+## Name collision, and why the structured data matters
+
+LinkedIn lists **three separate "Tushar Laad" profiles**, and search results mix him with Tushar Lall
+(a music composer), Tushar Lad, and Tushar Ladhe. His name does not resolve cleanly to him.
+
+This turns the JSON-LD `Person` block from a nice-to-have into a real requirement: `sameAs` links
+across GitHub, LinkedIn, the live products and the YouTube channel are what let search engines collapse
+those into one identity and rank his own domain first.
+
+## Revised featured set
+
+Treacle's discovery changes the ranking. Proposed order:
+
+1. **Treacle**, `mytreacle.com`. Shipped consumer product, solo-built, publicly verifiable.
+2. **Appsatile platform work.** Not a repo, but the deepest system: 7 layers, sub-millisecond latency,
+   five developers. Needs a case study written from the CV rather than from code.
+3. **edytlab**, 237 commits. Rust DSP with local ML.
+4. **MemryLab**, `memrylab.com`. Shipped native app, 12 stars, hexagonal architecture.
+5. **wayfinder**. Unity XR on real planetary terrain, the one nobody else has.
+
+`xpenselab` and Meridian move to the ledger's top rows. This is the first version of the list where the
+professional work outranks the repos, which is the correct outcome now that the CV is known.
