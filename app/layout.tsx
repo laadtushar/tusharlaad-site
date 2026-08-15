@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(url),
   title: {
     default: `${profile.name}, software engineer`,
-    template: `%s — ${profile.name}`,
+    template: `%s, ${profile.name}`,
   },
   description: `${profile.headline} ${profile.subhead}`,
   alternates: { canonical: "/" },
