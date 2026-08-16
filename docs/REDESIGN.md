@@ -1,13 +1,36 @@
-# tusharlaad.com — Redesign Brief
+# tusharlaad.com, redesign brief
 
-**Date:** 13 Aug 2026 · **Rev 3 — audited against all 23 repos and the public profile** · **Phase:**
-design, no implementation yet · **Blocked on:** employment/education dates, and what currently deploys
-the live domain
+**Status: built, merged and deployed.** The site is live as a preview and the source is on `main`.
 
-- **Subject:** Tushar Laad — Founding Software Engineer, Also Software Group
-- **Location:** Newcastle upon Tyne, UK · Newcastle University
-- **LinkedIn:** https://www.linkedin.com/in/tusharlaad2002/
-- **Evidence base:** 23 repos, ~1,300 commits, 4 live demos
+- **Subject:** Tushar Laad, Founder of LabyNator, Founding Software Engineer at Appsatile
+- **Location:** Newcastle upon Tyne, UK
+- **Evidence base:** 23 repos, 5 shipped products, 7 roles, 5 recommendations
+
+## Read this first
+
+This document was written across several revisions as facts arrived, and **the early sections contain
+claims that later evidence disproved.** They are kept rather than deleted so the reasoning is
+auditable, but where they conflict, the later sections win. The corrections that matter:
+
+| Early claim | Correction | Where |
+| --- | --- | --- |
+| Employer is "Also Software Group" | **Appsatile Software Group Ltd.** A search snippet had truncated the name. | Footprint sweep |
+| `xpenselab` is not deployed | **Live at xpenselab.com.** Its README simply has no demo link. | Product family |
+| The job tracker ships as "Meridian" | **HyredLab**, at hyredlab.com. Only the README still says Meridian. | Product family |
+| `decipher.website` is a live demo | **Dead.** It does not resolve, and it is still linked from the old site. | Product family |
+| `spark-streaming-job-market` is a featured project | **7 commits, never deployed.** Demoted to the ledger. | Rev 3 audit |
+| OceanFrogs dates unknown, possibly 2022 to 2024 | **Jul 2022 to Aug 2023 full-time, then freelance to Oct 2023.** From the LinkedIn export. | OceanFrogs section |
+| The positioning tension is data engineer versus builder | **Dissolved.** Four founding titles and a branded product family. | Rev 4 addendum |
+
+## Where it ended up
+
+- **Source:** `laadtushar/tusharlaad-site`, on `main`.
+- **Live preview:** deployed into the existing `portfolio-site` Vercel project, since the API token
+  cannot create projects on this account. Built clean, 11 pages prerendered, no runtime errors.
+- **Not yet done:** the repo is not connected to a Vercel project of its own, so merges do not
+  auto-deploy. Importing it at vercel.com/new fixes that permanently and takes about a minute.
+- **Still open:** product screenshots, the dead `decipher.website` link, and the LabyNator description
+  that cuts off at "an independent software lab and parent".
 
 ---
 
@@ -45,15 +68,15 @@ architecture decide the tiers.
 | --- | ---: | --- | --- | --- |
 | `edytlab` | 237 | Rust, Tauri 2, symphonia, fundsp, ONNX, Demucs, Whisper | DNS pending | Conversational audio editor — describe an edit in English, an agent plans and renders it. Pure-Rust DSP with local ML. **Deepest technical work.** |
 | `MemryLab` | 109 | Rust, Tauri 2, React 19, SQLite FTS5, D3, 9 LLM providers | memrylab.com | Strict hexagonal architecture, 30+ source adapters, 8-stage analysis pipeline, hybrid BM25 + vector search on device. Shipped installer, 12★, MIT. **The one with outside validation.** |
-| `xpenselab` | 335 | Next 16, Firebase, Genkit, Gemini, Stripe | not deployed | Largest codebase. Subscriptions, GDPR, client-side encryption with recovery codes, EMI tracking, expense splitting. **Proof of finishing** — deploy it. |
+| `xpenselab` | 335 | Next 16, Firebase, Genkit, Gemini, Stripe | xpenselab.com | Largest codebase. Subscriptions, GDPR, client-side encryption with recovery codes, EMI tracking, expense splitting. **Proof of finishing** — deploy it. |
 | `wayfinder` | — | Unity 6 LTS, OpenXR, Vulkan, C#, GDAL/QGIS | Play Store pending | Space exploration for Samsung Galaxy XR on real Mars/Moon terrain. 72 fps on device, 72 passing tests, hands-only. **Nobody else's portfolio has this.** |
-| `job-hunt-dashboard` | 75 | Next 16, Postgres, Prisma, Gemini 2.0 Flash, NextAuth | meridian-job-sync.vercel.app | Ships as "Meridian". Multi-agent extraction with a reflexion loop that critiques its own output. **Easiest to demo in an interview.** |
+| `job-hunt-dashboard` | 75 | Next 16, Postgres, Prisma, Gemini 2.0 Flash, NextAuth | hyredlab.com | Ships as "HyredLab". Multi-agent extraction with a reflexion loop that critiques its own output. **Easiest to demo in an interview.** |
 
 ### Ledger — one dense row each
 
 | Repo | Commits | Stack | Live | Note |
 | --- | ---: | --- | --- | --- |
-| `end-to-end-encrypted-chat-app` | 117 | Vite, Firebase, WebCrypto | decipher.website | Asymmetric key management plus steganography, IEEE-style paper and video in repo. Borderline feature. |
+| `end-to-end-encrypted-chat-app` | 117 | Vite, Firebase, WebCrypto | **dead link** | Asymmetric key management plus steganography, IEEE-style paper and video in repo. Borderline feature. |
 | `samspace` | 34 | Next 14, Vercel Blob, Vitest | samspace.vercel.app | Real client work — therapy practice site, intake forms, admin dashboard, AES-256-GCM at rest. **The only thing built for someone else.** |
 | `rust-pair-teach` | 22 | TypeScript, VS Code API | .vsix | Rust tutor extension that refuses to write your code. README honestly flags untested thresholds. |
 | `spark-streaming-job-market` | 7 | PySpark, Kafka, Redis, Parquet | localhost | Lambda architecture, hot and cold paths. Demoted from featured. |
@@ -74,11 +97,11 @@ architecture decide the tiers.
 `erpnext`, `frappe_docker` (upstream clones, no divergence); `attendax`, `Crypto`, `Riv`,
 `mental-model`, `frappe-cumbrian-dreams` (coursework-era or empty).
 
-## 3. The positioning problem
+## 3. The positioning problem (SUPERSEDED, see the Rev 4 addendum)
 
 The CV and the GitHub describe two different engineers.
 
-- **Professional identity:** data engineering — Founding Software Engineer at Also Software Group,
+- **Professional identity:** data engineering, Founding Software Engineer at Appsatile,
   Azure Databricks, PySpark, ETL pipelines, REST APIs, Docker, plus a Newcastle dissertation on
   LLM job-intent extraction.
 - **GitHub identity:** Rust systems work, native apps, XR, shipped consumer product. ~1,300 commits.
@@ -88,7 +111,7 @@ hobbyist and discards the paid track record. **The layered structure resolves th
 compromise** — which is the strongest argument for it:
 
 > Layer 1 shows the builder (edytlab, MemryLab, xpenselab — range and depth in eight seconds).
-> Layer 2 shows the professional (Also Software Group, the data-engineering track, Newcastle, in full).
+> Layer 2 shows the professional (Appsatile, the data-engineering track, Newcastle, in full).
 
 The tagline must do both jobs in one line — closer to *"Data engineer. I build and ship native tools
 in Rust."* than to either half alone.
