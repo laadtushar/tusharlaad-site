@@ -57,7 +57,7 @@ export function HeroStory({
 
       const mm = gsap.matchMedia();
       mm.add(
-        "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
+        "(prefers-reduced-motion: no-preference)",
         () => {
           root.setAttribute("data-story-live", "");
           const canvas = root.querySelector<HTMLCanvasElement>(".story-canvas");
@@ -73,6 +73,7 @@ export function HeroStory({
           const amberColor = css.getPropertyValue("--amber").trim() || "#e5a03c";
 
           let W = 0, H = 0;
+          let active = POINTS;
           const dpr = Math.min(2, window.devicePixelRatio || 1);
           // Four configurations per point; vortex is parametric in progress.
           const scatter = new Float32Array(POINTS * 2);
@@ -97,12 +98,16 @@ export function HeroStory({
               orbit[i * 2 + 1] = rnd() * Math.PI * 2;
             }
             // Lattice: centred grid, same spacing idea as the old hero field.
-            const spacing = 30;
+            // Capacity caps the live point count, so a phone's lattice stays
+            // inside its short viewport instead of running off both ends.
+            const spacing = W < 640 ? 24 : 30;
             const cols = Math.max(2, Math.floor((W * 0.72) / spacing));
-            const rows = Math.max(2, Math.ceil(POINTS / cols));
+            const maxRows = Math.max(2, Math.floor((H * 0.78) / spacing));
+            active = Math.min(POINTS, cols * maxRows);
+            const rows = Math.ceil(active / cols);
             const ox = (W - (cols - 1) * spacing) / 2;
             const oy = (H - (rows - 1) * spacing) / 2;
-            for (let i = 0; i < POINTS; i++) {
+            for (let i = 0; i < active; i++) {
               lattice[i * 2] = ox + (i % cols) * spacing;
               lattice[i * 2 + 1] = oy + Math.floor(i / cols) * spacing;
             }
@@ -110,16 +115,16 @@ export function HeroStory({
             const anchors = [
               [0.24, 0.3], [0.76, 0.3], [0.24, 0.74], [0.76, 0.74],
             ];
-            const per = Math.ceil(POINTS / 4);
+            const per = Math.ceil(active / 4);
             const cc = Math.ceil(Math.sqrt(per));
-            for (let i = 0; i < POINTS; i++) {
+            const cs = W < 640 ? 10 : 14;
+            for (let i = 0; i < active; i++) {
               const c = i % 4;
               const j = Math.floor(i / 4);
               const cx = anchors[c][0] * W;
               const cy = anchors[c][1] * H;
-              const s = 14;
-              clusters[i * 2] = cx + ((j % cc) - cc / 2) * s;
-              clusters[i * 2 + 1] = cy + (Math.floor(j / cc) - cc / 2) * s;
+              clusters[i * 2] = cx + ((j % cc) - cc / 2) * cs;
+              clusters[i * 2 + 1] = cy + (Math.floor(j / cc) - cc / 2) * cs;
             }
           }
 
@@ -160,7 +165,7 @@ export function HeroStory({
             let seg = SEGS[0];
             for (const s of SEGS) if (p >= s.t0) seg = s;
             const t = smooth(clamp01((p - seg.t0) / (seg.t1 - seg.t0)));
-            for (let i = 0; i < POINTS; i++) {
+            for (let i = 0; i < active; i++) {
               posAt(i, seg.a, p, A);
               posAt(i, seg.b, p, B);
               const x = A[0] + (B[0] - A[0]) * t;
@@ -256,7 +261,12 @@ export function HeroStory({
           // scroll it was written as.
           tl.set({}, {}, T);
 
-          const onResize = () => { build(); settled = false; };
+          const onResize = () => {
+            const dh = Math.abs(stage!.clientHeight - H);
+            if (stage!.clientWidth === W && dh < 140) return;
+            build();
+            settled = false;
+          };
           window.addEventListener("resize", onResize);
 
           return () => {
