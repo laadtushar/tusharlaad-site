@@ -514,3 +514,86 @@ Azure Databricks, Information Security, Security System Design, PySpark, React.j
 
 LabyNator does not appear in the export, which predates it. The truncated description ("an independent
 software lab and parent...") is still unresolved, and it is now the only gap left.
+
+---
+
+# Full profile correction, from the live LinkedIn
+
+Three things in every earlier revision were wrong. Corrected in `content.ts`.
+
+## 1. DoorFeed was missing entirely, and it is the current job
+
+**Data Engineer, DoorFeed. Apr 2026 to present. London, on-site, full-time.**
+A property investment platform across the UK and France.
+
+- Built the regulatory service answering what rent a property can legally charge, **empty repository to
+  production in 27 days**. Serves **2,512 rent ceilings** across **57 French rent-control sectors** and
+  two English schemes.
+- Sourced the data where no clean feed existed: council mapping services, prefectural decrees, boundary
+  sets. **348,842 rows from 11 sources**, with an evidence trail tracing every figure to its decree.
+- Dated lookup across **34,746 communes** and **35,672 UK small areas**.
+- Built the agent tool server: **105 tools across 11 domains** covering comparable search, valuation,
+  deal ingestion, documents and policy. Plus the FastAPI chat service on Postgres handling streaming.
+- Wrote the skills producing analyst output, including valuations applying French rent control and
+  English social and affordable rent rules per unit.
+- Document store from scratch: schema, API, versioning, presigned direct-to-S3 uploads, scanning for
+  malicious files and prompt injection. Object-level authorization in Cerbos policy.
+- ETL in Dagster and Polars over Parquet on S3 that quarantines bad rows. Freshness and provenance
+  checks.
+- Owns reliability for long-running agent runs: failure detection, automatic recovery, telemetry.
+
+These are the strongest numbers on the entire CV and they were absent from the site.
+
+## 2. Location is London, not Newcastle
+
+Newcastle was where the MSc and Hexis Lab were. He has been in London since at least Mar 2024.
+
+## 3. Treacle is not part of LabyNator
+
+LabyNator is the parent for **four** products: MemryLab, XpenseLab, HyredLab and **edytlab, which is
+live at edytlab.com** (earlier revisions had it as unprovisioned). Treacle is a **separate company**
+where he was founding engineer. The site now renders them as two distinct blocks.
+
+Full LabyNator description, previously truncated: "an independent software lab and parent company for
+a growing suite of SaaS applications. Builds, ships, and operates multiple live products including
+XpenseLab (personal finance), HyredLab (job tracking), MemryLab.com (Your Permanent Memory),
+EdytLab.com (Agentic Audio Editing). Manages the full product lifecycle from ideation and development
+to deployment and customer experience."
+
+## 4. OceanFrogs corrected again
+
+**Apr 2022 to Oct 2023, 1 yr 7 mos, Pune, remote, full-time.** One role, not two. The LinkedIn export
+in the `portfolio-site` repo was an older snapshot; the live profile is authoritative.
+
+One metric was wrong on the site: the NLP keyword extraction gave a **20 percent improvement in
+enrichment rate**, not 80 percent tagging efficiency. Fixed.
+
+The letter of recommendation attached to this role is from **Dr. Vinay Mehendiratta, CEO and founder**
+of OceanFrogs.
+
+## 5. New role found
+
+**Full Stack Website Developer, Cantos Cautivos. Internship, Mar 2024 to Apr 2024. London, remote.**
+PHP and full-stack. Added to the ledger tier.
+
+## 6. He does write, contrary to the earlier answer
+
+- Medium at **tusharlaad.medium.com**
+- LinkedIn articles: "I Was the Kid the School Wanted to Get Rid Of" (1,496 impressions), "When AI
+  Arrives at Work" (1,075), an AI ethics piece (1,001), a Meridian build writeup (1,319), a shipping
+  velocity post (3,184)
+
+The `/writing` route was stubbed on the strength of a "no" earlier in this project. That answer no
+longer matches the evidence. **Recommendation: link Medium from the console now**, which is done, and
+consider turning `/writing` on.
+
+## 7. Availability flag turned off
+
+He is five months into a full-time role. "Open to work" on a personal site while employed is a
+contradiction a reader will notice, so `profile.available` is now `false`. Flip the one boolean in
+`content.ts` if that is wrong.
+
+## Headline, in his own words
+
+"Data Engineer @ Doorfeed | Your Friendly Neighbourhood 0-to-1 Engineer". The 0-to-1 framing is the
+best line on the profile and is now the site's headline.

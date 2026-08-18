@@ -82,11 +82,12 @@ export function Console() {
         <Tile className="flex flex-col gap-2 bg-panel-2">
           <Label>Shipped</Label>
           <p className="text-sm leading-relaxed text-ink-2">
-            A <strong className="font-semibold text-amber">7 layer</strong> data
-            platform at sub-millisecond latency. An AI dating app shipped alone
-            across <strong className="font-semibold text-amber">109</strong> API
-            routes. A <strong className="font-semibold text-amber">5 dev</strong>{" "}
-            team led.
+            A rent-regulation service from empty repo to production in{" "}
+            <strong className="font-semibold text-amber">27 days</strong>, now
+            serving <strong className="font-semibold text-amber">2,512</strong>{" "}
+            ceilings. An agent tool server of{" "}
+            <strong className="font-semibold text-amber">105</strong> tools. A
+            dating app shipped alone.
           </p>
         </Tile>
 
@@ -186,7 +187,10 @@ function ProductCell({
 }
 
 export function Lab() {
-  const [lead, ...rest] = products;
+  const labProducts = products.filter((p) => p.owner === "labynator");
+  const [treacle] = products.filter((p) => p.owner === "treacle");
+  const [lead, ...rest] = labProducts;
+
   return (
     <Shell>
       <section id="work" className="pt-16 sm:pt-24">
@@ -203,6 +207,21 @@ export function Lab() {
             <ProductCell key={p.slug} product={p} />
           ))}
         </Grid>
+
+        {treacle ? (
+          <div className="pt-14">
+            <div className="flex flex-col gap-3 pb-6">
+              <Heading>Treacle</Heading>
+              <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
+                A separate company, not part of the lab. I joined as founding
+                engineer and shipped the product alone.
+              </p>
+            </div>
+            <Grid className="border border-rule">
+              <ProductCell product={treacle} featured />
+            </Grid>
+          </div>
+        ) : null}
       </section>
     </Shell>
   );
@@ -270,8 +289,9 @@ export function RoleRow({ role, compact = false }: { role: Role; compact?: boole
 }
 
 export function Experience() {
+  const current = roles.filter((r) => r.kind === "current");
   const founding = roles.filter((r) => r.kind === "founding");
-  const rest = roles.filter((r) => r.kind !== "founding");
+  const rest = roles.filter((r) => r.kind !== "founding" && r.kind !== "current");
 
   return (
     <Shell>
@@ -279,12 +299,19 @@ export function Experience() {
         <div className="flex flex-col gap-3 pb-2">
           <Heading>Where I have worked</Heading>
           <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
-            Three of these ran at the same time. That is deliberate rather than a
-            typo: the lab and Treacle were built alongside the day job.
+            Some of these ran at the same time. That is deliberate rather than a
+            typo: the lab and Treacle were built alongside a full-time job.
           </p>
         </div>
 
         <div className="pt-6">
+          <Label>Now</Label>
+          {current.map((r) => (
+            <RoleRow key={r.org} role={r} />
+          ))}
+        </div>
+
+        <div className="pt-10">
           <Label>Founding roles</Label>
           {founding.map((r) => (
             <RoleRow key={r.org} role={r} />

@@ -19,6 +19,8 @@ export interface Product {
   domain?: string;
   repo?: string;
   stack: string[];
+  /** Which house shipped it. Treacle is a separate company, not part of the lab. */
+  owner: "labynator" | "treacle";
   /** Optional screenshot at /public/shots/<file>. Cells upgrade when present. */
   image?: { src: string; alt: string };
   caseStudy?: {
@@ -36,7 +38,7 @@ export interface Role {
   from: string;
   to: string;
   location: string;
-  kind: "founding" | "engineering" | "earlier";
+  kind: "current" | "founding" | "engineering" | "earlier";
   summary: string;
   points: string[];
   concurrent?: boolean;
@@ -61,12 +63,12 @@ export interface Quote {
 
 export const profile = {
   name: "Tushar Laad",
-  /** Leads with the lab, then the day job. Both verifiable. */
-  headline: "I run LabyNator, a small software lab.",
+  /** His own framing, and the best line on the whole profile. */
+  headline: "Data engineer at DoorFeed. Your friendly neighbourhood 0-to-1 engineer.",
   subhead:
-    "Four products shipped under it. Founding engineer on a multi-tenant data platform by day, mostly in Rust and TypeScript after hours.",
-  location: "Newcastle upon Tyne, UK",
-  available: true,
+    "I take systems from an empty repository to production. Regulatory data, agent platforms and the backends under them by day; a four-product software lab the rest of the time.",
+  location: "London, UK",
+  available: false,
   availableLabel: "Open to work",
   email: "tusharlaad2002@gmail.com",
   domain: "tusharlaad.com",
@@ -74,8 +76,8 @@ export const profile = {
     { label: "GitHub", href: "https://github.com/laadtushar" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/tusharlaad2002/" },
     { label: "LabyNator", href: "https://labynator.com" },
+    { label: "Writing", href: "https://tusharlaad.medium.com" },
   ],
-  /** Drives JSON-LD sameAs. Three people share this name on LinkedIn, so this matters. */
   sameAs: [
     "https://github.com/laadtushar",
     "https://www.linkedin.com/in/tusharlaad2002/",
@@ -83,39 +85,43 @@ export const profile = {
     "https://memrylab.com",
     "https://hyredlab.com",
     "https://xpenselab.com",
+    "https://www.edytlab.com",
+    "https://tusharlaad.medium.com",
   ],
   now: {
     date: "August 2026",
     body:
-      "Building edytlab, a conversational audio editor in Rust, currently on phase two. Shipping wayfinder to the Play Store.",
+      "Building the agent platform and regulatory data service at DoorFeed. Shipping edytlab, a conversational audio editor in Rust, on the side.",
   },
 };
 
 /** Verifiable figures from the CV. No repo vanity counts. */
 export const headlineMetrics = [
-  { value: "7", label: "layer data platform architected" },
-  { value: "5", label: "developers led" },
+  { value: "27", label: "days from empty repo to production" },
+  { value: "105", label: "agent tools across 11 domains" },
   { value: "4", label: "products shipped under the lab" },
 ];
 
 export const stack = [
-  "Rust",
-  "TypeScript",
   "Python",
+  "TypeScript",
+  "Rust",
   "Go",
-  "PySpark",
   "PostgreSQL",
+  "FastAPI",
+  "Dagster",
+  "Polars",
+  "PySpark",
   "Kubernetes",
-  "Tauri",
+  "AWS",
   "Next.js",
-  "Unity",
 ];
 
 export const lab = {
   name: "LabyNator",
   domain: "labynator.com",
   blurb:
-    "An independent software lab. Everything below carries the Lab suffix because it all comes out of the same workshop, one person, shipped end to end.",
+    "An independent software lab and the parent company for four live SaaS products. One person from ideation through to deployment and support.",
 };
 
 export const products: Product[] = [
@@ -126,6 +132,7 @@ export const products: Product[] = [
     summary:
       "Voice profiling instead of forms. You talk, it listens, and it debriefs with you after dates to learn what actually worked. Architected and shipped alone across iOS and Android.",
     status: "shipped",
+    owner: "treacle",
     domain: "mytreacle.com",
     stack: ["Next.js", "React Native", "ElevenLabs", "WebRTC", "Neo4j", "pgvector", "AWS"],
     metrics: [
@@ -151,6 +158,7 @@ export const products: Product[] = [
     summary:
       "Point it at your journals, chat exports, notes and archives. It builds a visual timeline of how your beliefs and interests moved over years. Everything stays on the machine.",
     status: "shipped",
+    owner: "labynator",
     domain: "memrylab.com",
     repo: "https://github.com/laadtushar/MemryLab",
     stack: ["Rust", "Tauri 2", "React 19", "SQLite FTS5", "D3", "Ollama"],
@@ -176,7 +184,9 @@ export const products: Product[] = [
     tagline: "Describe an audio edit in English. It renders.",
     summary:
       "Drop in stems and ask for the mashup you want. An agent plans the operations, the DSP runs locally in Rust, and stem separation and transcription happen on your own machine.",
-    status: "building",
+    status: "shipped",
+    owner: "labynator",
+    domain: "edytlab.com",
     repo: "https://github.com/laadtushar/edytlab",
     stack: ["Rust", "Tauri 2", "symphonia", "fundsp", "ONNX", "Demucs", "Whisper"],
     metrics: [
@@ -201,6 +211,7 @@ export const products: Product[] = [
     summary:
       "Syncs with Gmail and turns the mess of application confirmations, rejections and recruiter threads into a tracked pipeline, without any manual entry.",
     status: "shipped",
+    owner: "labynator",
     domain: "hyredlab.com",
     repo: "https://github.com/laadtushar/job-hunt-dashboard",
     stack: ["Next.js 16", "PostgreSQL", "Prisma", "Gemini 2.0 Flash", "NextAuth"],
@@ -222,6 +233,7 @@ export const products: Product[] = [
     summary:
       "Income, expenses, budgets, loans and EMIs, with AI categorisation and optional client-side encryption. The largest codebase in the lab.",
     status: "shipped",
+    owner: "labynator",
     domain: "xpenselab.com",
     repo: "https://github.com/laadtushar/xpenselab",
     stack: ["Next.js 16", "Firebase", "Genkit", "Gemini", "Stripe"],
@@ -251,6 +263,26 @@ export const platformWork = {
 
 export const roles: Role[] = [
   {
+    org: "DoorFeed",
+    title: "Data Engineer",
+    from: "Apr 2026",
+    to: "Present",
+    location: "London, on-site",
+    kind: "current",
+    summary:
+      "A property investment platform across the UK and France. I build the regulatory data the analysis stands on, the backend that serves it, and the agent that turns it into analyst output.",
+    points: [
+      "Built the regulatory service that answers what rent a property can legally charge, from empty repository to production in 27 days. It serves 2,512 rent ceilings across 57 French rent-control sectors and two English schemes.",
+      "Sourced that data where no clean feed existed, out of council mapping services, prefectural decrees and boundary sets. 348,842 rows load from 11 sources, and every figure traces back to the decree it came from.",
+      "Built the dated lookup across 34,746 French communes and 35,672 UK small areas.",
+      "Built the tool server the agent calls: 105 tools across 11 domains covering comparable search, valuation, deal ingestion, documents and policy, plus the FastAPI chat service on Postgres that streams its output.",
+      "Wrote the skills producing the analyst output, including valuations that apply French rent control and English social and affordable rent rules per unit.",
+      "Built the document store from scratch, with presigned direct-to-S3 uploads and scanning for both malicious files and prompt injection, and object-level authorization held in Cerbos policy.",
+      "Built ETL in Dagster and Polars over Parquet on S3 that quarantines bad rows rather than shipping them, with the freshness and provenance checks that prove a dataset is current.",
+      "Own reliability for long-running agent runs: failure detection, automatic recovery, and the usage and error telemetry behind it.",
+    ],
+  },
+  {
     org: "LabyNator",
     title: "Founder",
     from: "Nov 2025",
@@ -258,9 +290,11 @@ export const roles: Role[] = [
     location: "UK, remote",
     kind: "founding",
     concurrent: true,
-    summary: "An independent software lab and the parent for everything above.",
+    summary:
+      "An independent software lab and parent company for four live SaaS products.",
     points: [
-      "Founded and run the lab that ships MemryLab, XpenseLab, HyredLab and edytlab.",
+      "Founded the lab that builds, ships and operates MemryLab, XpenseLab, HyredLab and edytlab.",
+      "Ran the full product lifecycle on each, from ideation through development, deployment and customer experience.",
     ],
   },
   {
@@ -282,13 +316,12 @@ export const roles: Role[] = [
   },
   {
     org: "Appsatile",
-    title: "Founding Software Engineer",
+    title: "Founding Software Engineer, Data",
     from: "Jun 2024",
     to: "Mar 2026",
     location: "Gateshead, on-site",
     kind: "founding",
-    summary:
-      "Architected the data platform and led the team building on it.",
+    summary: "Architected the data platform and led the team building on it.",
     points: [
       "Architected a 7-layer composable data system with cross-app interoperability, type safety and versioning, and designed cell-based multi-tenancy using row-level security with dedicated cells for enterprise tenants.",
       "Reached sub-millisecond latency through 3-tier caching across Caffeine, Redis and PostgreSQL.",
@@ -306,8 +339,7 @@ export const roles: Role[] = [
     to: "Jun 2024",
     location: "Newcastle upon Tyne",
     kind: "engineering",
-    summary:
-      "Brought generative AI into a cosmetic science platform.",
+    summary: "Brought generative AI into a cosmetic science platform.",
     points: [
       "Integrated GPT-4o and spaCy for ingredient analysis with sentiment scoring and trend forecasting across 30,000 European Commission regulatory data points.",
       "Prototyped a vision assistant for personalised skincare recommendations, deployed through FastAPI and Docker.",
@@ -316,21 +348,31 @@ export const roles: Role[] = [
   },
   {
     org: "OceanFrogs",
-    title: "Data Engineer and Web Developer",
-    from: "Jul 2022",
+    title: "Data Engineer",
+    from: "Apr 2022",
     to: "Oct 2023",
-    location: "Pune, then remote from Newcastle",
+    location: "Pune, remote",
     kind: "engineering",
     summary:
-      "Started on WordPress builds, moved onto the data team, ended up owning the enrichment pipelines and the APIs on top of them. Stayed on freelance for two months after moving to the UK.",
+      "Started on WordPress builds, moved onto the data team, ended up owning the enrichment product and the APIs on top of it.",
     points: [
-      "Migrated technographics labeling from SQL to Python regular expressions, cutting processing time fourfold and lifting accuracy by half.",
-      "Built a machine learning keyword extraction engine using NLP that raised tagging efficiency by 80 percent.",
-      "Designed and deployed REST APIs on FastAPI, Docker and NGINX over EC2, increasing data enrichment throughput by 60 percent.",
-      "Built and maintained the ETL pipelines behind business intelligence enrichment, in Python with Selenium, Pandas and BeautifulSoup on EC2.",
-      "Owned the Data Enrichment API product end to end, on FastAPI, NGINX, MSSQL and Docker over EC2.",
-      "Overhauled the website deployment process for an 80 percent cut in deployment time, and ran the training that let the team pick it up.",
+      "Owned the Data Enrichment API product on FastAPI, MSSQL, NGINX and Docker over EC2, and built the PySpark ETL behind it for business intelligence datasets serving B2B customers.",
+      "Migrated technographics labeling to Python and PySpark, making processing 400 percent faster and 50 percent more accurate.",
+      "Designed and deployed REST APIs that increased data enrichment capacity by 60 percent.",
+      "Implemented NLP-based keyword extraction for a 20 percent improvement in enrichment rate.",
+      "Wrote SQL stored procedures that reorganised platform data and lifted client interaction by 20 percent.",
+      "Cut deployment time by 80 percent and built the Looker Studio dashboards behind stakeholder reporting.",
     ],
+  },
+  {
+    org: "Cantos Cautivos",
+    title: "Full Stack Developer",
+    from: "Mar 2024",
+    to: "Apr 2024",
+    location: "London, remote",
+    kind: "earlier",
+    summary: "A short internship on a PHP full-stack codebase.",
+    points: ["PHP and full-stack development."],
   },
   {
     org: "Build My Site",
