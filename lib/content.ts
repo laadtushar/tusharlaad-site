@@ -17,6 +17,8 @@ export interface Product {
   summary: string;
   status: Status;
   domain?: string;
+  /** Play Store listing, where the product ships as an Android app. */
+  playStore?: string;
   repo?: string;
   stack: string[];
   /** Which house shipped it. Treacle is a separate company, not part of the lab. */
@@ -73,6 +75,17 @@ export const profile = {
   subhead:
     "I take systems from an empty repository to production. Regulatory data, agent platforms and the backends under them by day; a four-product software lab the rest of the time.",
   location: "London, UK",
+  portrait: {
+    src: "/portrait.jpg",
+    alt: "Tushar Laad, photographed against a dark background",
+  } as { src: string; alt: string } | undefined,
+  /**
+   * Written for search results, not assembled from other copy. Google cuts at
+   * roughly 155 characters, and headline + subhead ran to 245, so a third of
+   * it was thrown away mid-sentence.
+   */
+  metaDescription:
+    "Data engineer at DoorFeed in London. I take systems from an empty repository to production, and run a four-product software lab the rest of the time.",
   available: false,
   availableLabel: "Open to work",
   email: "tusharlaad2002@gmail.com",
@@ -135,14 +148,14 @@ export const story = {
   scenes: [
     {
       key: "problem",
-      heading: "Order out of mess is the job.",
-      body: "Ambiguous inputs, moving targets, no clean place to start. The work is taking a system from nothing to something people can rely on.",
+      heading: "Nothing starts clean.",
+      body: "No schema, no precedent, no obvious first move. Taking a system from an empty repository to something people depend on is the whole job.",
       figures: [],
     },
     {
       key: "resolve",
-      heading: "It resolves.",
-      body: "Empty repository to production, repeatedly. Treacle shipped to both app stores with one engineer on the backend, the apps and the infrastructure.",
+      heading: "Then it ships.",
+      body: "Treacle went from an empty repository to the Play Store with one engineer across the backend, the app and the infrastructure.",
       figures: [
         {
           value: "109",
@@ -152,14 +165,14 @@ export const story = {
         {
           value: "1",
           label: "engineer",
-          source: "Architected and shipped across iOS and Android alone.",
+          source: "Architected and shipped for Android alone, built cross-platform on React Native.",
         },
       ],
     },
     {
       key: "lab",
-      heading: "The rest of the time, a lab.",
-      body: "Four live products under LabyNator: MemryLab, XpenseLab, HyredLab and EdytLab. One person, ideation through deployment and support.",
+      heading: "Four more, on my own time.",
+      body: "MemryLab, XpenseLab, HyredLab and EdytLab, all live under LabyNator. One person from ideation through deployment and support.",
       figures: [
         {
           value: "4",
@@ -207,15 +220,16 @@ export const products: Product[] = [
     name: "Treacle",
     tagline: "An AI dating app with no swiping.",
     summary:
-      "Voice profiling instead of forms. You talk, it listens, and it debriefs with you after dates to learn what actually worked. Architected and shipped alone across iOS and Android.",
+      "Voice profiling instead of forms. You talk, it listens, and it debriefs with you after dates to learn what actually worked. Architected and shipped alone, live on the Play Store.",
     status: "shipped",
     owner: "treacle",
     domain: "mytreacle.com",
+    playStore: "https://play.google.com/store/apps/details?id=com.mytreacle.app",
     stack: ["Next.js", "React Native", "ElevenLabs", "WebRTC", "Neo4j", "pgvector", "AWS"],
     metrics: [
       { value: "109", label: "API routes", source: "The Next.js backend behind Treacle, written solo." },
       { value: "32", label: "matching dimensions", source: "Psychological domains across values, communication and lifestyle." },
-      { value: "1", label: "engineer", source: "Architected and shipped across iOS and Android alone." },
+      { value: "1", label: "engineer", source: "Architected and shipped for Android alone, built cross-platform on React Native." },
     ],
     caseStudy: {
       problem:
@@ -225,7 +239,7 @@ export const products: Product[] = [
       hard:
         "Confidence. A model that infers personality from speech is wrong often enough that shipping its raw output would be irresponsible, so scoring runs on weekly Inngest jobs behind a confidence gate with an admin review workflow, and low-confidence inferences never reach a match.",
       outcome:
-        "Live on iOS and Android. Next.js backend across 109 API routes, React Native on Expo, PostgreSQL with pgvector across six embedding tables, AES-256 on sensitive profile data, and a Sentry observability facade with 38 tests holding the boundary between backend and mobile.",
+        "Live on the Play Store. Next.js backend across 109 API routes, React Native on Expo, PostgreSQL with pgvector across six embedding tables, AES-256 on sensitive profile data, and a Sentry observability facade with 38 tests holding the boundary between backend and mobile.",
     },
   },
   {
@@ -382,7 +396,7 @@ export const roles: Role[] = [
     kind: "founding",
     concurrent: true,
     summary:
-      "Architected and shipped an AI-native dating app on iOS and Android as the solo engineer.",
+      "Architected and shipped an AI-native dating app to the Play Store as the solo engineer.",
     points: [
       "Designed a 32-dimension matching algorithm across psychological domains, with weekly Inngest jobs, confidence-gated scoring and an admin review workflow.",
       "Built the ElevenLabs voice architecture, speech to text into an LLM and back through text to speech over WebRTC, with real-time prosody analysis feeding a Neo4j graph.",
@@ -463,14 +477,6 @@ export const roles: Role[] = [
       "Delivered WordPress builds for more than 10 small business and startup clients, scoping through to deployment.",
       "Published a Flutter hybrid application to the Play Store.",
       "Held every client site above 90 on PageSpeed.",
-    ],
-    // Two of the five client sites named on the CV no longer resolve, so they
-    // are not linked. Nothing here is a dead link.
-    links: [
-      { label: "buildmysite.in", href: "https://buildmysite.in" },
-      { label: "Play Store app", href: "https://play.google.com/store/apps/details?id=com.bms.buildmysite" },
-      { label: "cavpa.in", href: "https://cavpa.in" },
-      { label: "vailperfumes.com", href: "https://vailperfumes.com" },
     ],
   },
 ];

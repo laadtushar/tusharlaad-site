@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from "./gsap-init";
+import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from "@/components/gsap-init";
 
 /**
  * One line threading every section, drawn by scroll. The hero ends with the
