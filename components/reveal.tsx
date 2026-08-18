@@ -185,3 +185,58 @@ export function DrawSpines({
     </div>
   );
 }
+
+/**
+ * Section-as-scene framing. The section drifts up as it enters the viewport
+ * and compresses slightly as the next scene arrives over it, both scrubbed
+ * to scroll, so sections read as scenes replacing one another rather than
+ * one long column. Transform and opacity only, no pinning: a scene you are
+ * still reading never gets taken away from you.
+ */
+export function SceneSection({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion() || !ref.current) return;
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1024px)", () => {
+        gsap.from(ref.current, {
+          y: 48,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top bottom",
+            end: "top 55%",
+            scrub: 0.8,
+          },
+        });
+        gsap.to(ref.current, {
+          scale: 0.975,
+          opacity: 0.55,
+          transformOrigin: "center top",
+          ease: "none",
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "bottom 32%",
+            end: "bottom top",
+            scrub: 0.8,
+          },
+        });
+      });
+    },
+    { scope: ref },
+  );
+
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+}

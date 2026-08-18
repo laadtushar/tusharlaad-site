@@ -12,7 +12,7 @@ import { gsap, useGSAP, prefersReducedMotion } from "./gsap-init";
  * the animation is worth.
  *
  * The final text is always the server-rendered string, restored verbatim on
- * complete, so nothing drifts: 348,842 ends as 348,842 and not 348842.
+ * complete, so nothing drifts: 1,234,567 ends as 1,234,567 and not 1234567.
  * Everything sits in a .tnum context already, so digits are tabular and the
  * width never changes mid-count. CLS stays at zero.
  */
@@ -31,7 +31,7 @@ export function CountUpAll() {
       if (!final) continue;
 
       // Split the string into everything before the number, the number, and
-      // everything after: "27 days" and "2,512" and "72 fps" all work.
+      // everything after: "27 days" and "1,234" and "72 fps" all work.
       const m = final.match(/^(\D*)([\d,.]+)([\s\S]*)$/);
       if (!m) continue;
       const [, prefix, numText, suffix] = m;

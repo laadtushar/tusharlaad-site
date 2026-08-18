@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { profile, writing } from "@/lib/content";
+import { linkedinPosts, profile, writing } from "@/lib/content";
 import { ExternalLink, Label } from "@/components/ui";
 import { Reveal, RevealRows } from "@/components/reveal";
+import { LinkedInPostRow } from "@/components/linkedin-post";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -48,6 +49,21 @@ export default function WritingPage() {
           </li>
         ))}
       </ul>
+      </RevealRows>
+
+      <div className="mt-14 flex flex-col gap-3">
+        <h2 className="text-2xl font-semibold tracking-[-0.03em]">Posts</h2>
+        <p className="measure text-sm leading-relaxed text-ink-2">
+          Shorter pieces, on LinkedIn. Each loads in place when you ask for it,
+          so this page stays light until you do.
+        </p>
+      </div>
+      <RevealRows selector=".post-row">
+        <ul className="pt-4">
+          {linkedinPosts.map((post) => (
+            <LinkedInPostRow key={post.urn} post={post} />
+          ))}
+        </ul>
       </RevealRows>
 
       <Reveal className="mt-12 border-t border-rule pt-6">

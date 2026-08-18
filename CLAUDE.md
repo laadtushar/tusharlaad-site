@@ -12,6 +12,13 @@ component. If a date, figure or link is wrong, it is wrong in `content.ts`.
 else. Any number in amber must pass through `<Figure>` with a `source`, because provenance is the
 site's whole thesis. Never use amber decoratively.
 
+**Employer work stops at what it does.** DoorFeed is named as the employer and the work is
+described at the level of its purpose: a regulatory data service, an agent platform, the
+backends under them, delivery speed. How it is built inside never ships: no internal row,
+source, tool or coverage counts, no component names, no pipeline shapes from work systems.
+Amber figures belong to Tushar's own products and repos, or to claims about himself. When a
+number's owner is an employer, the number stays at work.
+
 **Verifiable numbers only.** Every figure on this site traces to the CV or a repo. No invented
 precision, no rounded-up vanity metrics.
 
@@ -83,6 +90,12 @@ because moving is fashionable.
   cannot re-read.
 - The CSS stays. The load sequence, the concurrency spine, the provenance panels and the
   page transitions are zero bytes and must not be reimplemented in GSAP.
+- The hero is the one pinned moment. Content sections are scenes by framing only: they drift
+  in on entry and compress on exit, scrubbed, transform and opacity, and never pin. A section
+  fully in view sits at opacity 1, transform none. A scene you are still reading is never
+  taken away from you.
+- Third-party embeds load on request, never on page load. The facade row is the site's; the
+  embed is the third party's, arriving by invitation.
 - Never animate a value with `useState`. Animate on the compositor: transform, opacity, clip-path.
 - The one piece of hand-written motion is `components/hero-field.tsx`, a Canvas 2D point field.
   It stops its own rAF loop once resolved and untouched, pauses when offscreen, and renders the

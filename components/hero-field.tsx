@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * The hero moment: 348,842 rows resolving into one answer.
+ * The hero moment: many messy sources resolving into one answer.
  *
  * The through-line in the work this site describes is always the same
  * operation. Scattered sources from eleven feeds become one dated lookup;

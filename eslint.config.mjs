@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Skill reference files are teaching material, not shipped code.
+    ".claude/**",
   ]),
 ]);
 

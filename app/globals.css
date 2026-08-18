@@ -398,3 +398,69 @@ a {
     animation: none;
   }
 }
+
+/*
+ * The story hero. Desktop with motion allowed: the track is four viewports
+ * tall, the stage is CSS-sticky (no GSAP pin, no injected spacer, CLS 0),
+ * and scenes sit absolute in the stage while scroll advances them.
+ *
+ * Everywhere else these rules do not apply and the scenes are ordinary
+ * stacked sections: same words, same figures, no pin. Content parity is the
+ * fallback. The canvas only exists where the story is live.
+ */
+
+.story-canvas {
+  display: none;
+}
+
+.story-scene + .story-scene {
+  border-top: 1px solid var(--rule);
+  margin-top: 3.5rem;
+  padding-top: 3.5rem;
+}
+
+/* The media query owns this layout entirely, so the first paint is already
+   the final layout and CLS stays 0. JavaScript only ever animates opacity
+   and transform inside it; it never changes where anything lives. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .story-track {
+    height: 440vh;
+  }
+  .story-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: clip;
+  }
+  .story-canvas {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .story-scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+  }
+  .story-scene + .story-scene {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
+  /* Secondary scenes start hidden and can't take clicks while invisible;
+     the scrubbed timeline brings them in. */
+  .story-scene:not(.story-scene--identity) {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .story-scene:not(.story-scene--identity) .prov__fig {
+    pointer-events: auto;
+  }
+  /* The story field is the centerpiece here; the identity tile's own
+     lattice would be a second, contradictory field inside it. */
+  .story-scene--identity canvas:not(.story-canvas) {
+    display: none;
+  }
+}
