@@ -128,7 +128,14 @@ function ProductCell({
             src={product.image.src}
             alt={product.image.alt}
             fill
-            sizes="(max-width: 640px) 100vw, 50vw"
+            /* The featured cell spans all three columns inside a 1180px shell;
+               the rest are a third of it. Asking for 50vw everywhere fetched
+               roughly four times the pixels a small cell can show. */
+            sizes={
+              featured
+                ? "(max-width: 640px) 100vw, 1120px"
+                : "(max-width: 640px) 100vw, 380px"
+            }
             className="object-cover"
           />
         </div>

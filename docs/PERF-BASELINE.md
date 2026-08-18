@@ -77,6 +77,25 @@ via `IntersectionObserver` when scrolled out of view, and never starts a loop at
 under `prefers-reduced-motion: reduce` or at 640px and below, where it paints the
 resolved state once and stops.
 
+## When product screenshots land
+
+The site ships no product images yet, which is the single largest thing still missing
+from it. The rendering path was proven end to end with a synthetic test card and the
+numbers recorded in `public/shots/README.md`.
+
+The short version: a real screenshot at `w=1200` is roughly 60 to 120KB, so six of them
+will exceed both the 320KB total ceiling and the 24-request ceiling above. That is the
+budget working, not the budget being wrong. Re-measure when they land and raise both
+ceilings here with the new numbers and an explicit reason. Images below the fold are
+lazy, so the initial load stays honest either way.
+
+One correctness fix went in ahead of them. `ProductCell` passed a single
+`sizes="(max-width: 640px) 100vw, 50vw"` for every cell, but the featured cell spans all
+three columns of an 1180px shell while the rest take a third of it. The small cells were
+requesting `w=1200` sources for a 365px box, roughly four times the pixels they can
+display. `sizes` is now split by cell type: 1120px featured, 380px standard, which the
+optimiser resolves to `w=1200` and `w=640` respectively.
+
 ## Where the JavaScript actually goes
 
 142.3KB is almost entirely React 19 plus the Next 16 App Router runtime, and it is the
