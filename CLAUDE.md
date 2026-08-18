@@ -129,8 +129,15 @@ Kill it with `pkill -f "[n]ext-server"`, bracket included. Written plainly, `pki
 matches the shell running the command, kills that shell first, and leaves the server up: the failure
 looks exactly like the kill having worked.
 
-The performance budget lives in `docs/PERF-BASELINE.md` with the measured numbers behind it. Raise a
-ceiling only by editing that file with the reason. Never raise one to turn a red run green.
+The performance budget lives in `docs/PERF-BASELINE.md` with the measured numbers behind it, and it
+has two tiers. The **field gate** is the real one: LCP, FCP, TBT and CLS on an emulated low-end phone
+at 6x CPU on slow 4G, against Core Web Vitals thresholds. **It may not be raised.** The **byte
+ceilings** are a drift alarm so a dependency cannot creep in unnoticed; they may be raised when the
+field gate is green and the raise is recorded in that file with its reason. Never raise either to
+turn a red run green.
+
+TBT is the number that decides for JavaScript, because it is main thread time the reader cannot
+interact through. Bytes are a proxy, and a proxy that disagrees with the measurement is wrong.
 
 ## Deployment
 
