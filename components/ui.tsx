@@ -10,12 +10,17 @@ export function Tile({
   children,
   className = "",
   as: Tag = "div",
+  ...rest
 }: {
   children: ReactNode;
   className?: string;
   as?: "div" | "section" | "article" | "li";
-}) {
-  return <Tag className={`bg-panel p-5 sm:p-6 ${className}`}>{children}</Tag>;
+} & Record<`data-${string}`, string | undefined>) {
+  return (
+    <Tag className={`bg-panel p-5 sm:p-6 ${className}`} {...rest}>
+      {children}
+    </Tag>
+  );
 }
 
 /** Grid gap of 1px over a rule-coloured background draws every divider at once. */
@@ -132,7 +137,11 @@ export function Figure({
   className?: string;
 }) {
   if (!source) {
-    return <span className={`tnum text-amber ${className}`}>{value}</span>;
+    return (
+      <span className={`tnum text-amber ${className}`} data-count={value}>
+        {value}
+      </span>
+    );
   }
   return (
     <span className="prov">
@@ -140,6 +149,7 @@ export function Figure({
         type="button"
         className={`prov__fig tnum ${className}`}
         aria-describedby={`src-${value.replace(/\W/g, "")}`}
+        data-count={value}
       >
         {value}
       </button>

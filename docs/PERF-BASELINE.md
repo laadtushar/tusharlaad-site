@@ -17,10 +17,10 @@ Transferred bytes, compressed, cold load. `requests` counts every response the p
 
 | Route           | JS      | CSS    | Total    | Requests | LCP    | CLS |
 | --------------- | ------- | ------ | -------- | -------- | ------ | --- |
-| `/`             | 189.9KB | 6.9KB  | 281.7KB  | 20       | 200ms  | 0   |
-| `/cv`           | 189.9KB | 6.9KB  | 274.1KB  | 19       | 112ms  | 0   |
-| `/work/treacle` | 189.9KB | 6.9KB  | 269.7KB  | 19       | 100ms  | 0   |
-| `/writing`      | 189.9KB | 6.9KB  | 268.8KB  | 19       | 84ms   | 0   |
+| `/`             | 190.3KB | 6.8KB  | 282.4KB  | 20       | 152ms  | 0   |
+| `/cv`           | 190.3KB | 6.8KB  | 274.7KB  | 19       | 132ms  | 0   |
+| `/work/treacle` | 190.7KB | 6.8KB  | 270.9KB  | 19       | 144ms  | 0   |
+| `/writing`      | 190.3KB | 6.8KB  | 269.4KB  | 19       | 96ms   | 0   |
 
 LCP is measured on localhost, so it is a regression tripwire rather than a field number.
 CLS is the one that transfers directly: it is zero because nothing on the page reserves
@@ -35,11 +35,11 @@ over measured, which absorbs a real feature and refuses a careless dependency.
 
 | Budget   | Ceiling | Current worst |
 | -------- | ------- | ------------- |
-| JS       | 200KB   | 189.9KB       |
-| CSS      | 20KB    | 6.9KB         |
-| Total    | 320KB   | 281.7KB       |
+| JS       | 200KB   | 190.7KB       |
+| CSS      | 20KB    | 6.8KB         |
+| Total    | 320KB   | 282.4KB       |
 | Requests | 24      | 20            |
-| LCP      | 1200ms  | 200ms         |
+| LCP      | 1200ms  | 152ms         |
 | CLS      | 0.01    | 0             |
 
 Raise a ceiling only by editing this file with the reason. Never raise one to turn a red
@@ -92,7 +92,14 @@ The CSS work stayed. The load sequence, the concurrency spine, the provenance pa
 and the page transitions are all still zero bytes, and GSAP was not used to reimplement
 any of them.
 
-**If the JS ceiling ever needs defending, this 47.6KB is the first thing to look at.**
+A second pass then animated the whole site: the load sequence, every section heading, the
+product cells, the education rows, the case studies, the writing page, the footer, and a
+count-up on every sourced figure. **That entire pass cost 0.4KB**, 189.9KB to 190.3KB,
+because the library was already paid for. This is the shape of the trade: GSAP is expensive
+once and nearly free thereafter, so the question was only ever whether to have it at all.
+
+**If the JS ceiling ever needs defending, the 47.6KB library is the first thing to look at,
+not the animations.**
 The honest test is whether the headline split and the cross-browser scroll reveals are
 worth a third of the page's JavaScript. Today the answer is yes because the motion was
 asked for explicitly and it is the front door. That answer is allowed to change.
@@ -119,8 +126,8 @@ optimiser resolves to `w=1200` and `w=640` respectively.
 ## Where the JavaScript actually goes
 
 142.3KB is almost entirely React 19 plus the Next 16 App Router runtime, and it is the
-floor for this architecture rather than anything the site chose. Four client components ship:
-`hero-field.tsx`, `copy-email.tsx`, `headline.tsx` and `reveal.tsx`. Every other
+floor for this architecture rather than anything the site chose. Six client components ship: `hero-field.tsx`, `copy-email.tsx`, `headline.tsx`,
+`reveal.tsx`, `console-intro.tsx` and `count-up.tsx`. Every other
 component on every page renders on the server and sends no JavaScript at all.
 
 The JS figure is identical across all four routes, which is the tell: nothing

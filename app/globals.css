@@ -338,24 +338,9 @@ a {
   background: var(--amber);
 }
 
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .span__bar {
-      animation: drawspan linear both;
-      animation-timeline: view();
-      animation-range: entry 15% cover 34%;
-    }
-  }
-}
-
-@keyframes drawspan {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
+/* The bar is drawn by ScrollTrigger in components/reveal.tsx rather than by
+   animation-timeline: view(), which left roughly 16% of browsers looking at a
+   bar that never drew. transform-origin stays here because it is layout. */
 
 /*
  * Micro-interactions. Each of these earns its place in one sentence, and

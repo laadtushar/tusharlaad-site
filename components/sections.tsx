@@ -18,7 +18,9 @@ import {
 import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "./ui";
 import { CopyEmail } from "./copy-email";
 import { Headline } from "./headline";
-import { RevealRows } from "./reveal";
+import { Reveal, RevealHeading, RevealRows, DrawSpines } from "./reveal";
+import { ConsoleIntro } from "./console-intro";
+import { CountUpAll } from "./count-up";
 
 /* Client-only and dynamically imported, so it never blocks first paint and
    never runs during server rendering. */
@@ -29,20 +31,24 @@ const HeroField = dynamic(() => import("./hero-field"));
 export function Console() {
   return (
     <Shell>
-      <Grid className="enter border border-rule lg:grid-cols-3">
+      <ConsoleIntro>
+      <Grid className="border border-rule lg:grid-cols-3">
         <Tile className="relative isolate overflow-hidden flex flex-col gap-6 py-10 sm:py-14 lg:col-span-3">
           {features.heroField ? <HeroField /> : null}
           <div className="relative flex flex-col gap-4">
             <Headline text={profile.name} />
-            <p className="max-w-[24ch] text-balance text-xl font-medium leading-[1.2] tracking-[-0.025em] text-ink sm:text-2xl">
+            <p
+              data-intro="role"
+              className="max-w-[24ch] text-balance text-xl font-medium leading-[1.2] tracking-[-0.025em] text-ink sm:text-2xl"
+            >
               {profile.headline}
             </p>
-            <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
+            <p data-intro="sub" className="measure text-[0.95rem] leading-relaxed text-ink-2">
               {profile.subhead}
             </p>
           </div>
 
-          <div className="relative flex flex-wrap items-center gap-x-5 gap-y-2">
+          <div data-intro="meta" className="relative flex flex-wrap items-center gap-x-5 gap-y-2">
             {profile.available ? (
               <p className="flex items-center gap-2 font-mono text-[0.66rem] uppercase tracking-[0.1em] text-good">
                 <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-good" />
@@ -55,7 +61,7 @@ export function Console() {
           </div>
 
           <ul className="relative flex flex-wrap gap-1.5">
-            <li>
+            <li data-intro="link">
               <Link
                 href="/cv"
                 className="inline-block border border-amber px-2.5 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.09em] text-amber transition-colors hover:bg-amber hover:text-ground"
@@ -64,7 +70,7 @@ export function Console() {
               </Link>
             </li>
             {profile.links.map((l) => (
-              <li key={l.href}>
+              <li key={l.href} data-intro="link">
                 <ExternalLink
                   href={l.href}
                   className="inline-block border border-rule-2 px-2.5 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.09em] text-ink-2 no-underline transition-colors hover:border-amber hover:text-amber"
@@ -76,7 +82,7 @@ export function Console() {
           </ul>
         </Tile>
 
-        <Tile className="flex flex-col gap-2 bg-panel-2">
+        <Tile data-intro="tile" className="flex flex-col gap-2 bg-panel-2">
           <Label>Now</Label>
           <p className="text-sm leading-relaxed text-ink-2">
             <span className="font-mono text-[0.8rem] text-amber">
@@ -86,7 +92,7 @@ export function Console() {
           </p>
         </Tile>
 
-        <Tile className="flex flex-col gap-2 bg-panel-2">
+        <Tile data-intro="tile" className="flex flex-col gap-2 bg-panel-2">
           <Label>Shipped</Label>
           <p className="text-sm leading-relaxed text-ink-2">
             A rent-regulation service from empty repo to production in{" "}
@@ -98,11 +104,13 @@ export function Console() {
           </p>
         </Tile>
 
-        <Tile className="flex flex-col gap-3 bg-panel-2">
+        <Tile data-intro="tile" className="flex flex-col gap-3 bg-panel-2">
           <Label>Stack</Label>
           <Chips items={stack} />
         </Tile>
       </Grid>
+      </ConsoleIntro>
+      <CountUpAll />
     </Shell>
   );
 }
@@ -119,7 +127,7 @@ function ProductCell({
   return (
     <Tile
       as="article"
-      className={`flex flex-col gap-3 ${featured ? "gap-4 bg-panel-2 sm:col-span-3 sm:p-8" : ""}`}
+      className={`product-cell flex flex-col gap-3 ${featured ? "gap-4 bg-panel-2 sm:col-span-3 sm:p-8" : ""}`}
     >
       {product.image ? (
         <div className="enter-wipe relative -mx-5 -mt-5 mb-1 aspect-[16/10] overflow-hidden border-b border-rule sm:-mx-6 sm:-mt-6">
@@ -217,31 +225,31 @@ export function Lab() {
     <Shell>
       <section id="work" className="pt-16 sm:pt-24">
         <div className="flex flex-col gap-3 pb-6">
-          <Heading>{lab.name}</Heading>
+          <RevealHeading><Heading>{lab.name}</Heading></RevealHeading>
           <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
             {lab.blurb}{" "}
             <ExternalLink href={`https://${lab.domain}`}>{lab.domain}</ExternalLink>
           </p>
         </div>
-        <Grid className="border border-rule sm:grid-cols-3">
+        <RevealRows selector=".product-cell"><Grid className="border border-rule sm:grid-cols-3">
           <ProductCell product={lead} featured />
           {rest.map((p) => (
             <ProductCell key={p.slug} product={p} />
           ))}
-        </Grid>
+        </Grid></RevealRows>
 
         {treacle ? (
           <div className="pt-14">
             <div className="flex flex-col gap-3 pb-6">
-              <Heading>Treacle</Heading>
+              <RevealHeading><Heading>Treacle</Heading></RevealHeading>
               <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
                 A separate company, not part of the lab. I joined as founding
                 engineer and shipped the product alone.
               </p>
             </div>
-            <Grid className="border border-rule">
+            <RevealRows selector=".product-cell"><Grid className="border border-rule">
               <ProductCell product={treacle} featured />
-            </Grid>
+            </Grid></RevealRows>
           </div>
         ) : null}
       </section>
@@ -255,7 +263,7 @@ export function Quotes() {
   return (
     <Shell>
       <section className="pt-16 sm:pt-24">
-        <Heading className="pb-6">What people I worked with said</Heading>
+        <RevealHeading><Heading className="pb-6">What people I worked with said</Heading></RevealHeading>
         <RevealRows selector=".quote">
         <ul className="border-t border-rule">
           {quotes.map((q) => (
@@ -343,9 +351,10 @@ export function Experience() {
 
   return (
     <Shell>
+      <DrawSpines>
       <section id="cv" className="pt-16 sm:pt-24">
         <div className="flex flex-col gap-3 pb-2">
-          <Heading>Where I have worked</Heading>
+          <RevealHeading><Heading>Where I have worked</Heading></RevealHeading>
           <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
             Some of these ran at the same time. That is deliberate rather than a
             typo: the lab and Treacle were built alongside a full-time job. The
@@ -376,12 +385,12 @@ export function Experience() {
           ))}
         </RevealRows>
 
-        <div className="pt-10">
+        <RevealRows selector=".edu-row" className="pt-10">
           <Label>Education</Label>
           {education.map((e) => (
             <div
               key={e.org}
-              className="print-break grid gap-x-6 gap-y-2 border-t border-rule py-5 sm:grid-cols-[10rem_1fr]"
+              className="edu-row print-break grid gap-x-6 gap-y-2 border-t border-rule py-5 sm:grid-cols-[10rem_1fr]"
             >
               <p className="tnum font-mono text-[0.72rem] uppercase tracking-[0.06em] text-ink-3">
                 {e.from} to {e.to}
@@ -403,7 +412,7 @@ export function Experience() {
               </div>
             </div>
           ))}
-          <div className="print-break grid gap-x-6 gap-y-2 border-t border-rule py-5 sm:grid-cols-[10rem_1fr]">
+          <div className="edu-row print-break grid gap-x-6 gap-y-2 border-t border-rule py-5 sm:grid-cols-[10rem_1fr]">
             <p className="font-mono text-[0.72rem] uppercase tracking-[0.06em] text-ink-3">
               Writing
             </p>
@@ -412,8 +421,9 @@ export function Experience() {
               {publication.note}
             </p>
           </div>
-        </div>
+        </RevealRows>
       </section>
+      </DrawSpines>
     </Shell>
   );
 }
@@ -424,7 +434,7 @@ export function Ledger() {
   return (
     <Shell>
       <section id="ledger" className="pt-16 sm:pt-24">
-        <Heading className="pb-6">Everything else</Heading>
+        <RevealHeading><Heading className="pb-6">Everything else</Heading></RevealHeading>
         <RevealRows selector=".ledger-row">
         <ul className="border-t border-rule">
           {ledger.map((e) => (
@@ -467,6 +477,7 @@ export function Ledger() {
 export function Footer() {
   return (
     <Shell>
+      <Reveal>
       <footer className="mt-16 border-t border-rule py-10 sm:mt-24">
         <div className="flex flex-col gap-5">
           <p className="measure text-lg font-medium leading-snug tracking-[-0.02em]">
@@ -501,6 +512,7 @@ export function Footer() {
           </p>
         </div>
       </footer>
+      </Reveal>
     </Shell>
   );
 }
