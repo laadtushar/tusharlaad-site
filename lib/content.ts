@@ -471,8 +471,7 @@ export const roles: Role[] = [
     to: "Mar 2023",
     location: "India",
     kind: "earlier",
-    summary:
-      "A web development agency he founded and ran himself, alongside a degree rather than as part of one.",
+    summary: "A web development agency, founded and run solo alongside a degree.",
     points: [
       "Delivered WordPress builds for more than 10 small business and startup clients, scoping through to deployment.",
       "Published a Flutter hybrid application to the Play Store.",
