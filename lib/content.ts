@@ -45,6 +45,8 @@ export interface Role {
   concurrent?: boolean;
   /** Slug of a product case study that goes deeper on this role's work. */
   caseStudy?: string;
+  /** Work you can still open. Every href here was resolved before it was added. */
+  links?: { label: string; href: string }[];
 }
 
 export interface Study {
@@ -94,7 +96,7 @@ export const profile = {
   now: {
     date: "August 2026",
     body:
-      "Building the agent platform and regulatory data service at DoorFeed. Shipping edytlab, a conversational audio editor in Rust, on the side.",
+      "Building the agent platform and regulatory data service at DoorFeed. Shipping EdytLab, a conversational audio editor in Rust, on the side.",
   },
 };
 
@@ -204,7 +206,7 @@ export const products: Product[] = [
   },
   {
     slug: "edytlab",
-    name: "edytlab",
+    name: "EdytLab",
     tagline: "Describe an audio edit in English. It renders.",
     summary:
       "Drop in stems and ask for the mashup you want. An agent plans the operations, the DSP runs locally in Rust, and stem separation and transcription happen on your own machine.",
@@ -318,7 +320,7 @@ export const roles: Role[] = [
     summary:
       "An independent software lab and parent company for four live SaaS products.",
     points: [
-      "Founded the lab that builds, ships and operates MemryLab, XpenseLab, HyredLab and edytlab.",
+      "Founded the lab that builds, ships and operates MemryLab, XpenseLab, HyredLab and EdytLab.",
       "Ran the full product lifecycle on each, from ideation through development, deployment and customer experience.",
     ],
   },
@@ -406,11 +408,20 @@ export const roles: Role[] = [
     to: "Mar 2023",
     location: "India",
     kind: "earlier",
-    summary: "A web development agency, run through university.",
+    summary:
+      "A web development agency he founded and ran himself, alongside a degree rather than as part of one.",
     points: [
       "Delivered WordPress builds for more than 10 small business and startup clients, scoping through to deployment.",
       "Published a Flutter hybrid application to the Play Store.",
       "Held every client site above 90 on PageSpeed.",
+    ],
+    // Two of the five client sites named on the CV no longer resolve, so they
+    // are not linked. Nothing here is a dead link.
+    links: [
+      { label: "buildmysite.in", href: "https://buildmysite.in" },
+      { label: "Play Store app", href: "https://play.google.com/store/apps/details?id=com.bms.buildmysite" },
+      { label: "cavpa.in", href: "https://cavpa.in" },
+      { label: "vailperfumes.com", href: "https://vailperfumes.com" },
     ],
   },
 ];
@@ -439,11 +450,11 @@ export const education: Study[] = [
 export const quotes: Quote[] = [
   {
     body:
-      "We were faced with the complex challenge of implementing end-to-end encryption, particularly how to securely store and manage encryption keys. He devised an elegant solution that balanced security with usability: storing public keys on our servers while keeping private keys on users' local devices.",
-    name: "Suleiman Muhammad Sabo",
-    role: "Cybersecurity researcher",
-    date: "Mar 2024",
-    relationship: "Worked on the same team",
+      "He started as a website developer, took on a data engineer role, built APIs for us. He performed beautifully. When we assigned him his first labelling and machine learning project, he came back not only with a solution but alternative approaches, pros and cons, and all documented well.",
+    name: "Vinay Mehendi, PhD",
+    role: "Chief Executive, OceanFrogs",
+    date: "Sep 2023",
+    relationship: "Senior to Tushar at OceanFrogs",
   },
   {
     body:
@@ -457,9 +468,25 @@ export const quotes: Quote[] = [
     body:
       "Excellent skills at building data pipelines, REST APIs and Docker. A great team player who communicates effectively and shares knowledge generously.",
     name: "Srujan P",
-    role: "Product and Engineering Manager",
+    role: "Product and Engineering Manager, OceanFrogs",
     date: "Sep 2023",
     relationship: "Managed Tushar directly at OceanFrogs",
+  },
+  {
+    body:
+      "We were faced with the complex challenge of implementing end-to-end encryption, particularly how to securely store and manage encryption keys. He devised an elegant solution that balanced security with usability: storing public keys on our servers while keeping private keys on users' local devices.",
+    name: "Suleiman Muhammad Sabo",
+    role: "Cybersecurity researcher",
+    date: "Mar 2024",
+    relationship: "Worked on the same team",
+  },
+  {
+    body:
+      "An excellent developer and data engineer with extensive experience in data scraping, data mining, data labelling, data analytics and ML. Very proactive in taking up problems and coming up with novel solutions for them.",
+    name: "Pranjal Upadhyaya",
+    role: "Software Development Engineer",
+    date: "Nov 2023",
+    relationship: "Worked on the same team",
   },
 ];
 
@@ -469,7 +496,13 @@ export interface LedgerEntry {
   note: string;
   stack: string;
   href?: string;
-  status: Status;
+  /**
+   * Optional, because a status word sitting beside a GitHub link reads as
+   * GitHub's own flag. "Archived" in particular means the repository is
+   * archived on GitHub; do not use it to mean "finished". When nothing true
+   * can be said, say nothing: the year and the note already carry the state.
+   */
+  status?: Status;
 }
 
 export const ledger: LedgerEntry[] = [
@@ -495,7 +528,7 @@ export const ledger: LedgerEntry[] = [
     note: "Asymmetric key management with private keys held on device. Written up as a paper on scalable chat encryption.",
     stack: "Vite, Firebase, WebCrypto",
     href: "https://github.com/laadtushar/end-to-end-encrypted-chat-app",
-    status: "archived",
+    status: "shipped",
   },
   {
     name: "spark-streaming-job-market",
@@ -503,7 +536,6 @@ export const ledger: LedgerEntry[] = [
     note: "Lambda architecture over live job postings, hot path to Redis and cold path to Parquet.",
     stack: "PySpark, Kafka, Redis",
     href: "https://github.com/laadtushar/spark-streaming-job-market",
-    status: "archived",
   },
   {
     name: "fact-check-pro",
@@ -512,22 +544,6 @@ export const ledger: LedgerEntry[] = [
     stack: "Markdown, Python",
     href: "https://github.com/laadtushar/fact-checker-AI-Skill",
     status: "shipped",
-  },
-];
-
-/** Forks. Listed as contributions, never as authorship. */
-export const contributions = [
-  {
-    name: "pluely",
-    note: "Open source alternative to Cluely, a private AI assistant overlay.",
-    upstream: "iamsrikanthnani/pluely",
-    href: "https://github.com/laadtushar/pluely",
-  },
-  {
-    name: "frappe_mcp_server",
-    note: "An MCP server exposing Frappe document operations to agents.",
-    upstream: "kiran-harbak/frappe_mcp_server",
-    href: "https://github.com/laadtushar/frappe_mcp_server",
   },
 ];
 

@@ -45,9 +45,11 @@ const personLd = {
   url,
   email: `mailto:${profile.email}`,
   jobTitle: "Software Engineer",
+  // Derived from profile.location, never restated. He moved to London; this
+  // block said Newcastle for as long as it was written by hand.
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Newcastle upon Tyne",
+    addressLocality: profile.location.split(",")[0].trim(),
     addressCountry: "GB",
   },
   alumniOf: [

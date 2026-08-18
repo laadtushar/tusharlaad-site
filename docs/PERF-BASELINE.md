@@ -17,16 +17,16 @@ Transferred bytes, compressed, cold load. `requests` counts every response the p
 
 | Route           | JS      | CSS    | Total    | Requests | LCP    | CLS |
 | --------------- | ------- | ------ | -------- | -------- | ------ | --- |
-| `/`             | 142.3KB | 6.7KB  | 257.3KB  | 19       | 140ms  | 0   |
-| `/cv`           | 142.3KB | 6.7KB  | 250.2KB  | 18       | 88ms   | 0   |
-| `/work/treacle` | 142.3KB | 6.7KB  | 245.9KB  | 18       | 104ms  | 0   |
-| `/writing`      | 142.3KB | 6.7KB  | 244.9KB  | 18       | 92ms   | 0   |
+| `/`             | 189.9KB | 6.9KB  | 281.7KB  | 20       | 200ms  | 0   |
+| `/cv`           | 189.9KB | 6.9KB  | 274.1KB  | 19       | 112ms  | 0   |
+| `/work/treacle` | 189.9KB | 6.9KB  | 269.7KB  | 19       | 100ms  | 0   |
+| `/writing`      | 189.9KB | 6.9KB  | 268.8KB  | 19       | 84ms   | 0   |
 
 LCP is measured on localhost, so it is a regression tripwire rather than a field number.
 CLS is the one that transfers directly: it is zero because nothing on the page reserves
 space late, and it must stay zero.
 
-Total gzipped static chunks: **177.35KB**.
+Total gzipped static chunks: **177.35KB** before GSAP. See the animation section below for what it is now.
 
 ## Budgets
 
@@ -35,11 +35,11 @@ over measured, which absorbs a real feature and refuses a careless dependency.
 
 | Budget   | Ceiling | Current worst |
 | -------- | ------- | ------------- |
-| JS       | 200KB   | 142.3KB       |
-| CSS      | 20KB    | 6.7KB         |
-| Total    | 320KB   | 257.3KB       |
-| Requests | 24      | 19            |
-| LCP      | 1200ms  | 140ms         |
+| JS       | 200KB   | 189.9KB       |
+| CSS      | 20KB    | 6.9KB         |
+| Total    | 320KB   | 281.7KB       |
+| Requests | 24      | 20            |
+| LCP      | 1200ms  | 200ms         |
 | CLS      | 0.01    | 0             |
 
 Raise a ceiling only by editing this file with the reason. Never raise one to turn a red
@@ -50,6 +50,7 @@ run green.
 | Feature                             | Shipped cost      |
 | ----------------------------------- | ----------------- |
 | Hero point field (Canvas 2D)         | **1.75KB gz**     |
+| GSAP, ScrollTrigger, SplitText       | **47.6KB**        |
 | Load sequence (`.enter`, wipe)       | 0 bytes, CSS      |
 | Concurrency spine (`animation-timeline: view()`) | 0 bytes, CSS |
 | Provenance panels                    | 0 bytes, CSS      |
@@ -59,23 +60,42 @@ The hero number is a true marginal cost: the site was built twice, once with the
 import in place and once with it stubbed out, and the difference in total gzipped chunks
 is 177.35KB minus 175.60KB.
 
-### Why there is no animation library
+### The animation library, and what it cost
 
-`motion@13` was installed, a `Reveal` / `Stagger` / `StaggerItem` vocabulary was written
-against it, and then both were removed before shipping. The primitives did what
-`.enter` and `animation-timeline: view()` already do in `globals.css`, except slower to
-first paint and behind a 34KB gzipped dependency and a hydration boundary. Tree shaking
-meant it cost nothing while unused, which is exactly what made it dead code rather than
-a foundation.
+The site ran without one for a while. `motion@13` was installed, a `Reveal` /
+`Stagger` vocabulary written against it, and both removed: they did what `.enter` and
+`animation-timeline: view()` already do in `globals.css`, except behind a 34KB
+dependency and a hydration boundary.
 
-The one piece of hand-written JavaScript motion, `components/hero-field.tsx`, earns its
-1.75KB by doing something CSS genuinely cannot: scattering roughly seven hundred points
-at desktop width, then easing each one independently toward a lattice, with pointer
-displacement on the way. It stops its
-own `requestAnimationFrame` loop once the field resolves and the pointer leaves, pauses
-via `IntersectionObserver` when scrolled out of view, and never starts a loop at all
-under `prefers-reduced-motion: reduce` or at 640px and below, where it paints the
-resolved state once and stops.
+GSAP went in afterwards, deliberately, and it is a different trade. Measured:
+
+| | JS transferred | Delta |
+| --- | --- | --- |
+| Before GSAP | 142.3KB | |
+| With GSAP, ScrollTrigger, SplitText, @gsap/react | **189.9KB** | **+47.6KB** |
+
+That is a real cost against a 200KB ceiling, leaving about 10KB of headroom. It buys
+three things CSS on this site could not do:
+
+- **SplitText on the headline.** Splitting the name into per-character elements has to
+  happen at runtime against the real line breaks. There is no CSS equivalent that does
+  not mean hand-wrapping every letter in the markup. `aria: "auto"` restores an
+  `aria-label` on the `h1`, so a screen reader still hears one name rather than eleven
+  letters; `npm run verify` confirms the `h1` still reads "Tushar Laad".
+- **ScrollTrigger reveals in every browser.** `animation-timeline: view()` is roughly
+  84% supported and the other 16% get the static state. ScrollTrigger covers all of it,
+  which is why the roles, ledger and testimonials use it rather than another keyframe.
+- **`once: true` on every scroll reveal.** Nothing on this site replays as you scroll
+  back up, because a page that re-animates behind you is a page you cannot re-read.
+
+The CSS work stayed. The load sequence, the concurrency spine, the provenance panels
+and the page transitions are all still zero bytes, and GSAP was not used to reimplement
+any of them.
+
+**If the JS ceiling ever needs defending, this 47.6KB is the first thing to look at.**
+The honest test is whether the headline split and the cross-browser scroll reveals are
+worth a third of the page's JavaScript. Today the answer is yes because the motion was
+asked for explicitly and it is the front door. That answer is allowed to change.
 
 ## When product screenshots land
 
@@ -99,10 +119,9 @@ optimiser resolves to `w=1200` and `w=640` respectively.
 ## Where the JavaScript actually goes
 
 142.3KB is almost entirely React 19 plus the Next 16 App Router runtime, and it is the
-floor for this architecture rather than anything the site chose. The site ships exactly
-two client components, `hero-field.tsx` and `copy-email.tsx`; every other component on
-every page renders on the server and sends no JavaScript at all. The hero is the larger
-of the two at 1.75KB gzipped.
+floor for this architecture rather than anything the site chose. Four client components ship:
+`hero-field.tsx`, `copy-email.tsx`, `headline.tsx` and `reveal.tsx`. Every other
+component on every page renders on the server and sends no JavaScript at all.
 
 The JS figure is identical across all four routes, which is the tell: nothing
 route-specific is being shipped. If this number needs to come down, the lever is the
