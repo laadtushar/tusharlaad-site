@@ -234,6 +234,17 @@ a {
     animation: none;
   }
 
+  /* Nothing prints faded or displaced. GSAP leaves inline styles behind, and a
+     printed CV that lost a section to an unfired reveal is worse than one with
+     no motion at all, so print overrides all of it. */
+  * {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    visibility: visible !important;
+    clip-path: none !important;
+  }
+
   @page {
     margin: 14mm 14mm;
   }
@@ -531,5 +542,70 @@ a {
     a[data-underline]:hover {
       background-size: 100% 1px;
     }
+  }
+}
+
+/*
+ * The portrait. The photograph arrives with its own near-black background,
+ * which is close enough to the panel that a feathered mask makes it sit in
+ * the page rather than on it. Graded cold at rest so it belongs to the slate
+ * palette, and it returns to full colour under a pointer.
+ */
+
+.portrait__img {
+  filter: grayscale(0.55) contrast(1.06) brightness(0.95);
+  transition:
+    filter var(--dur-slow) var(--ease-out-expo),
+    transform var(--dur-slow) var(--ease-out-expo);
+}
+
+.portrait__mask {
+  background:
+    radial-gradient(120% 120% at 50% 35%, transparent 52%, var(--panel) 100%),
+    linear-gradient(to bottom, transparent 70%, color-mix(in oklab, var(--panel) 75%, transparent) 100%);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .portrait:hover .portrait__img {
+    filter: grayscale(0) contrast(1) brightness(1);
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .portrait__img {
+    /* The source is a dark studio shot; on the light palette it needs to sit
+       back rather than punch a hole in the page. */
+    filter: grayscale(0.4) contrast(1.02) brightness(1.04);
+  }
+}
+
+/*
+ * The CV reveals on scroll with no JavaScript at all.
+ *
+ * Wiring GSAP into this route was measured at +47KB across the whole site,
+ * because it duplicated the vendor chunk, and this is a print document reached
+ * by someone who came to read facts. animation-timeline gets the same effect
+ * at zero bytes; the 16% of browsers without it see the finished page, which
+ * for a CV is the correct failure.
+ */
+@supports (animation-timeline: view()) {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    .cv-reveal {
+      animation: cv-arrive linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
+@keyframes cv-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

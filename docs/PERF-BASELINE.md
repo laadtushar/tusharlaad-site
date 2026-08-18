@@ -17,10 +17,10 @@ Transferred bytes, compressed, cold load. `requests` counts every response the p
 
 | Route           | JS      | CSS    | Total    | Requests | LCP    | CLS |
 | --------------- | ------- | ------ | -------- | -------- | ------ | --- |
-| `/`             | 195.1KB | 7.6KB  | 304.3KB  | 22       | 156ms  | 0   |
-| `/cv`           | 195.1KB | 7.6KB  | 281.4KB  | 20       | 88ms   | 0   |
-| `/work/treacle` | 195.5KB | 7.6KB  | 276.5KB  | 20       | 92ms   | 0   |
-| `/writing`      | 195.6KB | 7.6KB  | 276.3KB  | 20       | 148ms  | 0   |
+| `/`             | 195.3KB | 7.9KB  | 296.8KB  | 22       | 172ms  | 0   |
+| `/cv`           | 195.3KB | 7.9KB  | 281.9KB  | 20       | 100ms  | 0   |
+| `/work/treacle` | 195.7KB | 7.9KB  | 277.0KB  | 20       | 84ms   | 0   |
+| `/writing`      | 195.8KB | 7.9KB  | 276.8KB  | 20       | 96ms   | 0   |
 
 LCP is measured on localhost, so it is a regression tripwire rather than a field number.
 CLS is the one that transfers directly: it is zero because nothing on the page reserves
@@ -35,11 +35,11 @@ over measured, which absorbs a real feature and refuses a careless dependency.
 
 | Budget   | Ceiling | Current worst |
 | -------- | ------- | ------------- |
-| JS       | 200KB   | 195.6KB       |
-| CSS      | 20KB    | 7.6KB         |
-| Total    | 320KB   | 304.3KB       |
+| JS       | 200KB   | 195.8KB       |
+| CSS      | 20KB    | 7.9KB         |
+| Total    | 320KB   | 296.8KB       |
 | Requests | 24      | 22            |
-| LCP      | 1200ms  | 156ms         |
+| LCP      | 1200ms  | 172ms         |
 | CLS      | 0.01    | 0             |
 
 Raise a ceiling only by editing this file with the reason. Never raise one to turn a red

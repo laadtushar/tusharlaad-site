@@ -185,7 +185,9 @@ export function Axis() {
   return (
     <div className="flex items-center gap-3 pb-1 pt-3">
       <span className="tnum font-mono text-[0.6rem] text-ink-3">{AXIS_START}</span>
-      <span className="h-px flex-1 bg-rule-2" />
+      {/* Draws left to right as the section arrives, so the axis is
+          established before the bars measured against it appear. */}
+      <span className="axis-line h-px flex-1 origin-left bg-rule-2" />
       <span className="tnum font-mono text-[0.6rem] text-ink-3">2026</span>
     </div>
   );

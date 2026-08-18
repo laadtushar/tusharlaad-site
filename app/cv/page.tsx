@@ -71,7 +71,7 @@ export default function CvPage() {
         {roles.map((r) => (
           <article
             key={`${r.org}-${r.from}`}
-            className="print-break border-t border-rule py-5"
+            className="cv-reveal print-break border-t border-rule py-5"
           >
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 className="text-[1.02rem] font-semibold tracking-[-0.02em]">
@@ -96,7 +96,7 @@ export default function CvPage() {
         <Label>Products shipped</Label>
         <ul className="border-t border-rule pt-4">
           {products.map((p) => (
-            <li key={p.slug} className="print-break pb-3 text-sm leading-relaxed">
+            <li key={p.slug} className="cv-reveal print-break pb-3 text-sm leading-relaxed">
               <span className="font-semibold">{p.name}.</span>{" "}
               <span className="text-ink-2">{p.tagline}</span>{" "}
               <span className="font-mono text-[0.7rem] text-ink-3">
@@ -151,7 +151,7 @@ export default function CvPage() {
       <section className="pt-5">
         <Label>Education</Label>
         {education.map((e) => (
-          <article key={e.org} className="print-break border-t border-rule py-4">
+          <article key={e.org} className="cv-reveal print-break border-t border-rule py-4">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 className="text-[1.02rem] font-semibold tracking-[-0.02em]">
                 {e.award}, {e.org}

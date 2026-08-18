@@ -16,14 +16,14 @@ import {
   type Product,
   type Role,
 } from "@/lib/content";
-import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "./ui";
-import { CopyEmail } from "./copy-email";
-import { Portrait } from "./portrait";
-import { Headline } from "./headline";
-import { Reveal, RevealHeading, RevealRows, DrawSpines, SceneSection } from "./reveal";
-import { ConsoleIntro } from "./console-intro";
-import { CountUpAll } from "./count-up";
-import { HeroStory } from "./hero-story";
+import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "@/components/ui";
+import { CopyEmail } from "@/components/copy-email";
+import { Portrait } from "@/components/portrait";
+import { Headline } from "@/components/headline";
+import { Reveal, RevealHeading, RevealRows, DrawSpines, SceneSection } from "@/components/reveal";
+import { ConsoleIntro } from "@/components/console-intro";
+import { CountUpAll } from "@/components/count-up";
+import { HeroStory } from "@/components/hero-story";
 
 /* Client-only and dynamically imported, so it never blocks first paint and
    never runs during server rendering. */

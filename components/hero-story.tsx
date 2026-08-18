@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import type { story as storyData } from "@/lib/content";
-import { gsap, ScrollTrigger, useGSAP } from "./gsap-init";
+import { gsap, ScrollTrigger, useGSAP } from "@/components/gsap-init";
 
 /**
  * The hero as scenes. On desktop with motion allowed, this section pins for

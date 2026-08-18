@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { EASE, gsap, SplitText, useGSAP, prefersReducedMotion } from "./gsap-init";
+import { EASE, gsap, SplitText, useGSAP, prefersReducedMotion } from "@/components/gsap-init";
 
 /**
  * The load sequence, as one timeline rather than four components each guessing
