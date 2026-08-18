@@ -421,15 +421,21 @@ a {
 
 /* The media query owns this layout entirely, so the first paint is already
    the final layout and CLS stays 0. JavaScript only ever animates opacity
-   and transform inside it; it never changes where anything lives. */
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+   and transform inside it; it never changes where anything lives.
+
+   The story runs on every width now, phones included. svh units rather than
+   vh, because the mobile address bar collapsing mid-scroll changes vh and
+   would make the pinned stage jump under the reader's thumb. */
+@media (prefers-reduced-motion: no-preference) {
   .story-track {
     height: 440vh;
+    height: 440svh;
   }
   .story-stage {
     position: sticky;
     top: 0;
     height: 100vh;
+    height: 100svh;
     overflow: clip;
   }
   .story-canvas {
@@ -462,5 +468,20 @@ a {
      lattice would be a second, contradictory field inside it. */
   .story-scene--identity canvas:not(.story-canvas) {
     display: none;
+  }
+
+  /* A phone thumb covers less scroll per gesture than a wheel, so the pin
+     is shorter there; and short viewports trade tile padding for fit. */
+  @media (max-width: 640px) {
+    .story-track {
+      height: 360vh;
+      height: 360svh;
+    }
+  }
+  @media (max-height: 700px) {
+    .story-scene--identity > * {
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+    }
   }
 }
