@@ -91,7 +91,12 @@ export default async function WorkPage({
       </header>
 
       {product.metrics ? (
-        <RevealRows selector=".metric-cell"><dl className="mt-10 grid gap-px border border-rule bg-rule sm:grid-cols-3">
+        <RevealRows selector=".metric-cell"><dl
+          className={`mt-10 grid gap-px border border-rule bg-rule ${
+            /* Bento fills exactly: the column count follows the cell count. */
+            product.metrics.length >= 3 ? "sm:grid-cols-3" : product.metrics.length === 2 ? "sm:grid-cols-2" : ""
+          }`}
+        >
           {product.metrics.map((m) => (
             <div key={m.label} className="metric-cell flex flex-col gap-1 bg-panel p-4">
               <dd className="font-mono text-xl">

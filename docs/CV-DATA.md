@@ -530,20 +530,20 @@ Three things in every earlier revision were wrong. Corrected in `content.ts`.
 A property investment platform across the UK and France.
 
 - Built the regulatory service answering what rent a property can legally charge, **empty repository to
-  production in 27 days**. Serves **2,512 rent ceilings** across **57 French rent-control sectors** and
-  two English schemes.
-- Sourced the data where no clean feed existed: council mapping services, prefectural decrees, boundary
-  sets. **348,842 rows from 11 sources**, with an evidence trail tracing every figure to its decree.
-- Dated lookup across **34,746 communes** and **35,672 UK small areas**.
-- Built the agent tool server: **105 tools across 11 domains** covering comparable search, valuation,
-  deal ingestion, documents and policy. Plus the FastAPI chat service on Postgres handling streaming.
-- Wrote the skills producing analyst output, including valuations applying French rent control and
-  English social and affordable rent rules per unit.
-- Document store from scratch: schema, API, versioning, presigned direct-to-S3 uploads, scanning for
-  malicious files and prompt injection. Object-level authorization in Cerbos policy.
-- ETL in Dagster and Polars over Parquet on S3 that quarantines bad rows. Freshness and provenance
-  checks.
-- Owns reliability for long-running agent runs: failure detection, automatic recovery, telemetry.
+  production in 27 days**.
+- Sourced the data where no clean feed existed, from public decrees, council mapping services and
+  boundary sets, with every figure traceable to the rule that set it.
+- Built the backend and tool server under the analysis agent, and the valuation logic applying French
+  rent control and English social and affordable rent rules.
+- Owns reliability for long-running agent runs: failure detection, recovery, telemetry.
+
+This section was redacted on 18 August 2026. This repository is public, and earlier revisions
+described DoorFeed's systems at a level of internal detail that belongs at work: row, source, tool
+and coverage counts, component names, pipeline shapes. The rule now lives in CLAUDE.md: employer
+work is described at the level of what it does, never how it is built inside. The full detail
+stays on the private CV, not in a public repo. The redacted figures also survive in this
+repository's git history; if that matters, the history needs rewriting, which is noted here
+rather than silently ignored.
 
 These are the strongest numbers on the entire CV and they were absent from the site.
 

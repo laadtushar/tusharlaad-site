@@ -116,7 +116,60 @@ export const stack = [
 ];
 
 /** One line to disable the hero animation if it ever stops earning its place. */
-export const features = { heroField: true };
+export const features = { heroField: true, heroStory: true };
+
+/**
+ * The pinned hero narrative. Scroll advances scenes instead of moving the
+ * page: scattered points swirl as the problem states itself, resolve into a
+ * lattice as the work lands, then split into clusters for the lab. Every
+ * figure here also appears elsewhere on the page and traces to the same
+ * source. Scene copy lives here, not in the component, like everything else.
+ */
+export const story = {
+  /*
+   * Scene copy rule, learned the hard way: nothing here describes an
+   * employer's internals. No row counts, no source counts, no pipeline
+   * shapes from work systems. Every figure in a scene belongs to Tushar
+   * outright: his own products, his own repos, his own lab.
+   */
+  scenes: [
+    {
+      key: "problem",
+      heading: "Order out of mess is the job.",
+      body: "Ambiguous inputs, moving targets, no clean place to start. The work is taking a system from nothing to something people can rely on.",
+      figures: [],
+    },
+    {
+      key: "resolve",
+      heading: "It resolves.",
+      body: "Empty repository to production, repeatedly. Treacle shipped to both app stores with one engineer on the backend, the apps and the infrastructure.",
+      figures: [
+        {
+          value: "109",
+          label: "API routes",
+          source: "The Next.js backend behind Treacle, written solo.",
+        },
+        {
+          value: "1",
+          label: "engineer",
+          source: "Architected and shipped across iOS and Android alone.",
+        },
+      ],
+    },
+    {
+      key: "lab",
+      heading: "The rest of the time, a lab.",
+      body: "Four live products under LabyNator: MemryLab, XpenseLab, HyredLab and EdytLab. One person, ideation through deployment and support.",
+      figures: [
+        {
+          value: "4",
+          label: "products live",
+          source: "memrylab.com, xpenselab.com, hyredlab.com and edytlab.com all resolve.",
+        },
+      ],
+    },
+  ],
+};
 
 export const lab = {
   name: "LabyNator",
@@ -134,21 +187,19 @@ export const products: Product[] = [
       "A service answering a question with no clean data source anywhere, built at DoorFeed. Rent ceilings across French rent-control sectors and English affordable-rent schemes, with every figure traceable to the decree behind it.",
     status: "shipped",
     owner: "doorfeed",
-    stack: ["Python", "FastAPI", "PostgreSQL", "Dagster", "Polars", "Parquet", "S3"],
+    stack: ["Python", "FastAPI", "PostgreSQL", "AWS"],
     metrics: [
       { value: "27", label: "days to production", source: "First commit to the service answering live queries in production." },
-      { value: "2,512", label: "rent ceilings served", source: "Across 57 French rent-control sectors and two English affordable-rent schemes." },
-      { value: "348,842", label: "rows from 11 sources", source: "Council mapping services, prefectural decrees and boundary sets, normalised into one dated lookup." },
     ],
     caseStudy: {
       problem:
         "Property investment analysis across the UK and France turns on one question: what rent is this unit legally allowed to charge. There is no clean feed for it. The answer lives in prefectural decrees, council mapping services and boundary sets, in a different shape in every jurisdiction, and getting it wrong means a valuation that is quietly illegal.",
       approach:
-        "Build the service that answers it directly rather than leaving the rules in analysts' heads. Eleven sources normalise into one dated lookup covering 34,746 French communes and 35,672 UK small areas, serving 2,512 rent ceilings across 57 French rent-control sectors and two English schemes. The valuation skills then apply French rent control and English social and affordable rent rules per unit.",
+        "Build the service that answers it directly rather than leaving the rules in analysts' heads. Public decrees, council mapping services and boundary sets normalise into one dated lookup, and the valuation logic applies French rent control and English social and affordable rent rules per unit.",
       hard:
-        "Provenance, not volume. A number an institution cannot audit is a number it cannot act on, so every figure traces back to the specific decree that set it, and the lookup is dated because the rules change underneath you. The ETL quarantines bad rows rather than shipping them, and freshness and provenance checks prove a dataset is current before anything reads it.",
+        "Provenance, not volume. A number an institution cannot audit is a number it cannot act on, so every figure traces back to the specific decree that set it, and the lookup is dated because the rules change underneath you.",
       outcome:
-        "Empty repository to production in 27 days, 348,842 rows loading from 11 sources. It sits under an agent platform of 105 tools across 11 domains, a FastAPI chat service on Postgres, a document store with presigned S3 uploads and prompt-injection scanning, and object-level authorization held in Cerbos policy.",
+        "Empty repository to production in 27 days, sitting under the agent platform that turns it into analyst output. What can be said publicly stops at what it does; how it is built inside stays at work.",
     },
   },
   {
@@ -298,15 +349,13 @@ export const roles: Role[] = [
     caseStudy: "doorfeed-regulatory-data",
     summary:
       "A property investment platform across the UK and France. I build the regulatory data the analysis stands on, the backend that serves it, and the agent that turns it into analyst output.",
+    // Described at the level of what it does, never how it is built inside.
+    // Internal counts, component names and pipeline shapes stay at work.
     points: [
-      "Built the regulatory service that answers what rent a property can legally charge, from empty repository to production in 27 days. It serves 2,512 rent ceilings across 57 French rent-control sectors and two English schemes.",
-      "Sourced that data where no clean feed existed, out of council mapping services, prefectural decrees and boundary sets. 348,842 rows load from 11 sources, and every figure traces back to the decree it came from.",
-      "Built the dated lookup across 34,746 French communes and 35,672 UK small areas.",
-      "Built the tool server the agent calls: 105 tools across 11 domains covering comparable search, valuation, deal ingestion, documents and policy, plus the FastAPI chat service on Postgres that streams its output.",
-      "Wrote the skills producing the analyst output, including valuations that apply French rent control and English social and affordable rent rules per unit.",
-      "Built the document store from scratch, with presigned direct-to-S3 uploads and scanning for both malicious files and prompt injection, and object-level authorization held in Cerbos policy.",
-      "Built ETL in Dagster and Polars over Parquet on S3 that quarantines bad rows rather than shipping them, with the freshness and provenance checks that prove a dataset is current.",
-      "Own reliability for long-running agent runs: failure detection, automatic recovery, and the usage and error telemetry behind it.",
+      "Built the regulatory service that answers what rent a property can legally charge, from empty repository to production in 27 days.",
+      "Sourced the data where no clean feed existed, from public decrees, council mapping services and boundary sets, with every figure traceable to the rule that set it.",
+      "Built the backend and tool server under the analysis agent, and the valuation logic applying French rent control and English social and affordable rent rules.",
+      "Own reliability for long-running agent runs: failure detection, recovery, and the telemetry behind both.",
     ],
   },
   {

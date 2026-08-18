@@ -12,6 +12,13 @@ component. If a date, figure or link is wrong, it is wrong in `content.ts`.
 else. Any number in amber must pass through `<Figure>` with a `source`, because provenance is the
 site's whole thesis. Never use amber decoratively.
 
+**Employer work stops at what it does.** DoorFeed is named as the employer and the work is
+described at the level of its purpose: a regulatory data service, an agent platform, the
+backends under them, delivery speed. How it is built inside never ships: no internal row,
+source, tool or coverage counts, no component names, no pipeline shapes from work systems.
+Amber figures belong to Tushar's own products and repos, or to claims about himself. When a
+number's owner is an employer, the number stays at work.
+
 **Verifiable numbers only.** Every figure on this site traces to the CV or a repo. No invented
 precision, no rounded-up vanity metrics.
 
