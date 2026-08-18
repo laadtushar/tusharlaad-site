@@ -479,14 +479,6 @@ export const ledger: LedgerEntry[] = [
     status: "building",
   },
   {
-    name: "samvriti.space",
-    year: "2026",
-    note: "A therapy practice site with intake forms and an admin dashboard, encrypted at rest. Client work.",
-    stack: "Next.js, Vercel Blob",
-    href: "https://samspace.vercel.app",
-    status: "shipped",
-  },
-  {
     name: "rust-pair-teach",
     year: "2026",
     note: "A VS Code tutor for Rust that refuses to write your code and gives tiered hints instead.",
