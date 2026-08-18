@@ -19,7 +19,7 @@ import {
 import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "./ui";
 import { CopyEmail } from "./copy-email";
 import { Headline } from "./headline";
-import { Reveal, RevealHeading, RevealRows, DrawSpines } from "./reveal";
+import { Reveal, RevealHeading, RevealRows, DrawSpines, SceneSection } from "./reveal";
 import { ConsoleIntro } from "./console-intro";
 import { CountUpAll } from "./count-up";
 import { HeroStory } from "./hero-story";
@@ -224,6 +224,7 @@ export function Lab() {
 
   return (
     <Shell>
+      <SceneSection>
       <section id="work" className="pt-16 sm:pt-24">
         <div className="flex flex-col gap-3 pb-6">
           <RevealHeading><Heading>{lab.name}</Heading></RevealHeading>
@@ -254,6 +255,7 @@ export function Lab() {
           </div>
         ) : null}
       </section>
+      </SceneSection>
     </Shell>
   );
 }
@@ -263,6 +265,7 @@ export function Lab() {
 export function Quotes() {
   return (
     <Shell>
+      <SceneSection>
       <section className="pt-16 sm:pt-24">
         <RevealHeading><Heading className="pb-6">What people I worked with said</Heading></RevealHeading>
         <RevealRows selector=".quote">
@@ -290,6 +293,7 @@ export function Quotes() {
         </ul>
         </RevealRows>
       </section>
+      </SceneSection>
     </Shell>
   );
 }
@@ -352,6 +356,7 @@ export function Experience() {
 
   return (
     <Shell>
+      <SceneSection>
       <DrawSpines>
       <section id="cv" className="pt-16 sm:pt-24">
         <div className="flex flex-col gap-3 pb-2">
@@ -425,6 +430,7 @@ export function Experience() {
         </RevealRows>
       </section>
       </DrawSpines>
+      </SceneSection>
     </Shell>
   );
 }
@@ -434,6 +440,7 @@ export function Experience() {
 export function Ledger() {
   return (
     <Shell>
+      <SceneSection>
       <section id="ledger" className="pt-16 sm:pt-24">
         <RevealHeading><Heading className="pb-6">Everything else</Heading></RevealHeading>
         <RevealRows selector=".ledger-row">
@@ -469,6 +476,7 @@ export function Ledger() {
         </ul>
         </RevealRows>
       </section>
+      </SceneSection>
     </Shell>
   );
 }

@@ -637,6 +637,32 @@ export const writing: Article[] = [
   },
 ];
 
+export interface LinkedInPost {
+  /** Full URN, e.g. "urn:li:ugcPost:74559...". The embed URL derives from it. */
+  urn: string;
+  /** Post date, decoded from the timestamp LinkedIn encodes in the id. */
+  date: string;
+  /** Iframe height LinkedIn's embed code specifies for this post. */
+  height: number;
+}
+
+/**
+ * LinkedIn posts, embedded on demand. The rows render natively in the site's
+ * own type; the official iframe only loads when a reader asks for it, because
+ * seven third-party iframes on page load would fail the performance budget
+ * and clash with everything the design contract says. Dates come from the
+ * timestamp encoded in each post id, not from memory.
+ */
+export const linkedinPosts: LinkedInPost[] = [
+  { urn: "urn:li:ugcPost:7455919976303120384", date: "May 2026", height: 602 },
+  { urn: "urn:li:ugcPost:7437048197098827778", date: "Mar 2026", height: 620 },
+  { urn: "urn:li:share:7428461908850204672", date: "Feb 2026", height: 559 },
+  { urn: "urn:li:share:7428423483094827008", date: "Feb 2026", height: 621 },
+  { urn: "urn:li:ugcPost:7417468446755549184", date: "Jan 2026", height: 620 },
+  { urn: "urn:li:ugcPost:7395013997345009665", date: "Nov 2025", height: 620 },
+  { urn: "urn:li:ugcPost:6979881000424124416", date: "Sep 2022", height: 570 },
+];
+
 export function productBySlug(slug: string) {
   return products.find((p) => p.slug === slug);
 }
