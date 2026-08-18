@@ -12,7 +12,8 @@ import { Label } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "CV",
-  description: `Curriculum vitae for ${profile.name}.`,
+  description: `Curriculum vitae for ${profile.name}: data engineer at DoorFeed, founder of LabyNator, founding engineer at Treacle.`,
+  alternates: { canonical: "/cv" },
 };
 
 /**
@@ -45,9 +46,23 @@ export default function CvPage() {
         </p>
         <p className="flex flex-wrap gap-x-4 gap-y-1 pt-1 font-mono text-[0.7rem] text-ink-2">
           <span>{profile.location}</span>
-          <span>{profile.email}</span>
-          <span>{profile.domain}</span>
-          <span>github.com/laadtushar</span>
+          <a href={`mailto:${profile.email}`} className="underline decoration-ink-3">
+            {profile.email}
+          </a>
+          <a href={`https://${profile.domain}`} className="underline decoration-ink-3">
+            {profile.domain}
+          </a>
+          {profile.links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-ink-3"
+            >
+              {l.label}
+            </a>
+          ))}
         </p>
       </header>
 
@@ -56,7 +71,7 @@ export default function CvPage() {
         {roles.map((r) => (
           <article
             key={`${r.org}-${r.from}`}
-            className="print-break border-t border-rule py-5"
+            className="cv-reveal print-break border-t border-rule py-5"
           >
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 className="text-[1.02rem] font-semibold tracking-[-0.02em]">
@@ -81,11 +96,52 @@ export default function CvPage() {
         <Label>Products shipped</Label>
         <ul className="border-t border-rule pt-4">
           {products.map((p) => (
-            <li key={p.slug} className="print-break pb-3 text-sm leading-relaxed">
+            <li key={p.slug} className="cv-reveal print-break pb-3 text-sm leading-relaxed">
               <span className="font-semibold">{p.name}.</span>{" "}
               <span className="text-ink-2">{p.tagline}</span>{" "}
               <span className="font-mono text-[0.7rem] text-ink-3">
-                {p.domain ?? "in development"} / {p.stack.slice(0, 3).join(", ")}
+                {p.domain ? (
+                  <a
+                    href={`https://${p.domain}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline decoration-ink-3"
+                  >
+                    {p.domain}
+                  </a>
+                ) : (
+                  "in development"
+                )}
+                {p.playStore ? (
+                  <>
+                    {" / "}
+                    <a
+                      href={p.playStore}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${p.name} on the Google Play Store`}
+                      className="underline decoration-ink-3"
+                    >
+                      Play Store
+                    </a>
+                  </>
+                ) : null}
+                {p.repo ? (
+                  <>
+                    {" / "}
+                    <a
+                      href={p.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${p.name} source on GitHub`}
+                      className="underline decoration-ink-3"
+                    >
+                      Source
+                    </a>
+                  </>
+                ) : null}
+                {" / "}
+                {p.stack.slice(0, 3).join(", ")}
               </span>
             </li>
           ))}
@@ -95,7 +151,7 @@ export default function CvPage() {
       <section className="pt-5">
         <Label>Education</Label>
         {education.map((e) => (
-          <article key={e.org} className="print-break border-t border-rule py-4">
+          <article key={e.org} className="cv-reveal print-break border-t border-rule py-4">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 className="text-[1.02rem] font-semibold tracking-[-0.02em]">
                 {e.award}, {e.org}

@@ -16,13 +16,14 @@ import {
   type Product,
   type Role,
 } from "@/lib/content";
-import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "./ui";
-import { CopyEmail } from "./copy-email";
-import { Headline } from "./headline";
-import { Reveal, RevealHeading, RevealRows, DrawSpines, SceneSection } from "./reveal";
-import { ConsoleIntro } from "./console-intro";
-import { CountUpAll } from "./count-up";
-import { HeroStory } from "./hero-story";
+import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "@/components/ui";
+import { CopyEmail } from "@/components/copy-email";
+import { Portrait } from "@/components/portrait";
+import { Headline } from "@/components/headline";
+import { Reveal, RevealHeading, RevealRows, DrawSpines, SceneSection } from "@/components/reveal";
+import { ConsoleIntro } from "@/components/console-intro";
+import { CountUpAll } from "@/components/count-up";
+import { HeroStory } from "@/components/hero-story";
 
 /* Client-only and dynamically imported, so it never blocks first paint and
    never runs during server rendering. */
@@ -37,6 +38,11 @@ export function Console() {
       <HeroStory scenes={story.scenes}>
         <Tile className="relative isolate flex w-full flex-col gap-6 overflow-hidden border border-rule py-10 sm:py-14">
           {features.heroField ? <HeroField /> : null}
+          {profile.portrait ? (
+            <div className="relative order-first w-28 shrink-0 sm:w-32 lg:absolute lg:right-6 lg:top-10 lg:order-none lg:w-56 xl:w-64">
+              <Portrait src={profile.portrait.src} alt={profile.portrait.alt} />
+            </div>
+          ) : null}
           <div className="relative flex flex-col gap-4">
             <Headline text={profile.name} />
             <p
@@ -198,6 +204,16 @@ function ProductCell({
           <li>
             <ExternalLink href={`https://${product.domain}`}>
               {product.domain}
+            </ExternalLink>
+          </li>
+        ) : null}
+        {product.playStore ? (
+          <li>
+            <ExternalLink
+              href={product.playStore}
+              ariaLabel={`${product.name} on the Google Play Store`}
+            >
+              Play Store
             </ExternalLink>
           </li>
         ) : null}

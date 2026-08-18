@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { EASE, gsap, SplitText, useGSAP, prefersReducedMotion } from "./gsap-init";
+import { EASE, gsap, SplitText, useGSAP, prefersReducedMotion } from "@/components/gsap-init";
 
 /**
  * The name resolves character by character, which is the argument the hero

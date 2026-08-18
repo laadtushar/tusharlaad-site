@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, prefersReducedMotion } from "./gsap-init";
+import { gsap, useGSAP, prefersReducedMotion } from "@/components/gsap-init";
 
 /**
  * Every sourced figure counts up once, when it first scrolls into view.

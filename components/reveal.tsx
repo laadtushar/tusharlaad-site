@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { EASE, gsap, SplitText, useGSAP, prefersReducedMotion } from "./gsap-init";
+import { EASE, gsap, SplitText, useGSAP, prefersReducedMotion } from "@/components/gsap-init";
 
 /**
  * The site's scroll vocabulary. Three shapes, used everywhere, so the page
@@ -169,6 +169,18 @@ export function DrawSpines({
   useGSAP(
     () => {
       if (prefersReducedMotion() || !ref.current) return;
+      // The axis draws first: you cannot read a bar against a scale that is
+      // not there yet.
+      const axis = ref.current.querySelector(".axis-line");
+      if (axis) {
+        gsap.from(axis, {
+          scaleX: 0,
+          duration: 0.8,
+          ease: EASE,
+          scrollTrigger: { trigger: ref.current, start: START, once: true },
+        });
+      }
+
       const bars = gsap.utils.toArray<HTMLElement>(".span__bar", ref.current);
       if (!bars.length) return;
 
