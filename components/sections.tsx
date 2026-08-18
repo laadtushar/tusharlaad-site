@@ -276,6 +276,14 @@ export function RoleRow({ role, compact = false }: { role: Role; compact?: boole
           {role.title}, {role.org}
         </h3>
         <p className="measure text-sm leading-relaxed text-ink-2">{role.summary}</p>
+        {role.caseStudy ? (
+          <Link
+            href={`/work/${role.caseStudy}`}
+            className="w-fit font-mono text-[0.68rem] text-amber underline decoration-amber/40 hover:decoration-amber"
+          >
+            How the rent-regulation service works
+          </Link>
+        ) : null}
         {!compact && role.points.length > 1 ? (
           <ul className="measure flex list-disc flex-col gap-1.5 pl-4 text-sm leading-relaxed text-ink-2 marker:text-ink-3">
             {role.points.map((p) => (
@@ -462,6 +470,11 @@ export function Footer() {
             <li>
               <Link href="/cv" className="text-ink-2 underline decoration-ink-3">
                 CV
+              </Link>
+            </li>
+            <li>
+              <Link href="/writing" className="text-ink-2 underline decoration-ink-3">
+                Writing
               </Link>
             </li>
           </ul>

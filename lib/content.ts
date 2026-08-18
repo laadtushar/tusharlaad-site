@@ -20,7 +20,7 @@ export interface Product {
   repo?: string;
   stack: string[];
   /** Which house shipped it. Treacle is a separate company, not part of the lab. */
-  owner: "labynator" | "treacle";
+  owner: "labynator" | "treacle" | "doorfeed";
   /** Optional screenshot at /public/shots/<file>. Cells upgrade when present. */
   image?: { src: string; alt: string };
   caseStudy?: {
@@ -42,6 +42,8 @@ export interface Role {
   summary: string;
   points: string[];
   concurrent?: boolean;
+  /** Slug of a product case study that goes deeper on this role's work. */
+  caseStudy?: string;
 }
 
 export interface Study {
@@ -95,13 +97,6 @@ export const profile = {
   },
 };
 
-/** Verifiable figures from the CV. No repo vanity counts. */
-export const headlineMetrics = [
-  { value: "27", label: "days from empty repo to production" },
-  { value: "105", label: "agent tools across 11 domains" },
-  { value: "4", label: "products shipped under the lab" },
-];
-
 export const stack = [
   "Python",
   "TypeScript",
@@ -125,6 +120,31 @@ export const lab = {
 };
 
 export const products: Product[] = [
+  {
+    slug: "doorfeed-regulatory-data",
+    name: "The rent-regulation service",
+    tagline: "What can this property legally charge?",
+    summary:
+      "A service answering a question with no clean data source anywhere, built at DoorFeed. Rent ceilings across French rent-control sectors and English affordable-rent schemes, with every figure traceable to the decree behind it.",
+    status: "shipped",
+    owner: "doorfeed",
+    stack: ["Python", "FastAPI", "PostgreSQL", "Dagster", "Polars", "Parquet", "S3"],
+    metrics: [
+      { value: "27", label: "days to production" },
+      { value: "2,512", label: "rent ceilings served" },
+      { value: "348,842", label: "rows from 11 sources" },
+    ],
+    caseStudy: {
+      problem:
+        "Property investment analysis across the UK and France turns on one question: what rent is this unit legally allowed to charge. There is no clean feed for it. The answer lives in prefectural decrees, council mapping services and boundary sets, in a different shape in every jurisdiction, and getting it wrong means a valuation that is quietly illegal.",
+      approach:
+        "Build the service that answers it directly rather than leaving the rules in analysts' heads. Eleven sources normalise into one dated lookup covering 34,746 French communes and 35,672 UK small areas, serving 2,512 rent ceilings across 57 French rent-control sectors and two English schemes. The valuation skills then apply French rent control and English social and affordable rent rules per unit.",
+      hard:
+        "Provenance, not volume. A number an institution cannot audit is a number it cannot act on, so every figure traces back to the specific decree that set it, and the lookup is dated because the rules change underneath you. The ETL quarantines bad rows rather than shipping them, and freshness and provenance checks prove a dataset is current before anything reads it.",
+      outcome:
+        "Empty repository to production in 27 days, 348,842 rows loading from 11 sources. It sits under an agent platform of 105 tools across 11 domains, a FastAPI chat service on Postgres, a document store with presigned S3 uploads and prompt-injection scanning, and object-level authorization held in Cerbos policy.",
+    },
+  },
   {
     slug: "treacle",
     name: "Treacle",
@@ -269,6 +289,7 @@ export const roles: Role[] = [
     to: "Present",
     location: "London, on-site",
     kind: "current",
+    caseStudy: "doorfeed-regulatory-data",
     summary:
       "A property investment platform across the UK and France. I build the regulatory data the analysis stands on, the backend that serves it, and the agent that turns it into analyst output.",
     points: [
@@ -518,6 +539,42 @@ export const publication = {
   title: "Advancing Chat Security: Asymmetric Encryption for Scalable Web Applications",
   note: "Written alongside the end-to-end encrypted chat project.",
 };
+
+export interface Article {
+  title: string;
+  blurb: string;
+  where: string;
+  date: string;
+  href: string;
+}
+
+/** Real, published, with real reach. Not a placeholder list. */
+export const writing: Article[] = [
+  {
+    title: "I Was the Kid the School Wanted to Get Rid Of",
+    blurb:
+      "Indian schools are good at marketing the children they invested in, and much less honest about the ones they wrote off early.",
+    where: "LinkedIn",
+    date: "May 2026",
+    href: "https://www.linkedin.com/pulse/i-kid-school-wanted-get-rid-tushar-laad-0rige/",
+  },
+  {
+    title: "When AI Arrives at Work",
+    blurb:
+      "Why some engineers ran toward LLMs and others stepped back, and why both readings of the risk are defensible.",
+    where: "LinkedIn",
+    date: "Mar 2026",
+    href: "https://www.linkedin.com/pulse/when-ai-arrives-work-why-some-engineers-run-toward-others-tushar-laad-jlxze/",
+  },
+  {
+    title: "Innovation, Ethics, and Urgency",
+    blurb:
+      "If a cure took five years without regulation and fifteen with it, is the delay the ethical choice or the unethical one?",
+    where: "Medium",
+    date: "Mar 2026",
+    href: "https://tusharlaad.medium.com/innovation-ethics-and-urgency-should-the-speed-of-progress-be-an-ethical-question-1fc5cca7c51e",
+  },
+];
 
 export function productBySlug(slug: string) {
   return products.find((p) => p.slug === slug);

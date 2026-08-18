@@ -1,12 +1,15 @@
 # CV source data
 
-Transcribed from LinkedIn screenshots supplied by Tushar on 13 Aug 2026. This is the input for
-`content.ts`. Anything marked NEEDS CONFIRMING is not yet verified.
+Input for `content.ts`, assembled across several passes as facts arrived.
+
+**Read the final section first.** The live LinkedIn superseded most of what is below: DoorFeed was
+missing entirely, the location was wrong, Treacle was wrongly folded into LabyNator, and the OceanFrogs
+dates changed twice. Earlier sections are kept for the audit trail, not because they are current.
 
 ## Identity
 
 - **Name:** Tushar Laad
-- **Location:** Newcastle upon Tyne, England, UK
+- **Location:** London, UK (earlier sections say Newcastle; that was the MSc and Hexis Lab)
 - **LinkedIn:** https://www.linkedin.com/in/tusharlaad2002/
 - **GitHub:** https://github.com/laadtushar
 - **Email:** tusharlaad2002@gmail.com (confirm this is the address to publish)
