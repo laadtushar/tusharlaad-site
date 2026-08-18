@@ -90,6 +90,12 @@ because moving is fashionable.
   cannot re-read.
 - The CSS stays. The load sequence, the concurrency spine, the provenance panels and the
   page transitions are zero bytes and must not be reimplemented in GSAP.
+- The hero is the one pinned moment. Content sections are scenes by framing only: they drift
+  in on entry and compress on exit, scrubbed, transform and opacity, and never pin. A section
+  fully in view sits at opacity 1, transform none. A scene you are still reading is never
+  taken away from you.
+- Third-party embeds load on request, never on page load. The facade row is the site's; the
+  embed is the third party's, arriving by invitation.
 - Never animate a value with `useState`. Animate on the compositor: transform, opacity, clip-path.
 - The one piece of hand-written motion is `components/hero-field.tsx`, a Canvas 2D point field.
   It stops its own rAF loop once resolved and untouched, pauses when offscreen, and renders the
