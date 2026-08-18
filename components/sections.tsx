@@ -14,7 +14,7 @@ import {
   type Product,
   type Role,
 } from "@/lib/content";
-import { Chips, ExternalLink, Grid, Heading, Label, Shell, StatusTag, Tile } from "./ui";
+import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "./ui";
 
 /* ---------------------------------------------------------------- console */
 
@@ -112,7 +112,7 @@ function ProductCell({
   return (
     <Tile
       as="article"
-      className={`flex flex-col gap-3 ${featured ? "gap-4 bg-panel-2 sm:col-span-2 sm:p-8" : ""}`}
+      className={`flex flex-col gap-3 ${featured ? "gap-4 bg-panel-2 sm:col-span-3 sm:p-8" : ""}`}
     >
       {product.image ? (
         <div className="enter-wipe relative -mx-5 -mt-5 mb-1 aspect-[16/10] overflow-hidden border-b border-rule sm:-mx-6 sm:-mt-6">
@@ -147,7 +147,9 @@ function ProductCell({
           {product.metrics.map((m) => (
             <div key={m.label} className="flex items-baseline gap-1.5">
               <dt className="sr-only">{m.label}</dt>
-              <dd className="tnum font-mono text-sm text-amber">{m.value}</dd>
+              <dd className="font-mono text-sm">
+                <Figure value={m.value} source={m.source} />
+              </dd>
               <dd className="text-xs text-ink-3">{m.label}</dd>
             </div>
           ))}
@@ -156,7 +158,7 @@ function ProductCell({
 
       <Chips items={product.stack} />
 
-      <ul className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-2 font-mono text-[0.68rem]">
+      <ul className={`flex flex-wrap items-center gap-x-4 gap-y-1 pt-2 font-mono text-[0.68rem] ${featured ? "" : "mt-auto"}`}>
         {product.caseStudy ? (
           <li>
             <Link
@@ -270,6 +272,7 @@ export function RoleRow({ role, compact = false }: { role: Role; compact?: boole
             Concurrent
           </p>
         ) : null}
+        <Span from={role.from} to={role.to} current={role.kind === "current"} />
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-[1.05rem] font-semibold tracking-[-0.02em]">
@@ -308,8 +311,11 @@ export function Experience() {
           <Heading>Where I have worked</Heading>
           <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
             Some of these ran at the same time. That is deliberate rather than a
-            typo: the lab and Treacle were built alongside a full-time job.
+            typo: the lab and Treacle were built alongside a full-time job. The
+            bars below sit on one shared axis, so the overlap is visible instead
+            of looking like a mistake.
           </p>
+          <Axis />
         </div>
 
         <div className="pt-6">

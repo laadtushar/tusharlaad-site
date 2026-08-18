@@ -29,7 +29,8 @@ export interface Product {
     hard: string;
     outcome: string;
   };
-  metrics?: { value: string; label: string }[];
+  /** Every figure carries where it came from. Provenance is the whole idea. */
+  metrics?: { value: string; label: string; source?: string }[];
 }
 
 export interface Role {
@@ -130,9 +131,9 @@ export const products: Product[] = [
     owner: "doorfeed",
     stack: ["Python", "FastAPI", "PostgreSQL", "Dagster", "Polars", "Parquet", "S3"],
     metrics: [
-      { value: "27", label: "days to production" },
-      { value: "2,512", label: "rent ceilings served" },
-      { value: "348,842", label: "rows from 11 sources" },
+      { value: "27", label: "days to production", source: "First commit to the service answering live queries in production." },
+      { value: "2,512", label: "rent ceilings served", source: "Across 57 French rent-control sectors and two English affordable-rent schemes." },
+      { value: "348,842", label: "rows from 11 sources", source: "Council mapping services, prefectural decrees and boundary sets, normalised into one dated lookup." },
     ],
     caseStudy: {
       problem:
@@ -156,9 +157,9 @@ export const products: Product[] = [
     domain: "mytreacle.com",
     stack: ["Next.js", "React Native", "ElevenLabs", "WebRTC", "Neo4j", "pgvector", "AWS"],
     metrics: [
-      { value: "109", label: "API routes" },
-      { value: "32", label: "matching dimensions" },
-      { value: "1", label: "engineer" },
+      { value: "109", label: "API routes", source: "The Next.js backend behind Treacle, written solo." },
+      { value: "32", label: "matching dimensions", source: "Psychological domains across values, communication and lifestyle." },
+      { value: "1", label: "engineer", source: "Architected and shipped across iOS and Android alone." },
     ],
     caseStudy: {
       problem:
@@ -183,9 +184,9 @@ export const products: Product[] = [
     repo: "https://github.com/laadtushar/MemryLab",
     stack: ["Rust", "Tauri 2", "React 19", "SQLite FTS5", "D3", "Ollama"],
     metrics: [
-      { value: "30+", label: "import formats" },
-      { value: "4.3 MB", label: "installer" },
-      { value: "0", label: "telemetry calls" },
+      { value: "30+", label: "import formats", source: "Obsidian, Notion, Evernote, social archives and messaging exports, behind one detection layer." },
+      { value: "4.3 MB", label: "installer", source: "The whole app, including the search index, with no vector database." },
+      { value: "0", label: "telemetry calls", source: "Nothing leaves the machine. No cloud dependency." },
     ],
     caseStudy: {
       problem:
@@ -210,8 +211,8 @@ export const products: Product[] = [
     repo: "https://github.com/laadtushar/edytlab",
     stack: ["Rust", "Tauri 2", "symphonia", "fundsp", "ONNX", "Demucs", "Whisper"],
     metrics: [
-      { value: "237", label: "commits" },
-      { value: "20", label: "editing tools exposed to the agent" },
+      { value: "237", label: "commits", source: "Pure Rust DSP with ONNX running Demucs and Whisper on device." },
+      { value: "20", label: "editing tools exposed to the agent", source: "The agent plans a sequence over them; session state lives in a branchable graph." },
     ],
     caseStudy: {
       problem:
@@ -258,7 +259,7 @@ export const products: Product[] = [
     repo: "https://github.com/laadtushar/xpenselab",
     stack: ["Next.js 16", "Firebase", "Genkit", "Gemini", "Stripe"],
     metrics: [
-      { value: "335", label: "commits" },
+      { value: "335", label: "commits", source: "The largest codebase in the lab, subscriptions and GDPR included." },
     ],
     caseStudy: {
       problem:

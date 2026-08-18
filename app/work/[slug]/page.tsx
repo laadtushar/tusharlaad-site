@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { products, productBySlug } from "@/lib/content";
-import { Chips, ExternalLink, Label, StatusTag } from "@/components/ui";
+import { Chips, ExternalLink, Figure, Label, StatusTag } from "@/components/ui";
 
 export function generateStaticParams() {
   return products.filter((p) => p.caseStudy).map((p) => ({ slug: p.slug }));
@@ -89,7 +89,9 @@ export default async function WorkPage({
         <dl className="mt-10 grid gap-px border border-rule bg-rule sm:grid-cols-3">
           {product.metrics.map((m) => (
             <div key={m.label} className="flex flex-col gap-1 bg-panel p-4">
-              <dd className="tnum font-mono text-xl text-amber">{m.value}</dd>
+              <dd className="font-mono text-xl">
+                <Figure value={m.value} source={m.source} />
+              </dd>
               <dt className="text-xs text-ink-2">{m.label}</dt>
             </div>
           ))}

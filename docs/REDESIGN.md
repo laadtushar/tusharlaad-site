@@ -284,3 +284,52 @@ Consequences:
 4. Screenshots, now a blocking step. Wayfinder needs an on-device capture only he can take.
 5. Meridian or HyredLab. The repo and live demo say one, LinkedIn says the other.
 6. Whether LabyNator is the parent company over Treacle and the rest.
+
+---
+
+# Motion and interaction
+
+## The research, and why nothing was installed
+
+Surveyed the 2026 field: GSAP went fully free in 2025 including ScrollTrigger and SplitText, Motion
+sits at 8&nbsp;KB with clean React integration, Lenis is 3&nbsp;KB and pairs with ScrollTrigger as the
+standard smooth-scroll setup. All good tools.
+
+None were added. Scroll-driven CSS animations now have roughly 84 percent global support and run off
+the main thread; View Transitions ship natively. Impeccable's rule applies directly: *do not add a
+dependency for an effect the existing stack can express cleanly.* A portfolio that ships 40&nbsp;KB of
+animation library to fade some cards in has spent its budget on the wrong thing.
+
+## The motion thesis
+
+Impeccable is explicit that a focal moment must come from the subject: *"A generic fade-and-rise,
+hover lift, parallax layer, or scroll reveal is not a thesis."*
+
+The thesis here is **provenance**. The hard problem in the DoorFeed work was making every figure
+traceable to the decree that set it. So the site's signature interaction is provenance made tangible:
+**every amber figure can be interrogated and says where it came from.** Amber already meant "live or
+dated value"; this completes the promise. The page argues the engineering position by behaving like
+it, rather than describing it in prose.
+
+Nine figures across the site carry a source. Implemented as a real `<button>` with `aria-describedby`
+pointing at a `role="tooltip"`, opening on hover, keyboard focus and tap. No JavaScript.
+
+## The concurrency spine
+
+Three roles ran at once, which a plain list renders as a data error. Every role now carries a bar on
+one shared 2020 to 2026 axis, labelled once above the group, so the overlap reads as deliberate. The
+bars draw themselves off `animation-timeline: view()` where supported, behind both an `@supports`
+guard and `prefers-reduced-motion: no-preference`, so they are simply present and static everywhere
+else.
+
+This is information design rather than decoration: it shows something the CV format cannot say.
+
+## Bugs the work surfaced
+
+- **A bento violation I introduced.** Four lab products with one spanning two cells left an empty
+  cell in the grid, which taste-skill names explicitly. The featured cell now spans the full row so
+  one plus three fills a three-column grid exactly. Verified programmatically: every grid's cell
+  count is now divisible by its column count.
+- **Horizontal overflow on mobile.** The provenance panel pushed the page to 418&nbsp;px against a
+  390&nbsp;px viewport. Fixed with `overflow-x: clip` on the body and a flipped anchor below 640&nbsp;px.
+  Nothing on this site should ever be reachable by scrolling sideways.

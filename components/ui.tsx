@@ -109,6 +109,98 @@ export function ExternalLink({
   );
 }
 
+/**
+ * A figure you can interrogate. Hovering, focusing or tapping it says where the
+ * number came from. It is the site's signature interaction because provenance
+ * is the hard problem in the work it describes.
+ */
+export function Figure({
+  value,
+  source,
+  className = "",
+}: {
+  value: string;
+  source?: string;
+  className?: string;
+}) {
+  if (!source) {
+    return <span className={`tnum text-amber ${className}`}>{value}</span>;
+  }
+  return (
+    <span className="prov">
+      <button
+        type="button"
+        className={`prov__fig tnum ${className}`}
+        aria-describedby={`src-${value.replace(/\W/g, "")}`}
+      >
+        {value}
+      </button>
+      <span
+        role="tooltip"
+        id={`src-${value.replace(/\W/g, "")}`}
+        className="prov__src"
+      >
+        {source}
+      </span>
+    </span>
+  );
+}
+
+/**
+ * One shared axis across every role, so three concurrent jobs read as
+ * deliberate rather than as a data error.
+ */
+const AXIS_START = 2020;
+const AXIS_END = 2026.75;
+
+function toYear(label: string) {
+  if (/present/i.test(label)) return AXIS_END;
+  const m = label.match(/([A-Za-z]{3})\s+(\d{4})/);
+  if (!m) return AXIS_START;
+  const months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+  const mi = months.indexOf(m[1].toLowerCase());
+  return Number(m[2]) + (mi < 0 ? 0 : mi / 12);
+}
+
+/** The shared reference the bars are read against. Shown once, above the roles. */
+export function Axis() {
+  return (
+    <div className="flex items-center gap-3 pb-1 pt-3">
+      <span className="tnum font-mono text-[0.6rem] text-ink-3">{AXIS_START}</span>
+      <span className="h-px flex-1 bg-rule-2" />
+      <span className="tnum font-mono text-[0.6rem] text-ink-3">2026</span>
+    </div>
+  );
+}
+
+export function Span({
+  from,
+  to,
+  current = false,
+}: {
+  from: string;
+  to: string;
+  current?: boolean;
+}) {
+  const span = AXIS_END - AXIS_START;
+  const a = Math.max(0, (toYear(from) - AXIS_START) / span);
+  const b = Math.min(1, (toYear(to) - AXIS_START) / span);
+  const left = `${(a * 100).toFixed(2)}%`;
+  const width = `${Math.max(1.5, (b - a) * 100).toFixed(2)}%`;
+  return (
+    <div
+      className="span"
+      role="img"
+      aria-label={`${from} to ${to}, shown against a 2020 to 2026 axis`}
+    >
+      <span
+        className={`span__bar${current ? " span__bar--now" : ""}`}
+        style={{ left, width }}
+      />
+    </div>
+  );
+}
+
 export function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-10">

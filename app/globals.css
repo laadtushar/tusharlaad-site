@@ -65,6 +65,10 @@ html {
 body {
   background: var(--ground);
   color: var(--ink);
+  /* Provenance panels are absolutely positioned; without this they can widen
+     the page on narrow screens. Clip rather than scroll: nothing should ever
+     be reachable by scrolling sideways. */
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -224,5 +228,123 @@ a {
 
   @page {
     margin: 14mm 14mm;
+  }
+}
+
+/*
+ * Provenance. The signature interaction: every amber figure can be
+ * interrogated, and it says where it came from. This is the site arguing its
+ * subject's engineering position by behaving like it, not describing it.
+ *
+ * Pure CSS. Hover, focus and tap all open it; no JavaScript, no dependency.
+ */
+
+.prov {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.prov__fig {
+  font: inherit;
+  color: var(--amber);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: help;
+  border-bottom: 1px dotted color-mix(in oklab, var(--amber) 55%, transparent);
+  transition: border-bottom-color 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.prov:hover .prov__fig,
+.prov:focus-within .prov__fig {
+  border-bottom-color: var(--amber);
+}
+
+.prov__src {
+  position: absolute;
+  bottom: calc(100% + 0.55rem);
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  max-width: min(30ch, 68vw);
+  padding: 0.55rem 0.7rem;
+  background: var(--panel-2);
+  border: 1px solid var(--amber);
+  color: var(--ink);
+  font-size: 0.76rem;
+  line-height: 1.45;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(3px);
+  visibility: hidden;
+  transition:
+    opacity 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 180ms;
+}
+.prov__src::before {
+  content: "Source";
+  display: block;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.25rem;
+}
+.prov:hover .prov__src,
+.prov:focus-within .prov__src {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+/* Near the right edge there is no room to open leftward, so flip the anchor. */
+@media (max-width: 640px) {
+  .prov__src {
+    left: auto;
+    right: 0;
+  }
+}
+
+/*
+ * The concurrency spine. Three roles ran at once, which a plain list renders as
+ * an error. The bar shows the real overlap against one shared axis, and draws
+ * itself off the scroll timeline where the browser supports it.
+ */
+
+.span {
+  position: relative;
+  height: 4px;
+  background: var(--rule-2);
+  overflow: hidden;
+}
+.span__bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--ink-2);
+  transform-origin: left;
+}
+.span__bar--now {
+  background: var(--amber);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .span__bar {
+      animation: drawspan linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 34%;
+    }
+  }
+}
+
+@keyframes drawspan {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
