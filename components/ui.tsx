@@ -84,7 +84,7 @@ export function Chips({ items }: { items: string[] }) {
       {items.map((t) => (
         <li
           key={t}
-          className="border border-rule-2 px-1.5 py-0.5 font-mono text-[0.62rem] tracking-[0.04em] text-ink-2"
+          className="chip border border-rule-2 px-1.5 py-0.5 font-mono text-[0.62rem] tracking-[0.04em] text-ink-2"
         >
           {t}
         </li>

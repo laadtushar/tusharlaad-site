@@ -485,3 +485,51 @@ a {
     }
   }
 }
+
+/*
+ * Motion pass. Each of these is a variation on the one grammar, arrival at a
+ * true value, and each is compositor-only: transform, opacity, clip-path.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Rules draw rather than appear, left to right, as their row arrives. */
+  @supports (animation-timeline: view()) {
+    .role,
+    .ledger-row,
+    .quote,
+    .edu-row {
+      border-top-color: transparent;
+    }
+  }
+
+  /* Stack chips settle: they arrive a touch loose and tighten on hover, the
+     same "resolve into place" the lattice makes. */
+  .chip {
+    transition:
+      transform var(--dur-base) var(--ease-out-expo),
+      border-color var(--dur-base) var(--ease-out-expo),
+      color var(--dur-base) var(--ease-out-expo);
+  }
+  @media (hover: hover) {
+    .chip:hover {
+      transform: translateY(-2px);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+  }
+
+  /* Links underline from the origin out, rather than fading a colour. */
+  a[data-underline] {
+    background-image: linear-gradient(var(--amber), var(--amber));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 1px;
+    transition: background-size var(--dur-base) var(--ease-out-expo);
+    text-decoration: none;
+  }
+  @media (hover: hover) {
+    a[data-underline]:hover {
+      background-size: 100% 1px;
+    }
+  }
+}

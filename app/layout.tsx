@@ -15,20 +15,20 @@ export const metadata: Metadata = {
     default: `${profile.name}, software engineer`,
     template: `%s, ${profile.name}`,
   },
-  description: `${profile.headline} ${profile.subhead}`,
+  description: profile.metaDescription,
   alternates: { canonical: "/" },
   openGraph: {
     type: "profile",
     url,
     siteName: profile.name,
     title: `${profile.name}, software engineer`,
-    description: profile.headline,
+    description: profile.metaDescription,
     locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
     title: `${profile.name}, software engineer`,
-    description: profile.headline,
+    description: profile.metaDescription,
   },
   robots: { index: true, follow: true },
 };
