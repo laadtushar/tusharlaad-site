@@ -42,11 +42,22 @@ and are not preferences:
   legible with motion off.
 - Scroll-driven effects use `animation-timeline` behind an `@supports` guard, so unsupported browsers
   get the static state rather than a broken one.
-- No animation library. CSS keyframes, `animation-timeline: view()` and the View Transitions API
-  cover everything the site does, at zero shipped bytes. `motion/react` was installed, measured
-  against the CSS it would replace, and removed: it was a 34KB dependency for a slower version of
-  behaviour already in `globals.css`. Reach for it only when something genuinely needs gesture,
-  layout or presence work, and expect to justify the bytes.
+- **GSAP is the animation library**, with ScrollTrigger and SplitText. It costs 47.6KB
+  transferred against a 200KB ceiling, which is about a third of the page's JavaScript,
+  so it has to keep earning that. Use it only where CSS genuinely cannot reach: runtime
+  text splitting, and scroll triggers in the 16% of browsers `animation-timeline: view()`
+  does not cover. `motion@13` was tried first and removed, because it was a 34KB
+  dependency for a slower version of behaviour already in `globals.css`.
+- Register plugins once, in `components/gsap-init.ts`, never inside a component that
+  re-renders. Animate with `useGSAP` and a `scope`, so cleanup and ScrollTrigger
+  teardown happen on unmount without being remembered.
+- Prefer `gsap.from()` over `gsap.to()` for entrances. It leaves the resolved state in
+  the DOM, so an interrupted or failed animation degrades to the finished page rather
+  than a blank one.
+- Every scroll reveal is `once: true`. A page that re-animates behind you is a page you
+  cannot re-read.
+- The CSS stays. The load sequence, the concurrency spine, the provenance panels and the
+  page transitions are zero bytes and must not be reimplemented in GSAP.
 - Never animate a value with `useState`. Animate on the compositor: transform, opacity, clip-path.
 - The one piece of hand-written motion is `components/hero-field.tsx`, a Canvas 2D point field.
   It stops its own rAF loop once resolved and untouched, pauses when offscreen, and renders the

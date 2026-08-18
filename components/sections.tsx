@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import {
-  contributions,
   education,
   features,
   lab,
@@ -18,6 +17,8 @@ import {
 } from "@/lib/content";
 import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "./ui";
 import { CopyEmail } from "./copy-email";
+import { Headline } from "./headline";
+import { RevealRows } from "./reveal";
 
 /* Client-only and dynamically imported, so it never blocks first paint and
    never runs during server rendering. */
@@ -32,9 +33,7 @@ export function Console() {
         <Tile className="relative isolate overflow-hidden flex flex-col gap-6 py-10 sm:py-14 lg:col-span-3">
           {features.heroField ? <HeroField /> : null}
           <div className="relative flex flex-col gap-4">
-            <h1 className="text-balance text-[2.75rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl">
-              {profile.name}
-            </h1>
+            <Headline text={profile.name} />
             <p className="max-w-[24ch] text-balance text-xl font-medium leading-[1.2] tracking-[-0.025em] text-ink sm:text-2xl">
               {profile.headline}
             </p>
@@ -256,23 +255,31 @@ export function Quotes() {
   return (
     <Shell>
       <section className="pt-16 sm:pt-24">
-        <Heading className="pb-6">What people who managed me said</Heading>
-        <Grid className="border border-rule sm:grid-cols-3">
+        <Heading className="pb-6">What people I worked with said</Heading>
+        <RevealRows selector=".quote">
+        <ul className="border-t border-rule">
           {quotes.map((q) => (
-            <Tile as="article" key={q.name} className="flex flex-col gap-3">
-              <blockquote className="text-sm leading-relaxed text-ink">
-                {q.body}
-              </blockquote>
-              <footer className="mt-auto flex flex-col gap-0.5 border-t border-rule pt-3">
+            <li
+              key={q.name}
+              className="quote grid gap-x-8 gap-y-3 border-b border-rule py-6 sm:grid-cols-[14rem_1fr]"
+            >
+              <div className="flex flex-col gap-0.5">
                 <span className="text-sm font-semibold">{q.name}</span>
                 <span className="text-xs text-ink-2">{q.role}</span>
                 <span className="font-mono text-[0.62rem] uppercase tracking-[0.09em] text-ink-3">
                   {q.relationship}
                 </span>
-              </footer>
-            </Tile>
+                <span className="tnum pt-1 font-mono text-[0.62rem] text-ink-3">
+                  {q.date}
+                </span>
+              </div>
+              <blockquote className="measure text-sm leading-relaxed text-ink">
+                {q.body}
+              </blockquote>
+            </li>
           ))}
-        </Grid>
+        </ul>
+        </RevealRows>
       </section>
     </Shell>
   );
@@ -308,6 +315,15 @@ export function RoleRow({ role, compact = false }: { role: Role; compact?: boole
             How the rent-regulation service works
           </Link>
         ) : null}
+        {role.links ? (
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 pt-0.5 font-mono text-[0.68rem]">
+            {role.links.map((l) => (
+              <li key={l.href}>
+                <ExternalLink href={l.href}>{l.label}</ExternalLink>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         {!compact && role.points.length > 1 ? (
           <ul className="measure flex list-disc flex-col gap-1.5 pl-4 text-sm leading-relaxed text-ink-2 marker:text-ink-3">
             {role.points.map((p) => (
@@ -339,26 +355,26 @@ export function Experience() {
           <Axis />
         </div>
 
-        <div className="roles pt-6">
+        <RevealRows selector=".role" className="roles pt-6">
           <Label>Now</Label>
           {current.map((r) => (
             <RoleRow key={r.org} role={r} />
           ))}
-        </div>
+        </RevealRows>
 
-        <div className="roles pt-10">
+        <RevealRows selector=".role" className="roles pt-10">
           <Label>Founding roles</Label>
           {founding.map((r) => (
             <RoleRow key={r.org} role={r} />
           ))}
-        </div>
+        </RevealRows>
 
-        <div className="roles pt-10">
+        <RevealRows selector=".role" className="roles pt-10">
           <Label>Before that</Label>
           {rest.map((r) => (
             <RoleRow key={r.org} role={r} compact={r.kind === "earlier"} />
           ))}
-        </div>
+        </RevealRows>
 
         <div className="pt-10">
           <Label>Education</Label>
@@ -409,11 +425,12 @@ export function Ledger() {
     <Shell>
       <section id="ledger" className="pt-16 sm:pt-24">
         <Heading className="pb-6">Everything else</Heading>
+        <RevealRows selector=".ledger-row">
         <ul className="border-t border-rule">
           {ledger.map((e) => (
             <li
               key={e.name}
-              className="grid gap-x-6 gap-y-1.5 border-b border-rule py-4 sm:grid-cols-[4rem_1fr_9rem]"
+              className="ledger-row grid gap-x-6 gap-y-1.5 border-b border-rule py-4 sm:grid-cols-[4rem_1fr_9rem]"
             >
               <span className="tnum font-mono text-[0.72rem] text-ink-3">
                 {e.year}
@@ -427,7 +444,7 @@ export function Ledger() {
                   ) : (
                     <span className="text-sm font-semibold">{e.name}</span>
                   )}
-                  <StatusTag status={e.status} />
+                  {e.status ? <StatusTag status={e.status} /> : null}
                 </span>
                 <span className="measure text-sm leading-relaxed text-ink-2">
                   {e.note}
@@ -439,31 +456,7 @@ export function Ledger() {
             </li>
           ))}
         </ul>
-
-        <div className="pt-10">
-          <Label>Contributions to projects I did not start</Label>
-          <ul className="border-t border-rule">
-            {contributions.map((c) => (
-              <li
-                key={c.name}
-                className="grid gap-x-6 gap-y-1 border-b border-rule py-4 sm:grid-cols-[4rem_1fr_9rem]"
-              >
-                <span className="font-mono text-[0.72rem] text-ink-3">Fork</span>
-                <div className="flex flex-col gap-1">
-                  <ExternalLink href={c.href} className="text-sm font-semibold text-ink decoration-ink-3">
-                    {c.name}
-                  </ExternalLink>
-                  <span className="measure text-sm leading-relaxed text-ink-2">
-                    {c.note}
-                  </span>
-                </div>
-                <span className="font-mono text-[0.66rem] leading-relaxed text-ink-3">
-                  {c.upstream}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        </RevealRows>
       </section>
     </Shell>
   );
