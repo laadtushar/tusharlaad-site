@@ -100,6 +100,12 @@ export function Reveal({
  * aria: "auto" puts an aria-label back on the element and hides the fragments,
  * so the heading is still announced as one phrase.
  */
+/**
+ * Words assemble from a light blur as the reader scrolls them in, scrubbed, so
+ * the assembly runs at the reader's own pace. Blur stays light (5px, per the
+ * scroll-storytelling recipe: heavier reads as smeared), and aria: "auto"
+ * keeps the heading announced as one phrase.
+ */
 export function RevealHeading({
   children,
   className = "",
@@ -119,12 +125,17 @@ export function RevealHeading({
         aria: "auto",
         onSplit(self) {
           return gsap.from(self.words, {
-            opacity: 0,
-            yPercent: 30,
-            duration: 0.5,
-            ease: EASE,
-            stagger: 0.05,
-            scrollTrigger: { trigger: ref.current, start: START, once: true },
+            autoAlpha: 0,
+            y: 16,
+            filter: "blur(5px)",
+            ease: "none",
+            stagger: 0.06,
+            scrollTrigger: {
+              trigger: ref.current,
+              start: "top 94%",
+              end: "top 58%",
+              scrub: 1,
+            },
           });
         },
       });
@@ -206,7 +217,7 @@ export function SceneSection({
     () => {
       if (prefersReducedMotion() || !ref.current) return;
       const mm = gsap.matchMedia();
-      mm.add("(min-width: 1024px)", () => {
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.from(ref.current, {
           y: 48,
           ease: "none",
