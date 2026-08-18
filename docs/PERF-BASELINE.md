@@ -17,10 +17,10 @@ Transferred bytes, compressed, cold load. `requests` counts every response the p
 
 | Route           | JS      | CSS    | Total    | Requests | LCP    | CLS |
 | --------------- | ------- | ------ | -------- | -------- | ------ | --- |
-| `/`             | 190.3KB | 6.8KB  | 282.4KB  | 20       | 152ms  | 0   |
-| `/cv`           | 190.3KB | 6.8KB  | 274.7KB  | 19       | 132ms  | 0   |
-| `/work/treacle` | 190.7KB | 6.8KB  | 270.9KB  | 19       | 144ms  | 0   |
-| `/writing`      | 190.3KB | 6.8KB  | 269.4KB  | 19       | 96ms   | 0   |
+| `/`             | 192.3KB | 7.2KB  | 284.5KB  | 20       | 180ms  | 0   |
+| `/cv`           | 192.3KB | 7.2KB  | 276.1KB  | 19       | 112ms  | 0   |
+| `/work/treacle` | 192.7KB | 7.2KB  | 273.2KB  | 19       | 112ms  | 0   |
+| `/writing`      | 192.8KB | 7.2KB  | 272.9KB  | 19       | 88ms   | 0   |
 
 LCP is measured on localhost, so it is a regression tripwire rather than a field number.
 CLS is the one that transfers directly: it is zero because nothing on the page reserves
@@ -35,11 +35,11 @@ over measured, which absorbs a real feature and refuses a careless dependency.
 
 | Budget   | Ceiling | Current worst |
 | -------- | ------- | ------------- |
-| JS       | 200KB   | 190.7KB       |
-| CSS      | 20KB    | 6.8KB         |
-| Total    | 320KB   | 282.4KB       |
+| JS       | 200KB   | 192.8KB       |
+| CSS      | 20KB    | 7.2KB         |
+| Total    | 320KB   | 284.5KB       |
 | Requests | 24      | 20            |
-| LCP      | 1200ms  | 152ms         |
+| LCP      | 1200ms  | 180ms         |
 | CLS      | 0.01    | 0             |
 
 Raise a ceiling only by editing this file with the reason. Never raise one to turn a red
@@ -51,6 +51,9 @@ run green.
 | ----------------------------------- | ----------------- |
 | Hero point field (Canvas 2D)         | **1.75KB gz**     |
 | GSAP, ScrollTrigger, SplitText       | **47.6KB**        |
+| Story hero, four scenes over one canvas | **~2KB**       |
+| Section scene framing                | **~0.4KB**        |
+| LinkedIn post facades                | **0 bytes until a post is requested** |
 | Load sequence (`.enter`, wipe)       | 0 bytes, CSS      |
 | Concurrency spine (`animation-timeline: view()`) | 0 bytes, CSS |
 | Provenance panels                    | 0 bytes, CSS      |
@@ -126,8 +129,9 @@ optimiser resolves to `w=1200` and `w=640` respectively.
 ## Where the JavaScript actually goes
 
 142.3KB is almost entirely React 19 plus the Next 16 App Router runtime, and it is the
-floor for this architecture rather than anything the site chose. Six client components ship: `hero-field.tsx`, `copy-email.tsx`, `headline.tsx`,
-`reveal.tsx`, `console-intro.tsx` and `count-up.tsx`. Every other
+floor for this architecture rather than anything the site chose. Eight client components ship: `hero-field.tsx`, `copy-email.tsx`, `headline.tsx`,
+`reveal.tsx`, `console-intro.tsx`, `count-up.tsx`, `hero-story.tsx` and
+`linkedin-post.tsx`. Every other
 component on every page renders on the server and sends no JavaScript at all.
 
 The JS figure is identical across all four routes, which is the tell: nothing
