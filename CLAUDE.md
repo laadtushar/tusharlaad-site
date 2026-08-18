@@ -68,6 +68,10 @@ screenshots too. If it fails, the push is not ready.
 Kill any server from a previous build before starting a new one. A stale `next start` serves the old
 build ID, the new CSS chunk 500s, and the run reports hundreds of phantom contrast failures.
 
+Kill it with `pkill -f "[n]ext-server"`, bracket included. Written plainly, `pkill -f "next-server"`
+matches the shell running the command, kills that shell first, and leaves the server up: the failure
+looks exactly like the kill having worked.
+
 The performance budget lives in `docs/PERF-BASELINE.md` with the measured numbers behind it. Raise a
 ceiling only by editing that file with the reason. Never raise one to turn a red run green.
 
