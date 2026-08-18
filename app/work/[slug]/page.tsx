@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { products, productBySlug } from "@/lib/content";
 import { Chips, ExternalLink, Figure, Label, StatusTag } from "@/components/ui";
+import { Reveal, RevealRows } from "@/components/reveal";
+import { CountUpAll } from "@/components/count-up";
 
 export function generateStaticParams() {
   return products.filter((p) => p.caseStudy).map((p) => ({ slug: p.slug }));
@@ -89,30 +91,30 @@ export default async function WorkPage({
       </header>
 
       {product.metrics ? (
-        <dl className="mt-10 grid gap-px border border-rule bg-rule sm:grid-cols-3">
+        <RevealRows selector=".metric-cell"><dl className="mt-10 grid gap-px border border-rule bg-rule sm:grid-cols-3">
           {product.metrics.map((m) => (
-            <div key={m.label} className="flex flex-col gap-1 bg-panel p-4">
+            <div key={m.label} className="metric-cell flex flex-col gap-1 bg-panel p-4">
               <dd className="font-mono text-xl">
                 <Figure value={m.value} source={m.source} />
               </dd>
               <dt className="text-xs text-ink-2">{m.label}</dt>
             </div>
           ))}
-        </dl>
+        </dl></RevealRows>
       ) : null}
 
-      <div className="flex flex-col gap-10 pt-12">
+      <RevealRows selector=".case-section" className="flex flex-col gap-10 pt-12" stagger={0.08}>
         {sections.map((s) => (
-          <section key={s.key} className="flex flex-col gap-2">
+          <section key={s.key} className="case-section flex flex-col gap-2">
             <Label>{s.heading}</Label>
             <p className="measure text-[0.98rem] leading-relaxed text-ink-2">
               {caseStudy[s.key]}
             </p>
           </section>
         ))}
-      </div>
+      </RevealRows>
 
-      <nav className="mt-16 border-t border-rule pt-6">
+      <Reveal className="mt-16 border-t border-rule pt-6">
         <Label>The rest of the lab</Label>
         <ul className="flex flex-wrap gap-x-5 gap-y-2 pt-3 font-mono text-[0.72rem]">
           {products
@@ -128,7 +130,8 @@ export default async function WorkPage({
               </li>
             ))}
         </ul>
-      </nav>
+      </Reveal>
+      <CountUpAll />
     </main>
   );
 }

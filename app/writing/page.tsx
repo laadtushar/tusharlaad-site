@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { profile, writing } from "@/lib/content";
 import { ExternalLink, Label } from "@/components/ui";
+import { Reveal, RevealRows } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -27,9 +28,10 @@ export default function WritingPage() {
         </p>
       </header>
 
+      <RevealRows selector=".article-row">
       <ul className="pt-10">
         {writing.map((a) => (
-          <li key={a.href} className="border-t border-rule py-6">
+          <li key={a.href} className="article-row border-t border-rule py-6">
             <article className="flex flex-col gap-2">
               <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                 <h2 className="text-[1.1rem] font-semibold tracking-[-0.02em]">
@@ -46,14 +48,15 @@ export default function WritingPage() {
           </li>
         ))}
       </ul>
+      </RevealRows>
 
-      <div className="mt-12 border-t border-rule pt-6">
+      <Reveal className="mt-12 border-t border-rule pt-6">
         <Label>Elsewhere</Label>
         <p className="pt-2 text-sm text-ink-2">
           Longer pieces go up on{" "}
           <ExternalLink href="https://tusharlaad.medium.com">Medium</ExternalLink>.
         </p>
-      </div>
+      </Reveal>
     </main>
   );
 }

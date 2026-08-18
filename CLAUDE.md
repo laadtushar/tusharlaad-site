@@ -34,6 +34,31 @@ and are not preferences:
   the layout was planned wrong.
 - **Nothing is reachable by scrolling sideways.** `overflow-x: clip` on the body is deliberate.
 
+## What the motion is saying
+
+The site has one argument: **messy input resolves into a verifiable answer.** That is what
+the DoorFeed work does, it is what the provenance panels are for, and it is the only story
+the motion is allowed to tell.
+
+So the grammar is **arrival at a true value**, and every authored moment is a variation on it:
+
+| Moment | What resolves |
+| --- | --- |
+| Hero field | Scattered points settle into a lattice |
+| Headline | Characters resolve into his name |
+| Sourced figures | Digits count up and land on the figure you can then interrogate |
+| Concurrency spine | Bars draw in chronological order, so overlapping roles draw together |
+| Rows and cells | Arrive slightly displaced, settle into alignment |
+
+The spine is the clearest case and the standard to hold: its delay comes from where each bar
+starts on the axis, not from DOM order, so the timeline plays chronologically and the three
+concurrent roles draw at the same moment. The animation makes the section's argument instead
+of decorating it.
+
+A new animation has to answer one question: **what is resolving?** If the answer is "nothing,
+it just looked flat", it does not ship. That is the line between this and a page that moves
+because moving is fashionable.
+
 ## Motion contract
 
 - One authored moment on load, then stillness. No ambient animation, no scroll hijacking, no smooth
