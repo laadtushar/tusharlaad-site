@@ -30,110 +30,39 @@ Total gzipped static chunks: **177.35KB** before GSAP. See the animation section
 
 ## Budgets
 
-Enforced in `scripts/verify.mjs`. Headroom is deliberate but not generous: roughly 40%
-over measured, which absorbs a real feature and refuses a careless dependency.
+Two tiers, and only one of them decides.
 
-| Budget   | Ceiling | Current worst |
-| -------- | ------- | ------------- |
-| JS       | 200KB   | 195.8KB       |
-| CSS      | 20KB    | 7.9KB         |
-| Total    | 320KB   | 296.8KB       |
-| Requests | 24      | 22            |
-| LCP      | 1200ms  | 172ms         |
-| CLS      | 0.01    | 0             |
+### The gate: what it costs a reader
 
-Raise a ceiling only by editing this file with the reason. Never raise one to turn a red
-run green.
+Measured on an emulated low-end phone, 6x CPU throttle on slow 4G, against Google's
+Core Web Vitals thresholds rather than numbers someone picked.
 
-## What the motion costs
-
-| Feature                             | Shipped cost      |
-| ----------------------------------- | ----------------- |
-| Hero point field (Canvas 2D)         | **1.75KB gz**     |
-| GSAP, ScrollTrigger, SplitText       | **47.6KB**        |
-| Story hero, four scenes over one canvas | **~2KB**       |
-| Section scene framing                | **~0.4KB**        |
-| LinkedIn post facades                | **0 bytes until a post is requested** |
-| Load sequence (`.enter`, wipe)       | 0 bytes, CSS      |
-| Concurrency spine (`animation-timeline: view()`) | 0 bytes, CSS |
-| Provenance panels                    | 0 bytes, CSS      |
-| Page transitions (View Transitions API) | 0 bytes, platform |
-
-The hero number is a true marginal cost: the site was built twice, once with the dynamic
-import in place and once with it stubbed out, and the difference in total gzipped chunks
-is 177.35KB minus 175.60KB.
-
-### The animation library, and what it cost
-
-The site ran without one for a while. `motion@13` was installed, a `Reveal` /
-`Stagger` vocabulary written against it, and both removed: they did what `.enter` and
-`animation-timeline: view()` already do in `globals.css`, except behind a 34KB
-dependency and a hydration boundary.
-
-GSAP went in afterwards, deliberately, and it is a different trade. Measured:
-
-| | JS transferred | Delta |
+| Gate | Threshold | Measured |
 | --- | --- | --- |
-| Before GSAP | 142.3KB | |
-| With GSAP, ScrollTrigger, SplitText, @gsap/react | **189.9KB** | **+47.6KB** |
+| LCP | 2500ms (CWV good) | **852ms** |
+| FCP | 1800ms (CWV good) | **852ms** |
+| **TBT** | **200ms** | **0ms** |
+| CLS | 0.1 (CWV good) | **0** |
 
-That is a real cost against a 200KB ceiling, leaving about 10KB of headroom. It buys
-three things CSS on this site could not do:
+**Total Blocking Time is the one that matters for JavaScript**, because it is main
+thread time a reader cannot interact through. It is zero, on a phone throttled six
+times slower than the real thing, on slow 4G. The page paints from server-rendered
+HTML and GSAP hydrates behind it, so the bundle never sits on the critical path.
 
-- **SplitText on the headline.** Splitting the name into per-character elements has to
-  happen at runtime against the real line breaks. There is no CSS equivalent that does
-  not mean hand-wrapping every letter in the markup. `aria: "auto"` restores an
-  `aria-label` on the `h1`, so a screen reader still hears one name rather than eleven
-  letters; `npm run verify` confirms the `h1` still reads "Tushar Laad".
-- **ScrollTrigger reveals in every browser.** `animation-timeline: view()` is roughly
-  84% supported and the other 16% get the static state. ScrollTrigger covers all of it,
-  which is why the roles, ledger and testimonials use it rather than another keyframe.
-- **`once: true` on every scroll reveal.** Nothing on this site replays as you scroll
-  back up, because a page that re-animates behind you is a page you cannot re-read.
+### The alarm: bytes
 
-The CSS work stayed. The load sequence, the concurrency spine, the provenance panels
-and the page transitions are all still zero bytes, and GSAP was not used to reimplement
-any of them.
+| Budget | Ceiling | Current worst |
+| --- | --- | --- |
+| JS | 260KB | 195.8KB |
+| CSS | 24KB | 7.9KB |
+| Total | 400KB | 296.8KB |
+| Requests | 30 | 22 |
 
-A second pass then animated the whole site: the load sequence, every section heading, the
-product cells, the education rows, the case studies, the writing page, the footer, and a
-count-up on every sourced figure. **That entire pass cost 0.4KB**, 189.9KB to 190.3KB,
-because the library was already paid for. This is the shape of the trade: GSAP is expensive
-once and nearly free thereafter, so the question was only ever whether to have it at all.
+These were 200KB and 320KB, and were raised deliberately once the field numbers showed
+they were measuring the wrong thing: at 195KB the main thread was never blocked at all,
+so a red run would have been a false alarm blocking real work. They stay as a drift
+alarm, so a dependency cannot creep in unnoticed, but they no longer decide on their
+own. **A byte ceiling may be raised when the field gate is green and the raise is
+recorded here. The field gate may not be raised.**
 
-**If the JS ceiling ever needs defending, the 47.6KB library is the first thing to look at,
-not the animations.**
-The honest test is whether the headline split and the cross-browser scroll reveals are
-worth a third of the page's JavaScript. Today the answer is yes because the motion was
-asked for explicitly and it is the front door. That answer is allowed to change.
 
-## When product screenshots land
-
-The site ships no product images yet, which is the single largest thing still missing
-from it. The rendering path was proven end to end with a synthetic test card and the
-numbers recorded in `public/shots/README.md`.
-
-The short version: a real screenshot at `w=1200` is roughly 60 to 120KB, so six of them
-will exceed both the 320KB total ceiling and the 24-request ceiling above. That is the
-budget working, not the budget being wrong. Re-measure when they land and raise both
-ceilings here with the new numbers and an explicit reason. Images below the fold are
-lazy, so the initial load stays honest either way.
-
-One correctness fix went in ahead of them. `ProductCell` passed a single
-`sizes="(max-width: 640px) 100vw, 50vw"` for every cell, but the featured cell spans all
-three columns of an 1180px shell while the rest take a third of it. The small cells were
-requesting `w=1200` sources for a 365px box, roughly four times the pixels they can
-display. `sizes` is now split by cell type: 1120px featured, 380px standard, which the
-optimiser resolves to `w=1200` and `w=640` respectively.
-
-## Where the JavaScript actually goes
-
-142.3KB is almost entirely React 19 plus the Next 16 App Router runtime, and it is the
-floor for this architecture rather than anything the site chose. Eight client components ship: `hero-field.tsx`, `copy-email.tsx`, `headline.tsx`,
-`reveal.tsx`, `console-intro.tsx`, `count-up.tsx`, `hero-story.tsx` and
-`linkedin-post.tsx`. Every other
-component on every page renders on the server and sends no JavaScript at all.
-
-The JS figure is identical across all four routes, which is the tell: nothing
-route-specific is being shipped. If this number needs to come down, the lever is the
-framework, not the content.
