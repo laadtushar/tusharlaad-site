@@ -93,7 +93,15 @@ because moving is fashionable.
 - The hero is the one pinned moment. Content sections are scenes by framing only: they drift
   in on entry and compress on exit, scrubbed, transform and opacity, and never pin. A section
   fully in view sits at opacity 1, transform none. A scene you are still reading is never
-  taken away from you.
+  taken away from you. This framing runs on phones too.
+- Section headings assemble word by word from a light blur, scrubbed to entry, so the
+  assembly runs at the reader's pace. Blur never exceeds 5px: heavier reads as smeared.
+  This is the one deliberate exception to once-only reveals, because a scrubbed entry is
+  the scene grammar; row reveals below it stay once: true.
+- One seeded line threads every content section, drawn by scroll through two stacked
+  lerps so the tip glides. Seeded, never Math.random(): the same line on every visit, no
+  jump on relayout. It lives in components/story-thread.tsx, from the scroll-storytelling
+  skill's guide-line recipe.
 - Third-party embeds load on request, never on page load. The facade row is the site's; the
   embed is the third party's, arriving by invitation.
 - Never animate a value with `useState`. Animate on the compositor: transform, opacity, clip-path.
