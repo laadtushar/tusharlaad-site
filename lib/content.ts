@@ -79,7 +79,7 @@ export const profile = {
     { label: "GitHub", href: "https://github.com/laadtushar" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/tusharlaad2002/" },
     { label: "LabyNator", href: "https://labynator.com" },
-    { label: "Writing", href: "https://tusharlaad.medium.com" },
+    { label: "Medium", href: "https://tusharlaad.medium.com" },
   ],
   sameAs: [
     "https://github.com/laadtushar",
@@ -112,6 +112,9 @@ export const stack = [
   "AWS",
   "Next.js",
 ];
+
+/** One line to disable the hero animation if it ever stops earning its place. */
+export const features = { heroField: true };
 
 export const lab = {
   name: "LabyNator",

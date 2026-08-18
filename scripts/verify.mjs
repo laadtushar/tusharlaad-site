@@ -53,6 +53,21 @@ async function shot(name, { width, height, scheme = "dark", path = "/", media })
       const h = a.getAttribute("href");
       return !h || h === "#" || h === "";
     }).length;
+    // WCAG 2.4.4: two links with the same accessible name must go to the same
+    // place. Two footer links both reading "Writing" and pointing at different
+    // destinations is the exact failure this catches.
+    const byName = new Map();
+    for (const a of links) {
+      const name = (a.getAttribute("aria-label") || a.textContent).trim().toLowerCase();
+      if (!name) continue;
+      const href = new URL(a.getAttribute("href") || "", location.href).href;
+      if (!byName.has(name)) byName.set(name, new Set());
+      byName.get(name).add(href);
+    }
+    const ambiguousLinks = [...byName.entries()]
+      .filter(([, hrefs]) => hrefs.size > 1)
+      .map(([name, hrefs]) => `${name} -> ${[...hrefs].join(", ")}`);
+
     const ld = document.querySelector('script[type="application/ld+json"]');
     return {
       emDash: (text.match(/[—–]/g) || []).length,
@@ -62,6 +77,7 @@ async function shot(name, { width, height, scheme = "dark", path = "/", media })
       imgsNoAlt,
       emptyLinks,
       badHref,
+      ambiguousLinks,
       hasLd: !!ld,
       ldSameAs: ld ? (JSON.parse(ld.textContent).sameAs || []).length : 0,
       lorem: /lorem ipsum/i.test(text),
@@ -128,6 +144,8 @@ async function shot(name, { width, height, scheme = "dark", path = "/", media })
   if (audit.imgsNoAlt) note(`${audit.imgsNoAlt} images without alt`);
   if (audit.emptyLinks) note(`${audit.emptyLinks} links with no accessible name`);
   if (audit.badHref) note(`${audit.badHref} links with empty href`);
+  if (audit.ambiguousLinks.length)
+    note(`links sharing a name but not a destination: ${audit.ambiguousLinks.join(" | ")}`);
   if (!audit.hasLd) note("no JSON-LD block");
   if (audit.placeholder) note("placeholder text still on the page");
   if (audit.eyebrowsAboveHeadings > Math.ceil(audit.sectionCount / 3)) {
@@ -143,6 +161,85 @@ async function shot(name, { width, height, scheme = "dark", path = "/", media })
   });
   if (focus.outline === "0px" || focus.style === "none") note("first tab stop has no visible focus ring");
   console.log("FOCUS", JSON.stringify(focus));
+
+  await ctx.close();
+}
+
+/*
+ * Performance budget. These are ceilings measured from the real build, not
+ * aspirations: a site whose whole argument is provenance should not ship a
+ * megabyte of JavaScript to say so. Raise a number here only with a reason
+ * in docs/PERF-BASELINE.md, never to make a red run go green.
+ */
+const BUDGET = {
+  jsKB: 200, // transferred, compressed, first load
+  cssKB: 20,
+  totalKB: 320,
+  requests: 24,
+  lcpMs: 1200, // localhost, so this catches regressions rather than field cost
+  cls: 0.01,
+};
+
+for (const path of ["/", "/cv", "/work/treacle", "/writing"]) {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const seen = new Map();
+  page.on("response", async (r) => {
+    try {
+      const sizes = await r.request().sizes();
+      seen.set(r.url(), {
+        bytes: sizes.responseBodySize + sizes.responseHeadersSize,
+        type: (r.headers()["content-type"] || "").split(";")[0],
+      });
+    } catch {
+      /* redirects and aborted requests have no sizes; they carry no weight either */
+    }
+  });
+
+  await page.goto(BASE + path, { waitUntil: "networkidle" });
+
+  let js = 0, css = 0, total = 0;
+  for (const { bytes, type } of seen.values()) {
+    total += bytes;
+    if (type.includes("javascript")) js += bytes;
+    else if (type.includes("css")) css += bytes;
+  }
+  const kb = (n) => +(n / 1024).toFixed(1);
+
+  const vitals = await page.evaluate(
+    () =>
+      new Promise((res) => {
+        let lcp = 0;
+        let cls = 0;
+        new PerformanceObserver((l) => {
+          for (const e of l.getEntries()) lcp = e.startTime;
+        }).observe({ type: "largest-contentful-paint", buffered: true });
+        new PerformanceObserver((l) => {
+          for (const e of l.getEntries()) if (!e.hadRecentInput) cls += e.value;
+        }).observe({ type: "layout-shift", buffered: true });
+        setTimeout(() => res({ lcp: Math.round(lcp), cls: +cls.toFixed(4) }), 1200);
+      }),
+  );
+
+  const m = {
+    path,
+    requests: seen.size,
+    jsKB: kb(js),
+    cssKB: kb(css),
+    totalKB: kb(total),
+    lcpMs: vitals.lcp,
+    cls: vitals.cls,
+  };
+  console.log("PERF", JSON.stringify(m));
+
+  const over = (key, unit = "KB") =>
+    m[key] > BUDGET[key] && note(`${path}: ${key} ${m[key]}${unit} over budget ${BUDGET[key]}${unit}`);
+  over("jsKB");
+  over("cssKB");
+  over("totalKB");
+  over("requests", "");
+  over("lcpMs", "ms");
+  over("cls", "");
 
   await ctx.close();
 }

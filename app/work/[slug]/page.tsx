@@ -53,7 +53,10 @@ export default async function WorkPage({
 
       <header className="flex flex-col gap-3 pt-8">
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-4xl font-semibold tracking-[-0.04em]">
+          <h1
+            className="text-4xl font-semibold tracking-[-0.04em]"
+            style={{ viewTransitionName: `title-${product.slug}` }}
+          >
             {product.name}
           </h1>
           <StatusTag status={product.status} />
