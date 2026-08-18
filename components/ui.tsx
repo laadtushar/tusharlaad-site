@@ -88,19 +88,27 @@ export function Chips({ items }: { items: string[] }) {
   );
 }
 
+/**
+ * `ariaLabel` exists for repeated link text. Five cards all reading "Source" are
+ * five identical entries in a screen reader's link list, so each one names its
+ * product there while the visible label stays short.
+ */
 export function ExternalLink({
   href,
   children,
   className = "",
+  ariaLabel,
 }: {
   href: string;
   children: ReactNode;
   className?: string;
+  ariaLabel?: string;
 }) {
   const external = href.startsWith("http");
   return (
     <a
       href={href}
+      {...(ariaLabel ? { "aria-label": ariaLabel } : {})}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={`text-amber underline decoration-amber/40 transition-colors hover:decoration-amber ${className}`}
     >

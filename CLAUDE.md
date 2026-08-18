@@ -42,9 +42,15 @@ and are not preferences:
   legible with motion off.
 - Scroll-driven effects use `animation-timeline` behind an `@supports` guard, so unsupported browsers
   get the static state rather than a broken one.
-- `motion/react` is available for gesture, layout and presence work. It is client-only: any file
-  using it needs `"use client"` and should be an isolated leaf, not a wrapper around page content.
-- Never animate a value with `useState`. Use motion values.
+- No animation library. CSS keyframes, `animation-timeline: view()` and the View Transitions API
+  cover everything the site does, at zero shipped bytes. `motion/react` was installed, measured
+  against the CSS it would replace, and removed: it was a 34KB dependency for a slower version of
+  behaviour already in `globals.css`. Reach for it only when something genuinely needs gesture,
+  layout or presence work, and expect to justify the bytes.
+- Never animate a value with `useState`. Animate on the compositor: transform, opacity, clip-path.
+- The one piece of hand-written motion is `components/hero-field.tsx`, a Canvas 2D point field.
+  It stops its own rAF loop once resolved and untouched, pauses when offscreen, and renders the
+  resolved state with no loop at all under reduced motion or at 640px and below.
 
 ## Verify before you push
 
@@ -56,8 +62,14 @@ npm run verify
 
 `scripts/verify.mjs` drives real Chromium and checks WCAG AA contrast on every text node, horizontal
 overflow at desktop and mobile, heading structure, alt text, link accessible names, focus visibility,
-JSON-LD presence, and the typographic bans above. It writes screenshots too. If it fails, the push is
-not ready.
+JSON-LD presence, the typographic bans above, and a performance budget on four routes. It writes
+screenshots too. If it fails, the push is not ready.
+
+Kill any server from a previous build before starting a new one. A stale `next start` serves the old
+build ID, the new CSS chunk 500s, and the run reports hundreds of phantom contrast failures.
+
+The performance budget lives in `docs/PERF-BASELINE.md` with the measured numbers behind it. Raise a
+ceiling only by editing that file with the reason. Never raise one to turn a red run green.
 
 ## Deployment
 

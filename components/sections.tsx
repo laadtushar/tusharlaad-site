@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   contributions,
   education,
+  features,
   lab,
   ledger,
   products,
@@ -15,6 +17,11 @@ import {
   type Role,
 } from "@/lib/content";
 import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "./ui";
+import { CopyEmail } from "./copy-email";
+
+/* Client-only and dynamically imported, so it never blocks first paint and
+   never runs during server rendering. */
+const HeroField = dynamic(() => import("./hero-field"));
 
 /* ---------------------------------------------------------------- console */
 
@@ -22,8 +29,9 @@ export function Console() {
   return (
     <Shell>
       <Grid className="enter border border-rule lg:grid-cols-3">
-        <Tile className="flex flex-col gap-6 py-10 sm:py-14 lg:col-span-3">
-          <div className="flex flex-col gap-4">
+        <Tile className="relative isolate overflow-hidden flex flex-col gap-6 py-10 sm:py-14 lg:col-span-3">
+          {features.heroField ? <HeroField /> : null}
+          <div className="relative flex flex-col gap-4">
             <h1 className="text-balance text-[2.75rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl">
               {profile.name}
             </h1>
@@ -35,7 +43,7 @@ export function Console() {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <div className="relative flex flex-wrap items-center gap-x-5 gap-y-2">
             {profile.available ? (
               <p className="flex items-center gap-2 font-mono text-[0.66rem] uppercase tracking-[0.1em] text-good">
                 <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-good" />
@@ -47,7 +55,7 @@ export function Console() {
             </p>
           </div>
 
-          <ul className="flex flex-wrap gap-1.5">
+          <ul className="relative flex flex-wrap gap-1.5">
             <li>
               <Link
                 href="/cv"
@@ -129,6 +137,7 @@ function ProductCell({
       <div className="flex flex-wrap items-center gap-2">
         <h3
           className={`font-semibold tracking-[-0.025em] ${featured ? "text-2xl" : "text-lg"}`}
+          style={{ viewTransitionName: `title-${product.slug}` }}
         >
           {product.name}
         </h3>
@@ -163,6 +172,7 @@ function ProductCell({
           <li>
             <Link
               href={`/work/${product.slug}`}
+              aria-label={`How ${product.name} works`}
               className="text-amber underline decoration-amber/40 hover:decoration-amber"
             >
               How it works
@@ -178,7 +188,11 @@ function ProductCell({
         ) : null}
         {product.repo ? (
           <li>
-            <ExternalLink href={product.repo} className="text-ink-2 decoration-ink-3">
+            <ExternalLink
+              href={product.repo}
+              ariaLabel={`${product.name} source on GitHub`}
+              className="text-ink-2 decoration-ink-3"
+            >
               Source
             </ExternalLink>
           </li>
@@ -261,7 +275,7 @@ export function Quotes() {
 
 export function RoleRow({ role, compact = false }: { role: Role; compact?: boolean }) {
   return (
-    <div className="print-break grid gap-x-6 gap-y-2 border-t border-rule py-5 sm:grid-cols-[10rem_1fr] sm:py-6">
+    <div className="role print-break grid gap-x-6 gap-y-2 border-t border-rule py-5 sm:grid-cols-[10rem_1fr] sm:py-6">
       <div className="flex flex-col gap-1">
         <p className="tnum font-mono text-[0.72rem] uppercase tracking-[0.06em] text-ink-3">
           {role.from} to {role.to}
@@ -318,21 +332,21 @@ export function Experience() {
           <Axis />
         </div>
 
-        <div className="pt-6">
+        <div className="roles pt-6">
           <Label>Now</Label>
           {current.map((r) => (
             <RoleRow key={r.org} role={r} />
           ))}
         </div>
 
-        <div className="pt-10">
+        <div className="roles pt-10">
           <Label>Founding roles</Label>
           {founding.map((r) => (
             <RoleRow key={r.org} role={r} />
           ))}
         </div>
 
-        <div className="pt-10">
+        <div className="roles pt-10">
           <Label>Before that</Label>
           {rest.map((r) => (
             <RoleRow key={r.org} role={r} compact={r.kind === "earlier"} />
@@ -462,9 +476,7 @@ export function Footer() {
           </p>
           <ul className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-[0.7rem]">
             <li>
-              <ExternalLink href={`mailto:${profile.email}`}>
-                {profile.email}
-              </ExternalLink>
+              <CopyEmail email={profile.email} />
             </li>
             {profile.links.map((l) => (
               <li key={l.href}>

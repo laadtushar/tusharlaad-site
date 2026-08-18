@@ -39,6 +39,14 @@
   --good: #4fa574;
   --warn: #c4553d;
   color-scheme: dark;
+
+  /* Motion tokens. CSS and motion/react read the same curves and durations, so
+     nothing on the page eases differently from anything else. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 160ms;
+  --dur-base: 320ms;
+  --dur-slow: 620ms;
 }
 
 @media (prefers-color-scheme: light) {
@@ -154,11 +162,11 @@ a {
 }
 
 .enter {
-  animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rise var(--dur-slow) var(--ease-out-expo) both;
 }
 
 .enter-wipe {
-  animation: wipe 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: wipe 720ms var(--ease-out-expo) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -253,7 +261,7 @@ a {
   padding: 0;
   cursor: help;
   border-bottom: 1px dotted color-mix(in oklab, var(--amber) 55%, transparent);
-  transition: border-bottom-color 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-bottom-color var(--dur-fast) var(--ease-out-expo);
 }
 .prov:hover .prov__fig,
 .prov:focus-within .prov__fig {
@@ -346,5 +354,62 @@ a {
   }
   to {
     transform: scaleX(1);
+  }
+}
+
+/*
+ * Micro-interactions. Each of these earns its place in one sentence, and
+ * nothing moves while the pointer is still. The palette is a cold instrument:
+ * instruments respond precisely to input and are otherwise motionless.
+ */
+
+/* The provenance panel arrives rather than fades, and waits long enough that
+   sweeping across a metrics row does not strobe three panels open. */
+.prov__src {
+  transition:
+    opacity var(--dur-fast) var(--ease-out-expo) 120ms,
+    transform var(--dur-base) var(--ease-spring) 120ms,
+    visibility var(--dur-base) 120ms;
+}
+.prov:hover .prov__src,
+.prov:focus-within .prov__src {
+  transition-delay: 120ms;
+}
+
+/* Tiles brighten their rule on hover. No lift, no shadow: cards here are
+   rule-separated and that holds. */
+.bg-panel,
+.bg-panel-2 {
+  transition: background-color var(--dur-base) var(--ease-out-expo);
+}
+
+/* Hovering one role dims the others, so the overlap between concurrent roles
+   becomes explicit instead of implied. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .roles:hover .role:not(:hover) .span__bar {
+    opacity: 0.28;
+  }
+  .role .span__bar {
+    transition: opacity var(--dur-base) var(--ease-out-expo);
+  }
+}
+
+/*
+ * Page transitions. The product name travels from its card into the case study
+ * heading, so the reader never loses their place.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--dur-base);
+    animation-timing-function: var(--ease-out-expo);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }
