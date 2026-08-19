@@ -1,0 +1,466 @@
+@import "tailwindcss";
+
+/*
+ * Console. A cold slate instrument surface with phosphor amber reserved for
+ * live and dated values. Radius is zero everywhere, by decision, not omission.
+ *
+ * Dark is the committed world. Light exists for readers whose OS asks for it
+ * and for print, and it is a real palette rather than an inversion.
+ */
+
+/* Utilities resolve through the live variables below, so one theme switch moves everything. */
+@theme {
+  --color-ground: var(--ground);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-rule: var(--rule);
+  --color-rule-2: var(--rule-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-amber: var(--amber);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --ground: #06090d;
+  --panel: #10161d;
+  --panel-2: #0b0f14;
+  --rule: #1b222b;
+  --rule-2: #263140;
+  --ink: #e3eaf2;
+  --ink-2: #94a1af;
+  --ink-3: #808d9c;
+  --amber: #e5a03c;
+  --good: #4fa574;
+  --warn: #c4553d;
+  color-scheme: dark;
+
+  /* Motion tokens. CSS and motion/react read the same curves and durations, so
+     nothing on the page eases differently from anything else. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 160ms;
+  --dur-base: 320ms;
+  --dur-slow: 620ms;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --ground: #f2f4f6;
+    --panel: #ffffff;
+    --panel-2: #e9edf1;
+    --rule: #d9dfe6;
+    --rule-2: #bcc6d1;
+    --ink: #10161d;
+    --ink-2: #4c5967;
+    --ink-3: #5c6773;
+    --amber: #8a5a12;
+    --good: #23694a;
+    --warn: #8f3527;
+    color-scheme: light;
+  }
+}
+
+html {
+  background: var(--ground);
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  /* Provenance panels are absolutely positioned; without this they can widen
+     the page on narrow screens. Clip rather than scroll: nothing should ever
+     be reachable by scrolling sideways. */
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/*
+ * Browser surfaces. The parts nobody draws still carry the design: selection,
+ * caret, scrollbars, focus rings, underline offset, and the numerals in any
+ * column of data.
+ */
+
+::selection {
+  background: var(--amber);
+  color: var(--ground);
+}
+
+* {
+  caret-color: var(--amber);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule-2) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ground);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rule-2);
+  border: 3px solid var(--ground);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-3);
+}
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Type floor: measure stays inside 65 to 75 characters. */
+.measure {
+  max-width: 68ch;
+}
+
+/*
+ * One authored load sequence, then stillness. Image and product cells wipe in
+ * on a clip path rather than another fade, and everything settles on an
+ * exponential ease-out from an already-visible default.
+ */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wipe {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.enter {
+  animation: rise var(--dur-slow) var(--ease-out-expo) both;
+}
+
+.enter-wipe {
+  animation: wipe 720ms var(--ease-out-expo) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter,
+  .enter-wipe {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/*
+ * Print. This is what /cv produces, so it is a real stylesheet rather than a
+ * courtesy: light ground, no site chrome, no wasted vertical space.
+ */
+
+@media print {
+  :root {
+    --ground: #ffffff;
+    --panel: #ffffff;
+    --panel-2: #ffffff;
+    --rule: #cbd2da;
+    --rule-2: #9aa5b1;
+    --ink: #000000;
+    --ink-2: #333b44;
+    --ink-3: #555f6a;
+    --amber: #6b4409;
+    --good: #1d5b3f;
+    --warn: #7d2f22;
+    color-scheme: light;
+  }
+
+  html,
+  body {
+    background: #ffffff;
+    font-size: 10.5pt;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-tight {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  a {
+    text-decoration: none;
+    color: #000000;
+  }
+
+  .print-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .enter,
+  .enter-wipe {
+    animation: none;
+  }
+
+  @page {
+    margin: 14mm 14mm;
+  }
+}
+
+/*
+ * Provenance. The signature interaction: every amber figure can be
+ * interrogated, and it says where it came from. This is the site arguing its
+ * subject's engineering position by behaving like it, not describing it.
+ *
+ * Pure CSS. Hover, focus and tap all open it; no JavaScript, no dependency.
+ */
+
+.prov {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.prov__fig {
+  font: inherit;
+  color: var(--amber);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: help;
+  border-bottom: 1px dotted color-mix(in oklab, var(--amber) 55%, transparent);
+  transition: border-bottom-color var(--dur-fast) var(--ease-out-expo);
+}
+.prov:hover .prov__fig,
+.prov:focus-within .prov__fig {
+  border-bottom-color: var(--amber);
+}
+
+.prov__src {
+  position: absolute;
+  bottom: calc(100% + 0.55rem);
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  max-width: min(30ch, 68vw);
+  padding: 0.55rem 0.7rem;
+  background: var(--panel-2);
+  border: 1px solid var(--amber);
+  color: var(--ink);
+  font-size: 0.76rem;
+  line-height: 1.45;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(3px);
+  visibility: hidden;
+  transition:
+    opacity 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 180ms;
+}
+.prov__src::before {
+  content: "Source";
+  display: block;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.25rem;
+}
+.prov:hover .prov__src,
+.prov:focus-within .prov__src {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+/* Near the right edge there is no room to open leftward, so flip the anchor. */
+@media (max-width: 640px) {
+  .prov__src {
+    left: auto;
+    right: 0;
+  }
+}
+
+/*
+ * The concurrency spine. Three roles ran at once, which a plain list renders as
+ * an error. The bar shows the real overlap against one shared axis, and draws
+ * itself off the scroll timeline where the browser supports it.
+ */
+
+.span {
+  position: relative;
+  height: 4px;
+  background: var(--rule-2);
+  overflow: hidden;
+}
+.span__bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--ink-2);
+  transform-origin: left;
+}
+.span__bar--now {
+  background: var(--amber);
+}
+
+/* The bar is drawn by ScrollTrigger in components/reveal.tsx rather than by
+   animation-timeline: view(), which left roughly 16% of browsers looking at a
+   bar that never drew. transform-origin stays here because it is layout. */
+
+/*
+ * Micro-interactions. Each of these earns its place in one sentence, and
+ * nothing moves while the pointer is still. The palette is a cold instrument:
+ * instruments respond precisely to input and are otherwise motionless.
+ */
+
+/* The provenance panel arrives rather than fades, and waits long enough that
+   sweeping across a metrics row does not strobe three panels open. */
+.prov__src {
+  transition:
+    opacity var(--dur-fast) var(--ease-out-expo) 120ms,
+    transform var(--dur-base) var(--ease-spring) 120ms,
+    visibility var(--dur-base) 120ms;
+}
+.prov:hover .prov__src,
+.prov:focus-within .prov__src {
+  transition-delay: 120ms;
+}
+
+/* Tiles brighten their rule on hover. No lift, no shadow: cards here are
+   rule-separated and that holds. */
+.bg-panel,
+.bg-panel-2 {
+  transition: background-color var(--dur-base) var(--ease-out-expo);
+}
+
+/* Hovering one role dims the others, so the overlap between concurrent roles
+   becomes explicit instead of implied. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .roles:hover .role:not(:hover) .span__bar {
+    opacity: 0.28;
+  }
+  .role .span__bar {
+    transition: opacity var(--dur-base) var(--ease-out-expo);
+  }
+}
+
+/*
+ * Page transitions. The product name travels from its card into the case study
+ * heading, so the reader never loses their place.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--dur-base);
+    animation-timing-function: var(--ease-out-expo);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/*
+ * The story hero. Desktop with motion allowed: the track is four viewports
+ * tall, the stage is CSS-sticky (no GSAP pin, no injected spacer, CLS 0),
+ * and scenes sit absolute in the stage while scroll advances them.
+ *
+ * Everywhere else these rules do not apply and the scenes are ordinary
+ * stacked sections: same words, same figures, no pin. Content parity is the
+ * fallback. The canvas only exists where the story is live.
+ */
+
+.story-canvas {
+  display: none;
+}
+
+.story-scene + .story-scene {
+  border-top: 1px solid var(--rule);
+  margin-top: 3.5rem;
+  padding-top: 3.5rem;
+}
+
+/* The media query owns this layout entirely, so the first paint is already
+   the final layout and CLS stays 0. JavaScript only ever animates opacity
+   and transform inside it; it never changes where anything lives. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .story-track {
+    height: 440vh;
+  }
+  .story-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: clip;
+  }
+  .story-canvas {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .story-scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+  }
+  .story-scene + .story-scene {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
+  /* Secondary scenes start hidden and can't take clicks while invisible;
+     the scrubbed timeline brings them in. */
+  .story-scene:not(.story-scene--identity) {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .story-scene:not(.story-scene--identity) .prov__fig {
+    pointer-events: auto;
+  }
+  /* The story field is the centerpiece here; the identity tile's own
+     lattice would be a second, contradictory field inside it. */
+  .story-scene--identity canvas:not(.story-canvas) {
+    display: none;
+  }
+}
