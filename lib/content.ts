@@ -515,6 +515,7 @@ export const quotes: Quote[] = [
     body:
       "He started as a website developer, took on a data engineer role, built APIs for us. He performed beautifully. When we assigned him his first labelling and machine learning project, he came back not only with a solution but alternative approaches, pros and cons, and all documented well.",
     name: "Vinay Mehendi, PhD",
+    avatar: { src: "/people/vinay-mehendi.webp", alt: "Vinay Mehendi" },
     role: "Chief Executive, OceanFrogs",
     date: "Sep 2023",
     relationship: "Senior to Tushar at OceanFrogs",
@@ -523,6 +524,7 @@ export const quotes: Quote[] = [
     body:
       "He not only delivered on assigned responsibilities but regularly went beyond expectations, investing additional time to understand underlying systems and improve solution quality.",
     name: "Joel Joseph Joy",
+    avatar: { src: "/people/joel-joseph-joy.webp", alt: "Joel Joseph Joy" },
     role: "Azure and Databricks Engineer",
     date: "Mar 2026",
     relationship: "Managed Tushar directly at Appsatile",
@@ -531,6 +533,7 @@ export const quotes: Quote[] = [
     body:
       "Excellent skills at building data pipelines, REST APIs and Docker. A great team player who communicates effectively and shares knowledge generously.",
     name: "Srujan P",
+    avatar: { src: "/people/srujan-p.webp", alt: "Srujan P" },
     role: "Product and Engineering Manager, OceanFrogs",
     date: "Sep 2023",
     relationship: "Managed Tushar directly at OceanFrogs",
@@ -539,6 +542,7 @@ export const quotes: Quote[] = [
     body:
       "We were faced with the complex challenge of implementing end-to-end encryption, particularly how to securely store and manage encryption keys. He devised an elegant solution that balanced security with usability: storing public keys on our servers while keeping private keys on users' local devices.",
     name: "Suleiman Muhammad Sabo",
+    avatar: { src: "/people/suleiman-muhammad-sabo.webp", alt: "Suleiman Muhammad Sabo" },
     role: "Cybersecurity researcher",
     date: "Mar 2024",
     relationship: "Worked on the same team",
@@ -547,6 +551,7 @@ export const quotes: Quote[] = [
     body:
       "An excellent developer and data engineer with extensive experience in data scraping, data mining, data labelling, data analytics and ML. Very proactive in taking up problems and coming up with novel solutions for them.",
     name: "Pranjal Upadhyaya",
+    avatar: { src: "/people/pranjal-upadhyaya.webp", alt: "Pranjal Upadhyaya" },
     role: "Software Development Engineer",
     date: "Nov 2023",
     relationship: "Worked on the same team",
