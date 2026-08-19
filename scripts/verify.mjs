@@ -130,6 +130,12 @@ async function auditRoute(path, { scheme, isHome, media }) {
       const out = [];
       for (const el of document.querySelectorAll("p, li, span, dd, dt, blockquote, h1, h2, h3, a")) {
         if (!el.textContent.trim()) continue;
+        // WCAG 1.4.3 and 1.4.11 exempt pure decoration. An element hidden from
+        // assistive technology carries no information by definition, so holding
+        // it to a text contrast ratio tests the wrong thing. Scoped to
+        // aria-hidden deliberately: anything a reader must actually read must
+        // never be aria-hidden, so this cannot quietly excuse real content.
+        if (el.closest('[aria-hidden="true"]')) continue;
         const cs = getComputedStyle(el);
         if (el.children.length && el.childElementCount === el.childNodes.length) continue;
         const size = parseFloat(cs.fontSize);
