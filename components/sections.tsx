@@ -18,6 +18,7 @@ import {
 } from "@/lib/content";
 import { Axis, Chips, ExternalLink, Figure, Grid, Heading, Label, Shell, Span, StatusTag, Tile } from "@/components/ui";
 import { CopyEmail } from "@/components/copy-email";
+import { QuoteCard } from "@/components/quote-card";
 import { Portrait } from "@/components/portrait";
 import { Headline } from "@/components/headline";
 import { Reveal, RevealHeading, RevealRows, DrawSpines, SceneSection } from "@/components/reveal";
@@ -284,30 +285,11 @@ export function Quotes() {
       <SceneSection>
       <section className="pt-16 sm:pt-24">
         <RevealHeading><Heading className="pb-6">What people I worked with said</Heading></RevealHeading>
-        <RevealRows selector=".quote">
-        <ul className="border-t border-rule">
+        <ul className="quotes border-t border-rule">
           {quotes.map((q) => (
-            <li
-              key={q.name}
-              className="quote grid gap-x-8 gap-y-3 border-b border-rule py-6 sm:grid-cols-[14rem_1fr]"
-            >
-              <div className="flex flex-col gap-0.5">
-                <span className="text-sm font-semibold">{q.name}</span>
-                <span className="text-xs text-ink-2">{q.role}</span>
-                <span className="font-mono text-[0.62rem] uppercase tracking-[0.09em] text-ink-3">
-                  {q.relationship}
-                </span>
-                <span className="tnum pt-1 font-mono text-[0.62rem] text-ink-3">
-                  {q.date}
-                </span>
-              </div>
-              <blockquote className="measure text-sm leading-relaxed text-ink">
-                {q.body}
-              </blockquote>
-            </li>
+            <QuoteCard key={q.name} quote={q} />
           ))}
         </ul>
-        </RevealRows>
       </section>
       </SceneSection>
     </Shell>

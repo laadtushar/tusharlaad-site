@@ -619,3 +619,29 @@ a[data-underline] {
     transform: none;
   }
 }
+
+/*
+ * Testimonials. These are other people's words, so the card holds still until
+ * the reader engages with it, then answers: an amber edge draws down the row
+ * under the pointer and the rest step back, which is the same "one thing in
+ * focus" the concurrency spine does with its bars.
+ */
+
+.quote__edge {
+  transform: scaleY(0);
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .quote:hover .quote__edge {
+    transform: scaleY(1);
+  }
+
+  /* The row being read stays lit; its neighbours recede. */
+  .quotes:hover .quote:not(:hover) {
+    opacity: 0.55;
+  }
+  .quote {
+    transition: opacity var(--dur-base) var(--ease-out-expo);
+  }
+}
