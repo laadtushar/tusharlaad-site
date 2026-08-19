@@ -14,12 +14,29 @@ container above the product name, and the cell upgrades on its own.
 - **16:10, at least 1600px wide.** The featured cell displays at 1082px on a 1440px
   viewport and requests a 1200px optimised source, so anything under 1600px will
   look soft on a high-density display.
-- **Real UI with real data.** No mockups, no device frames, no marketing renders.
+- **The real UI, running.** No mockups, no device frames, no marketing renders.
   A screenshot of a working thing is the entire point.
+- **Demo data, never personal data.** Every product here renders somebody's private
+  life by default, so each shot is captured against a seeded demo account rather
+  than a real one. The frontend is the shipped build; only the rows are invented,
+  and they are generated from a fixed seed so a re-capture reproduces the image.
 - **Alt text says what the product is doing**, not "screenshot of Treacle". It is
   the only description a screen reader gets.
-- **Scrub private data before capture.** XpenseLab and HyredLab both show real
-  personal and financial data by default.
+
+## How each one was captured
+
+Four of the five products are not reachable over the network from a build agent,
+so each was run locally and driven with Playwright.
+
+| Product | How |
+| --- | --- |
+| HyredLab | Real Next.js app against a local Postgres, seeded with twelve invented applications and an allowlisted demo user |
+| MemryLab | Tauri desktop app: the shipped React frontend served by Vite, with the Rust IPC layer answered by a seeded stub |
+| EdytLab | Same, plus four generated WAV files so the waveform lanes draw real audio, and a scripted agent turn |
+| XpenseLab | Real Next.js app with the two Firestore hooks answered from a seeded fixture, so no request reaches a live project |
+
+Treacle has no screenshot: it ships on the Play Store and there is no local
+source in the lab to run.
 
 ## What was measured
 
