@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { Quote } from "@/lib/content";
 import { gsap, SplitText, useGSAP, prefersReducedMotion } from "@/components/gsap-init";
 
@@ -134,7 +134,13 @@ export function QuoteCard({ quote }: { quote: Quote }) {
  * said yes.
  */
 function Avatar({ quote }: { quote: Quote }) {
-  if (quote.avatar) {
+  // A photograph that fails to load falls back to the monogram rather than a
+  // broken image. That makes the photo files droppable at any time without a
+  // code change, and means a missing or renamed file degrades to something
+  // deliberate instead of an empty frame.
+  const [failed, setFailed] = useState(false);
+
+  if (quote.avatar && !failed) {
     return (
       <span className="relative block size-10 overflow-hidden border border-rule-2 bg-panel-2">
         <Image
@@ -143,6 +149,7 @@ function Avatar({ quote }: { quote: Quote }) {
           fill
           sizes="40px"
           className="object-cover"
+          onError={() => setFailed(true)}
         />
       </span>
     );
