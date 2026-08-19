@@ -254,6 +254,10 @@ export const products: Product[] = [
   {
     slug: "memrylab",
     name: "MemryLab",
+    image: {
+      src: "/shots/memrylab.webp",
+      alt: "The MemryLab timeline view: four years of imported documents as a zoomable monthly bar chart, with a period table beneath it and the ten analysis views down the left",
+    },
     tagline: "A searchable timeline of how your thinking changed.",
     summary:
       "Point it at your journals, chat exports, notes and archives. It builds a visual timeline of how your beliefs and interests moved over years. Everything stays on the machine.",
@@ -281,6 +285,10 @@ export const products: Product[] = [
   {
     slug: "edytlab",
     name: "EdytLab",
+    image: {
+      src: "/shots/edytlab.webp",
+      alt: "The EdytLab editor: four audio tracks with waveforms, markers and a volume envelope on the left, and on the right an agent turn that ran three editing tools and reported what it changed",
+    },
     tagline: "Describe an audio edit in English. It renders.",
     summary:
       "Drop in stems and ask for the mashup you want. An agent plans the operations, the DSP runs locally in Rust, and stem separation and transcription happen on your own machine.",
@@ -307,6 +315,10 @@ export const products: Product[] = [
   {
     slug: "hyredlab",
     name: "HyredLab",
+    image: {
+      src: "/shots/hyredlab.webp",
+      alt: "The HyredLab dashboard: a pipeline board of tracked applications with stage counts across applied, screening, interview, offer, rejected and ghosted",
+    },
     tagline: "A job tracker that reads your inbox for you.",
     summary:
       "Syncs with Gmail and turns the mess of application confirmations, rejections and recruiter threads into a tracked pipeline, without any manual entry.",
@@ -329,6 +341,10 @@ export const products: Product[] = [
   {
     slug: "xpenselab",
     name: "XpenseLab",
+    image: {
+      src: "/shots/xpenselab.webp",
+      alt: "The XpenseLab dashboard: income, expenses and savings totals across the top, a seven day income against expenses chart, and the most recent transactions with their categories",
+    },
     tagline: "Personal finance that categorises itself.",
     summary:
       "Income, expenses, budgets, loans and EMIs, with AI categorisation and optional client-side encryption. The largest codebase in the lab.",
