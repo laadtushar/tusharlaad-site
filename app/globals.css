@@ -645,3 +645,19 @@ a[data-underline] {
     transition: opacity var(--dur-base) var(--ease-out-expo);
   }
 }
+
+/*
+ * Testimonial photographs. Graded the same way as the portrait so a row of
+ * five sources, shot in five different lighting conditions, reads as one set
+ * rather than a scrapbook. Colour returns on hover, like the portrait.
+ */
+.quote__avatar img {
+  filter: grayscale(0.65) contrast(1.05) brightness(0.97);
+  transition: filter var(--dur-slow) var(--ease-out-expo);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .quote:hover .quote__avatar img {
+    filter: grayscale(0) contrast(1) brightness(1);
+  }
+}

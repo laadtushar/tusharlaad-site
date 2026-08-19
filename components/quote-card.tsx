@@ -36,12 +36,17 @@ export function QuoteCard({ quote }: { quote: Quote }) {
         aria: "auto",
         autoSplit: true,
         onSplit(self) {
+          // Plays once on entry rather than scrubbed. Scrubbing both ends off
+          // the card's own top meant a tall card, or the last card on the
+          // page, could never reach progress 1: the page bottomed out first
+          // and the closing lines stayed masked permanently. A quote you
+          // cannot finish reading is worse than one that simply arrives.
           const tl = gsap.timeline({
+            defaults: { ease: "power3.out" },
             scrollTrigger: {
               trigger: ref.current,
-              start: "top 88%",
-              end: "top 45%",
-              scrub: 1,
+              start: "top 85%",
+              once: true,
             },
           });
 
@@ -50,25 +55,24 @@ export function QuoteCard({ quote }: { quote: Quote }) {
             scale: 0.6,
             rotate: -12,
             transformOrigin: "left top",
-            ease: "none",
+            duration: 0.5,
           }, 0)
             .from(q("[data-quote-who]"), {
               autoAlpha: 0,
               x: -12,
-              ease: "none",
-            }, 0.05)
+              duration: 0.5,
+            }, 0.08)
             .from(q("[data-quote-avatar]"), {
               autoAlpha: 0,
-              scale: 0.7,
-              rotate: -8,
+              scale: 0.8,
               transformOrigin: "center",
-              ease: "none",
+              duration: 0.45,
             }, 0)
             .from(self.lines, {
               yPercent: 105,
-              stagger: 0.12,
-              ease: "none",
-            }, 0.1);
+              duration: 0.6,
+              stagger: 0.07,
+            }, 0.12);
 
           return tl;
         },
@@ -125,13 +129,11 @@ export function QuoteCard({ quote }: { quote: Quote }) {
 }
 
 /**
- * A monogram unless someone has actually agreed to a photograph.
+ * The person's photograph, or their initials if there isn't one.
  *
- * Lifting five people's LinkedIn portraits onto this site is their likeness
- * used without asking, and those CDN URLs are signed and expire regardless.
- * Initials in the site's own mono, in a square with the amber rule, say who
- * without borrowing anything. Set `avatar` on a quote once that person has
- * said yes.
+ * Drawn at 56px rather than 40: at the smaller size a face was unreadable,
+ * which is the whole point of showing one. `object-top` because these are
+ * portraits, and a centre crop on a portrait cuts the head.
  */
 function Avatar({ quote }: { quote: Quote }) {
   // A photograph that fails to load falls back to the monogram rather than a
@@ -142,13 +144,13 @@ function Avatar({ quote }: { quote: Quote }) {
 
   if (quote.avatar && !failed) {
     return (
-      <span className="relative block size-10 overflow-hidden border border-rule-2 bg-panel-2">
+      <span className="quote__avatar relative block size-14 overflow-hidden border border-rule-2 bg-panel-2">
         <Image
           src={quote.avatar.src}
           alt={quote.avatar.alt}
           fill
-          sizes="40px"
-          className="object-cover"
+          sizes="56px"
+          className="object-cover object-top"
           onError={() => setFailed(true)}
         />
       </span>
@@ -167,7 +169,7 @@ function Avatar({ quote }: { quote: Quote }) {
   return (
     <span
       aria-hidden
-      className="flex size-10 items-center justify-center border border-rule-2 bg-panel-2 font-mono text-[0.72rem] tracking-[0.06em] text-ink-2"
+      className="quote__avatar flex size-14 items-center justify-center border border-rule-2 bg-panel-2 font-mono text-[0.8rem] tracking-[0.06em] text-ink-2"
     >
       {initials}
     </span>
