@@ -16,7 +16,7 @@ export default function WritingPage() {
     <main className="mx-auto w-full max-w-[52rem] px-4 py-10 sm:px-6 sm:py-14">
       <Link
         href="/"
-        className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-ink-2 underline decoration-ink-3"
+        data-underline className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-ink-2"
       >
         Back to the site
       </Link>

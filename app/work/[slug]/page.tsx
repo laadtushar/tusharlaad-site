@@ -5,6 +5,7 @@ import { products, productBySlug } from "@/lib/content";
 import { Chips, ExternalLink, Figure, Label, StatusTag } from "@/components/ui";
 import { Reveal, RevealRows } from "@/components/reveal";
 import { CountUpAll } from "@/components/count-up";
+import { CaseIntro } from "@/components/case-intro";
 
 export function generateStaticParams() {
   return products.filter((p) => p.caseStudy).map((p) => ({ slug: p.slug }));
@@ -48,40 +49,44 @@ export default async function WorkPage({
     <main className="mx-auto w-full max-w-[52rem] px-4 py-10 sm:px-6 sm:py-14">
       <Link
         href="/#work"
-        className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-ink-2 underline decoration-ink-3"
+        data-underline className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-ink-2"
       >
         Back to the lab
       </Link>
 
+      <CaseIntro>
       <header className="flex flex-col gap-3 pt-8">
         <div className="flex flex-wrap items-center gap-3">
           <h1
+            data-case="title"
             className="text-4xl font-semibold tracking-[-0.04em]"
             style={{ viewTransitionName: `title-${product.slug}` }}
           >
             {product.name}
           </h1>
-          <StatusTag status={product.status} />
+          <span data-case="tag">
+            <StatusTag status={product.status} />
+          </span>
         </div>
-        <p className="text-balance text-lg font-medium leading-snug text-ink">
+        <p data-case="line" className="text-balance text-lg font-medium leading-snug text-ink">
           {product.tagline}
         </p>
-        <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
+        <p data-case="line" className="measure text-[0.95rem] leading-relaxed text-ink-2">
           {product.summary}
         </p>
-        <div className="pt-2">
+        <div data-case="chips" className="pt-2">
           <Chips items={product.stack} />
         </div>
         <ul className="flex flex-wrap gap-x-5 gap-y-1 pt-2 font-mono text-[0.7rem]">
           {product.domain ? (
-            <li>
+            <li data-case="link">
               <ExternalLink href={`https://${product.domain}`}>
                 {product.domain}
               </ExternalLink>
             </li>
           ) : null}
           {product.repo ? (
-            <li>
+            <li data-case="link">
               <ExternalLink href={product.repo} className="text-ink-2 decoration-ink-3">
                 Source
               </ExternalLink>
@@ -89,6 +94,7 @@ export default async function WorkPage({
           ) : null}
         </ul>
       </header>
+      </CaseIntro>
 
       {product.metrics ? (
         <RevealRows selector=".metric-cell"><dl
