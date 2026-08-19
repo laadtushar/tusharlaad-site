@@ -66,6 +66,15 @@ export interface Quote {
   role: string;
   date: string;
   relationship: string;
+  /**
+   * Optional photograph, at /public/people. Left unset for everyone, because
+   * these are five real people and their likeness is theirs: a LinkedIn photo
+   * cannot be lifted onto this site without each person's permission, and the
+   * CDN URLs are signed and expire anyway. With no photo the card draws a
+   * monogram from their initials, which needs nobody's consent. Set this only
+   * for people who have actually agreed.
+   */
+  avatar?: { src: string; alt: string };
 }
 
 export const profile = {
