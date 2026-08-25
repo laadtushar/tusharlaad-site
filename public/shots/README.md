@@ -14,6 +14,14 @@ container above the product name, and the cell upgrades on its own.
 - **16:10, at least 1600px wide.** The featured cell displays at 1082px on a 1440px
   viewport and requests a 1200px optimised source, so anything under 1600px will
   look soft on a high-density display.
+  - `treacle.webp` breaks this rule at 1024x640, and it is the one shot that is
+    knowingly below standard. It is composed from phone screenshots that arrived
+    273px wide, and upscaling those to reach 1600px would have traded sharp type
+    for a soft, larger file. Treacle is a **featured** cell, so it requests
+    `w=1200`: this source is upscaled, and it is visibly soft on a 2x display.
+    **Recapture it from full-resolution phone screenshots** (an iPhone screenshot
+    is 1179px wide, which composes past 1600px comfortably) and rerun
+    `scripts/compose-treacle.mjs`. Nothing else needs to change.
 - **The real UI, running.** No mockups, no device frames, no marketing renders.
   A screenshot of a working thing is the entire point.
 - **Demo data, never personal data.** Every product here renders somebody's private
@@ -34,9 +42,20 @@ so each was run locally and driven with Playwright.
 | MemryLab | Tauri desktop app: the shipped React frontend served by Vite, with the Rust IPC layer answered by a seeded stub |
 | EdytLab | Same, plus four generated WAV files so the waveform lanes draw real audio, and a scripted agent turn |
 | XpenseLab | Real Next.js app with the two Firestore hooks answered from a seeded fixture, so no request reaches a live project |
+| Treacle | A mobile app, so it cannot be driven headlessly. Captured by hand on the phone, then three panels composed at native scale by `scripts/compose-treacle.mjs` |
 
-Treacle has no screenshot: it ships on the Play Store and there is no local
-source in the lab to run.
+Treacle is the one shot that shows a real account rather than a seeded one,
+because it was taken on a live TestFlight build. The crops are therefore doing
+privacy work, not composition work:
+
+- the chat panel ends before the name and the date of birth
+- the call panel starts after the answer about sexual orientation
+- the account screen, which carries a real email address, is not used at all
+
+Nothing is redacted or painted over. Every panel is a contiguous region of a real
+screenshot, chosen so that the personal parts are outside it. If that shot is ever
+retaken, apply the same test: crop the personal data out of frame rather than
+covering it up, and if it cannot be cropped out, do not use the screen.
 
 ## What was measured
 
