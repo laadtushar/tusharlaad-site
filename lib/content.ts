@@ -227,6 +227,10 @@ export const products: Product[] = [
   {
     slug: "treacle",
     name: "Treacle",
+    image: {
+      src: "/shots/treacle.webp",
+      alt: "Three screens from Treacle: the weekly match, which delivers one curated person rather than a feed to browse; the assistant opening a profiling conversation; and a voice call running, with the option to schedule one instead",
+    },
     tagline: "An AI dating app with no swiping.",
     summary:
       "Voice profiling instead of forms. You talk, it listens, and it debriefs with you after dates to learn what actually worked. Architected and shipped alone, live on the Play Store.",
