@@ -51,7 +51,7 @@ export default async function WorkPage({
         href="/#work"
         data-underline className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-ink-2"
       >
-        Back to the lab
+        Back to the work
       </Link>
 
       <CaseIntro>
@@ -104,11 +104,16 @@ export default async function WorkPage({
           }`}
         >
           {product.metrics.map((m) => (
-            <div key={m.label} className="metric-cell flex flex-col gap-1 bg-panel p-4">
+            <div
+              key={m.label}
+              /* dt before dd, reversed for display: a dl requires the term
+                 first, and this had the definition first. */
+              className="metric-cell flex flex-col-reverse justify-end gap-1 bg-panel p-4"
+            >
+              <dt className="text-xs text-ink-2">{m.label}</dt>
               <dd className="font-mono text-xl">
                 <Figure value={m.value} source={m.source} />
               </dd>
-              <dt className="text-xs text-ink-2">{m.label}</dt>
             </div>
           ))}
         </dl></RevealRows>
@@ -126,7 +131,7 @@ export default async function WorkPage({
       </RevealRows>
 
       <Reveal className="mt-16 border-t border-rule pt-6">
-        <Label>The rest of the lab</Label>
+        <Label>The rest of the work</Label>
         <ul className="flex flex-wrap gap-x-5 gap-y-2 pt-3 font-mono text-[0.72rem]">
           {products
             .filter((p) => p.slug !== product.slug && p.caseStudy)

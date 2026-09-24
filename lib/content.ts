@@ -117,7 +117,7 @@ export const profile = {
     "https://memrylab.com",
     "https://hyredlab.com",
     "https://xpenselab.com",
-    "https://www.edytlab.com",
+    "https://edytlab.com",
     "https://tusharlaad.medium.com",
   ],
   now: {

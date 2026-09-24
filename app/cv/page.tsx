@@ -110,7 +110,12 @@ export default function CvPage() {
                     {p.domain}
                   </a>
                 ) : (
-                  "in development"
+                  /* Keyed off status, not off domain. Employer work has no
+                     public URL and never will, so the old fallback printed
+                     "in development" under a heading that says "Products
+                     shipped", against a case study that says it reached
+                     production in 27 days. */
+                  p.status === "shipped" ? "no public URL" : "in development"
                 )}
                 {p.playStore ? (
                   <>
@@ -156,7 +161,7 @@ export default function CvPage() {
               <h2 className="text-[1.02rem] font-semibold tracking-[-0.02em]">
                 {e.award}, {e.org}
                 {e.grade ? (
-                  <span className="ml-2 font-mono text-[0.7rem] text-amber">
+                  <span className="ml-2 font-mono text-[0.7rem] text-ink-3">
                     {e.grade}
                   </span>
                 ) : null}

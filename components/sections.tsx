@@ -6,6 +6,7 @@ import {
   features,
   lab,
   ledger,
+  productBySlug,
   products,
   profile,
   publication,
@@ -33,6 +34,10 @@ const HeroField = dynamic(() => import("./hero-field"));
 /* ---------------------------------------------------------------- console */
 
 export function Console() {
+  /* The delivery figure belongs to the case study, not to this tile. Read it
+     from there so the two can never drift, and so it carries its source like
+     every other amber number on the site. */
+  const shipped = productBySlug("doorfeed-regulatory-data")?.metrics?.[0];
   return (
     <Shell>
       <ConsoleIntro>
@@ -106,9 +111,11 @@ export function Console() {
           <Label>Shipped</Label>
           <p className="text-sm leading-relaxed text-ink-2">
             A regulatory data service from empty repo to production in{" "}
-            <strong className="font-semibold text-amber">27 days</strong>. The
-            agent platform under a property analyst. A dating app shipped
-            alone, live on both stores.
+            {shipped ? (
+              <Figure value={shipped.value} source={shipped.source} />
+            ) : null}{" "}
+            days. The agent platform under a property analyst. A dating app
+            shipped alone, live on the Play Store.
           </p>
         </Tile>
 
@@ -176,12 +183,18 @@ function ProductCell({
       {product.metrics ? (
         <dl className="prov-row relative flex flex-wrap gap-x-6 gap-y-1 border-t border-rule pt-3">
           {product.metrics.map((m) => (
-            <div key={m.label} className="flex items-baseline gap-1.5">
-              <dt className="sr-only">{m.label}</dt>
+            <div
+              key={m.label}
+              /* dt before dd, which is what a dl requires, then reversed for
+                 display so the reader still sees "335 commits". The label used
+                 to be an sr-only dt with the visible copy as a second dd, so a
+                 screen reader read every metric twice. */
+              className="flex flex-row-reverse items-baseline justify-end gap-1.5"
+            >
+              <dt className="text-xs text-ink-3">{m.label}</dt>
               <dd className="font-mono text-sm">
                 <Figure value={m.value} source={m.source} />
               </dd>
-              <dd className="text-xs text-ink-3">{m.label}</dd>
             </div>
           ))}
         </dl>
@@ -402,8 +415,11 @@ export function Experience() {
               <div className="flex flex-col gap-1.5">
                 <h3 className="text-[1.05rem] font-semibold tracking-[-0.02em]">
                   {e.award}, {e.org}
+                  {/* Not amber: amber is reserved for live or dated values
+                      carrying a source, and a grade is neither. "Distinction"
+                      is not even a number. */}
                   {e.grade ? (
-                    <span className="ml-2 font-mono text-[0.7rem] uppercase tracking-[0.08em] text-amber">
+                    <span className="ml-2 font-mono text-[0.7rem] uppercase tracking-[0.08em] text-ink-3">
                       {e.grade}
                     </span>
                   ) : null}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { profile } from "@/lib/content";
+import { education, profile, roles } from "@/lib/content";
 import "./globals.css";
 
 /* next/font self-hosts these at build time, so no CDN request and no layout shift. */
@@ -44,7 +44,11 @@ const personLd = {
   name: profile.name,
   url,
   email: `mailto:${profile.email}`,
-  jobTitle: "Software Engineer",
+  /* Read from the roles, never restated. This block exists to tell three
+     people of the same name apart, so publishing a different job title from
+     the page it sits on defeats the only thing it is for. */
+  jobTitle: roles[0].title,
+  worksFor: { "@type": "Organization", name: roles[0].org },
   // Derived from profile.location, never restated. He moved to London; this
   // block said Newcastle for as long as it was written by hand.
   address: {
@@ -52,13 +56,10 @@ const personLd = {
     addressLocality: profile.location.split(",")[0].trim(),
     addressCountry: "GB",
   },
-  alumniOf: [
-    { "@type": "CollegeOrUniversity", name: "Newcastle University" },
-    {
-      "@type": "CollegeOrUniversity",
-      name: "Symbiosis Institute of Computer Studies and Research",
-    },
-  ],
+  alumniOf: education.map((e) => ({
+    "@type": "CollegeOrUniversity",
+    name: e.org,
+  })),
   sameAs: profile.sameAs,
 };
 
