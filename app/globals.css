@@ -311,18 +311,93 @@ a {
   color: var(--amber);
   margin-bottom: 0.25rem;
 }
+/*
+ * A hairline from the figure up to its source, drawn as the panel arrives.
+ *
+ * This is the site's whole argument in one interaction: a claim, and the thing
+ * that makes it checkable. The panel already appeared; what was missing was the
+ * connection between the two, so the line draws from the number to the evidence
+ * rather than the evidence merely materialising near it. Same grammar as the
+ * thread that runs the page, at one hundredth the length.
+ */
+.prov__src::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0.7rem;
+  width: 1px;
+  height: 0.55rem;
+  background: var(--amber);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1) 60ms;
+}
 .prov:hover .prov__src,
 .prov:focus-within .prov__src {
   opacity: 1;
   transform: none;
   visibility: visible;
 }
+.prov:hover .prov__src::after,
+.prov:focus-within .prov__src::after {
+  transform: scaleY(1);
+}
 
-/* Near the right edge there is no room to open leftward, so flip the anchor. */
-@media (max-width: 640px) {
+@media (prefers-reduced-motion: reduce) {
+  .prov__src::after {
+    transform: scaleY(1);
+    transition: none;
+  }
+}
+
+/*
+ * Near an edge there is no room to open outward, so flip the anchor.
+ *
+ * The viewport-width guess this used to make was wrong in the middle: between
+ * 641px and roughly 760px the flip is off, but the third column has already
+ * pushed a figure far enough right that a 30ch panel runs past the edge, and
+ * `overflow-x: clip` on the body means it is cut off rather than reachable.
+ * The XpenseLab commit count lost 28px of its source that way. On a site whose
+ * entire claim is that every figure traces to something, an unreadable source
+ * is the worst bug available.
+ *
+ * Anchor positioning asks the real question, which is whether this panel would
+ * overflow, rather than guessing from how wide the window is.
+ */
+/*
+ * Below 768px the panel stops hanging off the figure and spans the metrics row
+ * instead.
+ *
+ * Anchoring to the figure cannot work at these widths. A panel opening right
+ * runs off the right edge for a figure in the third column; flipping it to open
+ * left runs off the LEFT edge for a figure near the start of the row, which is
+ * how eleven of twelve sources clipped at 390px, by up to 186px. Both failures
+ * need to know where the figure sits, and CSS cannot ask that here.
+ *
+ * CSS anchor positioning is the tool built to ask it, and it does not work on
+ * this page: `position-try-fallbacks` measures overflow against the containing
+ * block, and .product-cell carries a GSAP transform, which makes it the
+ * containing block for fixed descendants. The panel is compared against the
+ * cell rather than the viewport, finds no overflow, and never flips. Measured,
+ * not assumed. Escaping that needs the top layer, not a smarter position rule.
+ *
+ * So: drop the anchoring. The row is always inside the viewport, so a panel
+ * that spans the row is always inside it too, whatever the figure is doing.
+ */
+@media (max-width: 768px) {
+  .prov {
+    position: static;
+  }
   .prov__src {
-    left: auto;
+    left: 0;
     right: 0;
+    width: auto;
+    max-width: none;
+    bottom: calc(100% + 0.55rem);
+  }
+  /* The connector points at the row it belongs to, not at one figure in it. */
+  .prov__src::after {
+    left: 50%;
   }
 }
 

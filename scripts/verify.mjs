@@ -31,6 +31,38 @@ async function shot(name, { width, height, scheme = "dark", path = "/", media })
     note(`${name}: horizontal overflow, scrollWidth ${overflow.scroll} vs ${overflow.client}`);
   }
 
+  /*
+   * Overflow of things that are hidden at rest.
+   *
+   * The check above measures the page as it sits, which is why it never saw
+   * the provenance panels: they are visibility:hidden until hovered, so they
+   * contribute nothing to scrollWidth and clip silently when they open. The
+   * XpenseLab commit count lost 28px of its source that way between 641px and
+   * 768px, on a site whose entire claim is that every figure traces to
+   * something. Open each one and measure it against the viewport.
+   */
+  const clipped = await page.evaluate(() => {
+    const vw = document.documentElement.clientWidth;
+    const out = [];
+    document.querySelectorAll(".prov").forEach((el) => {
+      const src = el.querySelector(".prov__src");
+      const fig = el.querySelector(".prov__fig");
+      if (!src || !fig) return;
+      const prev = src.getAttribute("style") || "";
+      src.style.opacity = "1";
+      src.style.visibility = "visible";
+      src.style.transform = "none";
+      const r = src.getBoundingClientRect();
+      const over = Math.max(0, Math.round(r.right - vw), Math.round(0 - r.left));
+      if (over > 0) out.push({ figure: fig.textContent.trim(), over });
+      src.setAttribute("style", prev);
+    });
+    return out;
+  });
+  if (clipped.length) {
+    note(`${name}: source panel clipped ${JSON.stringify(clipped)}`);
+  }
+
   if (errors.length) note(`${name}: console errors ${JSON.stringify(errors.slice(0, 3))}`);
 
   await page.screenshot({ path: `${OUT}/${name}.png`, fullPage: true });
@@ -365,6 +397,13 @@ for (const path of ["/", "/cv", "/work/treacle", "/writing"]) {
 await shot("home-desktop-dark", { width: 1440, height: 1000 });
 await shot("home-desktop-light", { width: 1440, height: 1000, scheme: "light" });
 await shot("home-mobile-dark", { width: 390, height: 844 });
+/*
+ * The band between the mobile flip and the point where the grid gives room
+ * back. Nothing ran here before, which is how a clipped source panel shipped:
+ * 1440 was fine, 390 was fine, and the gap between them was never looked at.
+ */
+await shot("home-narrow-660", { width: 660, height: 1000 });
+await shot("home-narrow-768", { width: 768, height: 1000 });
 await shot("work-treacle", { width: 1440, height: 1000, path: "/work/treacle" });
 await shot("cv-screen", { width: 1440, height: 1000, path: "/cv" });
 await shot("cv-print", { width: 1000, height: 1400, path: "/cv", scheme: "light", media: { media: "print" } });

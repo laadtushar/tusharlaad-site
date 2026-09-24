@@ -174,7 +174,7 @@ function ProductCell({
       </p>
 
       {product.metrics ? (
-        <dl className="flex flex-wrap gap-x-6 gap-y-1 border-t border-rule pt-3">
+        <dl className="prov-row relative flex flex-wrap gap-x-6 gap-y-1 border-t border-rule pt-3">
           {product.metrics.map((m) => (
             <div key={m.label} className="flex items-baseline gap-1.5">
               <dt className="sr-only">{m.label}</dt>
