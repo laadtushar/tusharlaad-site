@@ -168,6 +168,19 @@ export default function CvPage() {
             {e.detail ? (
               <p className="pt-1.5 text-sm leading-relaxed text-ink-2">{e.detail}</p>
             ) : null}
+            {e.since ? (
+              <p className="pt-1.5 text-sm leading-relaxed text-ink-2">
+                {e.since.note}{" "}
+                <a
+                  href={e.since.href}
+                  data-underline
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Newcastle University
+                </a>
+              </p>
+            ) : null}
           </article>
         ))}
       </section>

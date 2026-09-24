@@ -58,6 +58,11 @@ export interface Study {
   to: string;
   grade?: string;
   detail?: string;
+  /**
+   * What happened after the degree, where the institution itself is the source.
+   * The href is the proof, so the claim never stands on this site's word alone.
+   */
+  since?: { note: string; href: string; image?: { src: string; alt: string } };
 }
 
 export interface Quote {
@@ -518,6 +523,14 @@ export const education: Study[] = [
     grade: "Distinction",
     detail:
       "Information security and cryptography, secure software development, system security, engineering for AI, cloud computing. Dissertation on LLM-driven identification of job intent, technologies and teams.",
+    since: {
+      note: "Invited back in March 2026 as an alumni panellist on the university's UK Work Culture Programme.",
+      href: "https://www.ncl.ac.uk/careers/about/news/news-items/learning-about-uk-culture-2025/",
+      image: {
+        src: "/talk-newcastle.webp",
+        alt: "Tushar presenting to the programme in a Newcastle University seminar room, the cohort seated at tables in front of him, beside a slide titled Parallel processing: the first 6 months that breaks the first half year of an MSc into coursework, a part-time job, university roles and an internship",
+      },
+    },
   },
   {
     org: "Symbiosis Institute of Computer Studies and Research",

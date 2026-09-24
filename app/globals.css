@@ -591,6 +591,30 @@ a[data-underline] {
 }
 
 /*
+ * The talk photograph, graded on the same terms as the portrait so the two
+ * photographs on this site read as one set rather than a scrapbook. It is a
+ * room shot under fluorescent light, so it needs more desaturation than the
+ * studio portrait to sit in the slate palette at all.
+ */
+
+.talk__img {
+  filter: grayscale(0.7) contrast(1.05) brightness(0.94);
+  transition: filter var(--dur-slow) var(--ease-out-expo);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .talk:hover .talk__img {
+    filter: grayscale(0) contrast(1) brightness(1);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .talk__img {
+    filter: grayscale(0.55) contrast(1.02) brightness(1.02);
+  }
+}
+
+/*
  * The CV reveals on scroll with no JavaScript at all.
  *
  * Wiring GSAP into this route was measured at +47KB across the whole site,

@@ -413,6 +413,31 @@ export function Experience() {
                     {e.detail}
                   </p>
                 ) : null}
+                {e.since ? (
+                  <p className="measure text-sm leading-relaxed text-ink-2">
+                    {e.since.note}{" "}
+                    <ExternalLink href={e.since.href}>
+                      Newcastle University
+                    </ExternalLink>
+                  </p>
+                ) : null}
+                {e.since?.image ? (
+                  /* Graded like the portrait so one photograph does not read as
+                     a different site from the other. The full frame, at
+                     Tushar's instruction: the room is the point, not just the
+                     speaker in it. */
+                  <figure className="talk mt-2 w-full max-w-[38rem]">
+                    <div className="relative aspect-video overflow-hidden bg-panel-2">
+                      <Image
+                        src={e.since.image.src}
+                        alt={e.since.image.alt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 608px"
+                        className="talk__img object-cover"
+                      />
+                    </div>
+                  </figure>
+                ) : null}
               </div>
             </div>
           ))}
