@@ -547,6 +547,10 @@ export const quotes: Quote[] = [
   {
     body:
       "He started as a website developer, took on a data engineer role, built APIs for us. He performed beautifully. When we assigned him his first labelling and machine learning project, he came back not only with a solution but alternative approaches, pros and cons, and all documented well.",
+    /* Spelling confirmed by Tushar and deliberately left as it is.
+       docs/CV-DATA.md records "Dr. Vinay Mehendiratta" in its final section;
+       that is a different surname, not a typo to propagate. Do not "correct"
+       this to match the doc. */
     name: "Vinay Mehendi, PhD",
     avatar: { src: "/people/vinay-mehendi.webp", alt: "Vinay Mehendi" },
     role: "Chief Executive, OceanFrogs",
