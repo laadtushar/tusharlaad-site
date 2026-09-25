@@ -209,9 +209,18 @@ export function HeroStory({
 
           /* ----------------------------------------------- text scenes */
           // One scrubbed timeline; positions are fractions of pin progress.
-          // Exits stay readable (opacity floor above 0) per the skill notes,
-          // and opacity only, never visibility, so screen readers keep the
-          // whole story regardless of scroll position.
+          //
+          // autoAlpha, not opacity: opacity alone leaves an invisible scene in
+          // the tab order, and the three figure buttons in the secondary scenes
+          // were reachable from the top of the page with their focus ring at
+          // zero opacity. Three stops in a row where a keyboard user cannot see
+          // where they are, on a page that does not scroll to show them.
+          //
+          // The earlier note here reasoned that opacity-only kept the whole
+          // story available to screen readers at any scroll position. The
+          // reduced-motion path is what actually delivers that: it renders all
+          // four scenes statically at full opacity. For everyone else, a scene
+          // that has left the screen should leave the a11y tree with it.
           const T = 10;
           const q = gsap.utils.selector(root);
           const tl = gsap.timeline({
@@ -223,13 +232,13 @@ export function HeroStory({
           const sceneEls = q(".story-scene");
           gsap.set(sceneEls.slice(1), { y: 28 });
 
-          tl.to(sceneEls[0], { opacity: 0, y: -30, duration: 0.1 * T }, 0.13 * T)
+          tl.to(sceneEls[0], { autoAlpha: 0, y: -30, duration: 0.1 * T }, 0.13 * T)
             .set(sceneEls[0], { pointerEvents: "none" }, 0.2 * T)
-            .to(sceneEls[1], { opacity: 1, y: 0, duration: 0.08 * T }, 0.24 * T)
-            .to(sceneEls[1], { opacity: 0, y: -26, duration: 0.08 * T }, 0.4 * T)
-            .to(sceneEls[2], { opacity: 1, y: 0, duration: 0.08 * T }, 0.48 * T)
-            .to(sceneEls[2], { opacity: 0, y: -26, duration: 0.08 * T }, 0.64 * T)
-            .to(sceneEls[3], { opacity: 1, y: 0, duration: 0.08 * T }, 0.74 * T);
+            .to(sceneEls[1], { autoAlpha: 1, y: 0, duration: 0.08 * T }, 0.24 * T)
+            .to(sceneEls[1], { autoAlpha: 0, y: -26, duration: 0.08 * T }, 0.4 * T)
+            .to(sceneEls[2], { autoAlpha: 1, y: 0, duration: 0.08 * T }, 0.48 * T)
+            .to(sceneEls[2], { autoAlpha: 0, y: -26, duration: 0.08 * T }, 0.64 * T)
+            .to(sceneEls[3], { autoAlpha: 1, y: 0, duration: 0.08 * T }, 0.74 * T);
 
           // Figures resolve under the reader's scroll inside their scene,
           // and always end exactly on the server-rendered string.
@@ -284,7 +293,7 @@ export function HeroStory({
   return (
     <section ref={ref} aria-label="Introduction" className="story">
       <noscript>
-        <style>{`.story-track{height:auto !important}.story-stage{position:static !important;height:auto !important}.story-scene{position:static !important;opacity:1 !important;pointer-events:auto !important}.story-canvas{display:none !important}`}</style>
+        <style>{`.story-track{height:auto !important}.story-stage{position:static !important;height:auto !important}.story-scene{position:static !important;opacity:1 !important;visibility:visible !important;pointer-events:auto !important}.story-canvas{display:none !important}`}</style>
       </noscript>
       <div className="story-track">
         <div className="story-stage">
@@ -302,7 +311,13 @@ export function HeroStory({
                 {sc.figures.length ? (
                 <dl className="flex flex-wrap gap-x-10 gap-y-4 pt-2">
                   {sc.figures.map((f) => (
-                    <div key={f.label} className="flex flex-col gap-1">
+                    <div
+                      key={f.label}
+                      /* dt before dd, reversed for display: a dl requires the
+                         term first and this had the definition first. */
+                      className="flex flex-col-reverse justify-end gap-1"
+                    >
+                      <dt className="text-xs text-ink-2">{f.label}</dt>
                       <dd className="prov">
                         <button
                           type="button"
@@ -324,7 +339,6 @@ export function HeroStory({
                           {f.source}
                         </span>
                       </dd>
-                      <dt className="text-xs text-ink-2">{f.label}</dt>
                     </div>
                   ))}
                 </dl>

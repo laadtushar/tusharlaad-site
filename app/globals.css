@@ -541,14 +541,14 @@ a {
     margin-top: 0;
     padding-top: 0;
   }
-  /* Secondary scenes start hidden and can't take clicks while invisible;
-     the scrubbed timeline brings them in. */
+  /* Secondary scenes start hidden. visibility, not opacity alone: an
+     invisible scene must leave the tab order with the screen, or its figure
+     buttons stay reachable with a focus ring nobody can see. The scrubbed
+     timeline brings them back with autoAlpha. */
   .story-scene:not(.story-scene--identity) {
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-  }
-  .story-scene:not(.story-scene--identity) .prov__fig {
-    pointer-events: auto;
   }
   /* The story field is the centerpiece here; the identity tile's own
      lattice would be a second, contradictory field inside it. */

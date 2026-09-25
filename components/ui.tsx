@@ -36,11 +36,29 @@ export function Grid({
   );
 }
 
-export function Label({ children }: { children: ReactNode }) {
+/**
+ * A small uppercase label.
+ *
+ * `as` exists because on a case study this text IS the section heading, not an
+ * eyebrow above one: "The problem", "The approach". Rendered as a span, those
+ * routes had exactly one heading on the page, so pressing H in a screen reader
+ * returned the title and nothing else, and the four-part shape of a case study
+ * — its whole editorial structure — was invisible.
+ *
+ * This is not the eyebrow the design contract bans. An eyebrow is a label
+ * sitting above a heading that repeats it. Here there is no other heading.
+ */
+export function Label({
+  children,
+  as: As = "span",
+}: {
+  children: ReactNode;
+  as?: "span" | "h2" | "h3";
+}) {
   return (
-    <span className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ink-3">
+    <As className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ink-3">
       {children}
-    </span>
+    </As>
   );
 }
 
@@ -130,10 +148,13 @@ export function ExternalLink({
 export function Figure({
   value,
   source,
+  label,
   className = "",
 }: {
   value: string;
   source?: string;
+  /** Disambiguates the tooltip id. See the note on `srcId`. */
+  label?: string;
   className?: string;
 }) {
   if (!source) {
@@ -143,21 +164,31 @@ export function Figure({
       </span>
     );
   }
+  /*
+   * The id used to be derived from the value alone, and the derivation is
+   * lossy: "30+" and "30" both become src-30, as do "0" and "0%". No page
+   * collides today, but the homepage already carries thirteen of these in one
+   * document including src-1 and src-0, so one new metric valued 1 would break
+   * a tooltip association silently. The label makes it specific.
+   */
+  const slug = (s: string) => s.replace(/\W/g, "").toLowerCase();
+  const srcId = `src-${label ? `${slug(label)}-` : ""}${slug(value)}`;
   return (
     <span className="prov">
       <button
         type="button"
         className={`prov__fig tnum ${className}`}
-        aria-describedby={`src-${value.replace(/\W/g, "")}`}
-        data-count={value}
+        aria-describedby={srcId}
+        /* The name is fixed at the true value. data-count sits on the span
+           below, because CountUpAll rewrites textContent every frame and on a
+           button that IS the accessible name: focus landing mid-count
+           announced 299 for 335, or 26 for 27. A site whose thesis is that
+           figures are verifiable should not read out false ones. */
+        aria-label={value}
       >
-        {value}
+        <span data-count={value}>{value}</span>
       </button>
-      <span
-        role="tooltip"
-        id={`src-${value.replace(/\W/g, "")}`}
-        className="prov__src"
-      >
+      <span role="tooltip" id={srcId} className="prov__src">
         {source}
       </span>
     </span>

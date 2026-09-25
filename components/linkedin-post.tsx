@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { LinkedInPost } from "@/lib/content";
 
 /**
@@ -15,6 +15,7 @@ import type { LinkedInPost } from "@/lib/content";
  */
 export function LinkedInPostRow({ post }: { post: LinkedInPost }) {
   const [open, setOpen] = useState(false);
+  const panelId = useId();
   const embed = `https://www.linkedin.com/embed/feed/update/${post.urn}?collapsed=1`;
 
   return (
@@ -28,14 +29,25 @@ export function LinkedInPostRow({ post }: { post: LinkedInPost }) {
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
+          aria-controls={panelId}
           aria-label={`${open ? "Hide" : "Show"} the LinkedIn post from ${post.date}`}
           className="border border-rule-2 px-2 py-1 font-mono text-[0.64rem] uppercase tracking-[0.1em] text-ink-2 transition-colors hover:border-amber hover:text-amber"
         >
           {open ? "Hide post" : "Show post"}
         </button>
       </div>
-      {open ? (
-        <div className="mt-4 border border-rule bg-panel p-1">
+      {/*
+        The panel is always in the DOM so aria-controls resolves to something.
+        Rendering it only when open left seven dangling references on /writing,
+        which is the same as having no aria-controls at all. The iframe is still
+        conditional, so LinkedIn's bytes do not load until a reader asks.
+      */}
+      <div
+        id={panelId}
+        hidden={!open}
+        className="mt-4 border border-rule bg-panel p-1"
+      >
+        {open ? (
           <iframe
             src={embed}
             height={post.height}
@@ -44,8 +56,8 @@ export function LinkedInPostRow({ post }: { post: LinkedInPost }) {
             loading="lazy"
             allowFullScreen
           />
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </li>
   );
 }

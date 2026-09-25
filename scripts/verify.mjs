@@ -89,7 +89,12 @@ async function auditRoute(path, { scheme, isHome, media }) {
     const audit = await page.evaluate(() => {
       const text = document.body.innerText;
       const h1 = [...document.querySelectorAll("h1")].map((e) => e.textContent.trim());
-      const imgsNoAlt = [...document.querySelectorAll("img")].filter((i) => !i.getAttribute("alt")).length;
+      /* alt="" is a decision, not an omission: it marks an image the adjacent
+         text already describes, and a screen reader skips it. Only a missing
+         attribute is the bug. */
+      const imgsNoAlt = [...document.querySelectorAll("img")].filter(
+        (i) => i.getAttribute("alt") === null,
+      ).length;
       const links = [...document.querySelectorAll("a")];
       const emptyLinks = links.filter((a) => !a.textContent.trim() && !a.getAttribute("aria-label")).length;
       const badHref = links.filter((a) => {
@@ -112,11 +117,56 @@ async function auditRoute(path, { scheme, isHome, media }) {
         .map(([name, hrefs]) => `${name} -> ${[...hrefs].join(", ")}`);
 
       const ld = document.querySelector('script[type="application/ld+json"]');
+
+      /*
+       * Structure and reference integrity.
+       *
+       * h1Count alone passed six case studies that had exactly one heading on
+       * the whole page: their section labels rendered as spans, so pressing H
+       * in a screen reader returned the title and nothing else. Duplicate ids
+       * and dangling IDREFs were latent rather than live, but the tooltip ids
+       * are derived from figure values, so a second metric valued 1 would have
+       * broken an association in silence.
+       */
+      const levels = [...document.querySelectorAll("h1,h2,h3,h4,h5,h6")].map(
+        (h) => Number(h.tagName[1]),
+      );
+      let skipped = 0;
+      for (let i = 1; i < levels.length; i++) {
+        if (levels[i] - levels[i - 1] > 1) skipped++;
+      }
+      const ids = [...document.querySelectorAll("[id]")].map((e) => e.id);
+      const dupIds = [...new Set(ids.filter((v, i) => ids.indexOf(v) !== i))];
+      const dangling = [];
+      for (const attr of ["aria-describedby", "aria-labelledby", "aria-controls", "aria-owns"]) {
+        document.querySelectorAll(`[${attr}]`).forEach((el) => {
+          el.getAttribute(attr)
+            .split(/\s+/)
+            .filter(Boolean)
+            .forEach((id) => {
+              if (!document.getElementById(id)) dangling.push(`${attr}=${id}`);
+            });
+        });
+      }
+      // A dl group must open with its term. dd before dt is not a valid list.
+      let dlOutOfOrder = 0;
+      document.querySelectorAll("dl").forEach((dl) => {
+        dl.querySelectorAll("dt,dd").forEach((el, i, all) => {
+          if (i === 0 && el.tagName === "DD") dlOutOfOrder++;
+          else if (el.tagName === "DD" && all[i - 1] && all[i - 1].tagName === "DD" && i === 1) dlOutOfOrder++;
+        });
+      });
+
       return {
         emDash: (text.match(/[—–]/g) || []).length,
         middot: (text.match(/·/g) || []).length,
         h1,
         h1Count: h1.length,
+        headingLevels: levels.length,
+        skippedLevels: skipped,
+        dupIds,
+        dangling,
+        dlOutOfOrder,
         imgsNoAlt,
         emptyLinks,
         badHref,
@@ -190,6 +240,13 @@ async function auditRoute(path, { scheme, isHome, media }) {
 
     if (audit.emDash) note(`${where}: ${audit.emDash} em or en dashes`);
     if (audit.h1Count !== 1) note(`${where}: h1 count is ${audit.h1Count}, expected 1`);
+    if (audit.headingLevels < 2) {
+      note(`${where}: ${audit.headingLevels} heading(s) on the page, so it cannot be skimmed by heading`);
+    }
+    if (audit.skippedLevels) note(`${where}: ${audit.skippedLevels} skipped heading level(s)`);
+    if (audit.dupIds.length) note(`${where}: duplicate ids ${JSON.stringify(audit.dupIds)}`);
+    if (audit.dangling.length) note(`${where}: dangling aria references ${JSON.stringify(audit.dangling)}`);
+    if (audit.dlOutOfOrder) note(`${where}: ${audit.dlOutOfOrder} dl group(s) start with dd before dt`);
     if (audit.imgsNoAlt) note(`${where}: ${audit.imgsNoAlt} images without alt`);
     if (audit.emptyLinks) note(`${where}: ${audit.emptyLinks} links with no accessible name`);
     if (audit.badHref) note(`${where}: ${audit.badHref} links with empty href`);

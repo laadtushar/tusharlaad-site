@@ -112,7 +112,7 @@ export default async function WorkPage({
             >
               <dt className="text-xs text-ink-2">{m.label}</dt>
               <dd className="font-mono text-xl">
-                <Figure value={m.value} source={m.source} />
+                <Figure value={m.value} source={m.source} label={m.label} />
               </dd>
             </div>
           ))}
@@ -122,7 +122,7 @@ export default async function WorkPage({
       <RevealRows selector=".case-section" className="flex flex-col gap-10 pt-12" stagger={0.08}>
         {sections.map((s) => (
           <section key={s.key} className="case-section flex flex-col gap-2">
-            <Label>{s.heading}</Label>
+            <Label as="h2">{s.heading}</Label>
             <p className="measure text-[0.98rem] leading-relaxed text-ink-2">
               {caseStudy[s.key]}
             </p>
@@ -131,7 +131,7 @@ export default async function WorkPage({
       </RevealRows>
 
       <Reveal className="mt-16 border-t border-rule pt-6">
-        <Label>The rest of the work</Label>
+        <Label as="h2">The rest of the work</Label>
         <ul className="flex flex-wrap gap-x-5 gap-y-2 pt-3 font-mono text-[0.72rem]">
           {products
             .filter((p) => p.slug !== product.slug && p.caseStudy)

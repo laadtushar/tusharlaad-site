@@ -74,13 +74,29 @@ export function Reveal({
   useGSAP(
     () => {
       if (prefersReducedMotion() || !ref.current) return;
-      gsap.from(ref.current, {
+      const tween = gsap.from(ref.current, {
         opacity: 0,
         y,
         duration: 0.6,
         ease: EASE,
         scrollTrigger: { trigger: ref.current, start: START, once: true },
       });
+
+      /*
+       * Keyboard focus can land inside a block that has not revealed yet.
+       * Tabbing scrolls an element only just into view, which on some viewport
+       * heights leaves it below the `top 88%` line: the trigger never fires and
+       * the focused element sits at opacity 0 indefinitely. It happened to the
+       * last link on /writing at 900px tall, and it is latent in every reveal
+       * that ends up last at some height.
+       *
+       * Focus wins over the scroll position: finish the tween and let the
+       * reader see where they are.
+       */
+      const el = ref.current;
+      const onFocusIn = () => tween.progress(1).kill();
+      el.addEventListener("focusin", onFocusIn, { once: true });
+      return () => el.removeEventListener("focusin", onFocusIn);
     },
     { scope: ref },
   );

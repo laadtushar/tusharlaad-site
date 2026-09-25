@@ -112,7 +112,11 @@ export function Console() {
           <p className="text-sm leading-relaxed text-ink-2">
             A regulatory data service from empty repo to production in{" "}
             {shipped ? (
-              <Figure value={shipped.value} source={shipped.source} />
+              <Figure
+                value={shipped.value}
+                source={shipped.source}
+                label={shipped.label}
+              />
             ) : null}{" "}
             days. The agent platform under a property analyst. A dating app
             shipped alone, live on the Play Store.
@@ -193,7 +197,7 @@ function ProductCell({
             >
               <dt className="text-xs text-ink-3">{m.label}</dt>
               <dd className="font-mono text-sm">
-                <Figure value={m.value} source={m.source} />
+                <Figure value={m.value} source={m.source} label={m.label} />
               </dd>
             </div>
           ))}

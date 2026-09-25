@@ -33,11 +33,25 @@ export function CopyEmail({ email }: { email: string }) {
       <button
         type="button"
         onClick={copy}
-        aria-label={`Copy ${email} to the clipboard`}
+        aria-label={
+          copied
+            ? `${email} copied to the clipboard`
+            : `Copy ${email} to the clipboard`
+        }
         className="border border-rule-2 px-1.5 py-0.5 text-[0.62rem] uppercase tracking-[0.1em] text-ink-3 transition-colors hover:border-amber hover:text-amber"
       >
-        <span role="status">{copied ? "Copied" : "Copy"}</span>
+        {copied ? "Copied" : "Copy"}
       </button>
+      {/*
+        The live region sits outside the button, not inside it. A button has
+        presentational children in ARIA, so a role="status" in there is only
+        announced by engines lenient enough to ignore that, and the button's
+        own name never changed either: it still read "Copy" after copying.
+        Now the name flips and a real live region says it once.
+      */}
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? `${email} copied to the clipboard` : ""}
+      </span>
     </span>
   );
 }

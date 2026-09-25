@@ -147,7 +147,11 @@ function Avatar({ quote }: { quote: Quote }) {
       <span className="quote__avatar relative block size-14 overflow-hidden border border-rule-2 bg-panel-2">
         <Image
           src={quote.avatar.src}
-          alt={quote.avatar.alt}
+          /* Empty by design: the person's name is rendered as text directly
+             beneath the photograph, so an alt repeating it makes a screen
+             reader say it twice. The photograph carries nothing the text
+             does not. */
+          alt=""
           fill
           sizes="56px"
           className="object-cover object-top"
