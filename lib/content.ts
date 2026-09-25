@@ -202,7 +202,7 @@ export const lab = {
   name: "LabyNator",
   domain: "labynator.com",
   blurb:
-    "An independent software lab and the parent company for four live SaaS products. One person from ideation through to deployment and support.",
+    "Four products, built and shipped alone as the ideas arrive. Not a company: somewhere to take an idea the whole way, from empty repository through to the people using it.",
 };
 
 export const products: Product[] = [
@@ -410,15 +410,15 @@ export const roles: Role[] = [
     org: "LabyNator",
     title: "Founder",
     from: "Nov 2025",
-    to: "Apr 2026",
+    to: "Present",
     location: "UK, remote",
-    kind: "founding",
+    kind: "current",
     concurrent: true,
     summary:
-      "An independent software lab and parent company for four live SaaS products.",
+      "Where the side projects live. Four products built and shipped alone, one at a time, as the ideas arrive.",
     points: [
-      "Founded the lab that builds, ships and operates MemryLab, XpenseLab, HyredLab and EdytLab.",
-      "Ran the full product lifecycle on each, from ideation through development, deployment and customer experience.",
+      "Built, shipped and still operate MemryLab, XpenseLab, HyredLab and EdytLab.",
+      "Took each one the full distance alone, from ideation through development, deployment and support.",
     ],
   },
   {
