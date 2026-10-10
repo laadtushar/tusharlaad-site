@@ -218,9 +218,9 @@ function ProductCell({
             </Link>
           </li>
         ) : null}
-        {product.domain ? (
+        {product.domain && product.url ? (
           <li>
-            <ExternalLink href={`https://${product.domain}`}>
+            <ExternalLink href={product.url}>
               {product.domain}
             </ExternalLink>
           </li>
@@ -264,7 +264,7 @@ export function Lab() {
           <RevealHeading><Heading>{lab.name}</Heading></RevealHeading>
           <p className="measure text-[0.95rem] leading-relaxed text-ink-2">
             {lab.blurb}{" "}
-            <ExternalLink href={`https://${lab.domain}`}>{lab.domain}</ExternalLink>
+            <ExternalLink href={lab.url}>{lab.domain}</ExternalLink>
           </p>
         </div>
         <RevealRows selector=".product-cell"><Grid className="border border-rule sm:grid-cols-3">

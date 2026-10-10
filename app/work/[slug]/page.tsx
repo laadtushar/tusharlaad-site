@@ -6,6 +6,7 @@ import { Chips, ExternalLink, Figure, Label, StatusTag } from "@/components/ui";
 import { Reveal, RevealRows } from "@/components/reveal";
 import { CountUpAll } from "@/components/count-up";
 import { CaseIntro } from "@/components/case-intro";
+import { pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return products.filter((p) => p.caseStudy).map((p) => ({ slug: p.slug }));
@@ -19,12 +20,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = productBySlug(slug);
   if (!product) return {};
-  return {
-    title: product.name,
-    description: product.tagline,
-    alternates: { canonical: `/work/${product.slug}` },
-    openGraph: { title: product.name, description: product.tagline },
-  };
+  return pageMetadata({
+    title: product.metaTitle ?? `${product.name}: ${product.tagline}`,
+    description: product.metaDescription ?? product.summary,
+    path: `/work/${product.slug}`,
+  });
 }
 
 const sections = [
@@ -78,9 +78,9 @@ export default async function WorkPage({
           <Chips items={product.stack} />
         </div>
         <ul className="flex flex-wrap gap-x-5 gap-y-1 pt-2 font-mono text-[0.7rem]">
-          {product.domain ? (
+          {product.domain && product.url ? (
             <li data-case="link">
-              <ExternalLink href={`https://${product.domain}`}>
+              <ExternalLink href={product.url}>
                 {product.domain}
               </ExternalLink>
             </li>

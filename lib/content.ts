@@ -8,6 +8,8 @@
  * Anything still unverified is marked with a `pending` flag rather than guessed.
  */
 
+import { family, familyUrl } from "@/lib/family";
+
 export type Status = "shipped" | "building" | "archived";
 
 export interface Product {
@@ -16,7 +18,17 @@ export interface Product {
   tagline: string;
   summary: string;
   status: Status;
+  /** Display name of the site, for link text. Never build a URL from it: use `url`. */
   domain?: string;
+  /** The final host that serves the site, so the link never goes through a redirect. */
+  url?: string;
+  /**
+   * Written for search results, like profile.metaDescription, not assembled
+   * from the case study. Roughly 50 to 60 characters for the title and 140 to
+   * 160 for the description. Both are on the case-study route only.
+   */
+  metaTitle?: string;
+  metaDescription?: string;
   /** Play Store listing, where the product ships as an Android app. */
   playStore?: string;
   repo?: string;
@@ -99,31 +111,36 @@ export const profile = {
    * it was thrown away mid-sentence.
    */
   metaDescription:
-    "Data engineer at DoorFeed in London. I take systems from an empty repository to production, and run a four-product software lab the rest of the time.",
+    "Data engineer at DoorFeed, London. I take systems from an empty repository to production, and run LabyNator, a four-product software lab, the rest of the time.",
+  /** Page titles are written for search results, like the description above. */
+  metaTitle: "Tushar Laad, data engineer and founder of LabyNator",
   available: false,
   availableLabel: "Open to work",
   email: "tusharlaad2002@gmail.com",
+  /** Display name only. */
   domain: "tusharlaad.com",
+  /**
+   * The canonical URL: the apex 308-redirects here, so every canonical, og:url,
+   * sitemap entry and JSON-LD url is built from this and never from `domain`.
+   */
+  url: family.founder.url,
   links: [
     { label: "GitHub", href: "https://github.com/laadtushar" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/tusharlaad2002/" },
-    { label: "LabyNator", href: "https://labynator.com" },
+    { label: "LabyNator", href: family.studio.url },
     { label: "Medium", href: "https://tusharlaad.medium.com" },
   ],
   sameAs: [
     "https://github.com/laadtushar",
     "https://www.linkedin.com/in/tusharlaad2002/",
-    "https://labynator.com",
-    "https://memrylab.com",
-    "https://hyredlab.com",
-    "https://xpenselab.com",
-    "https://edytlab.com",
+    family.studio.url,
+    ...family.apps.map((a) => a.url),
     "https://tusharlaad.medium.com",
   ],
   now: {
     date: "August 2026",
     body:
-      "Building the agent platform and regulatory data service at DoorFeed. Shipping EdytLab, a conversational audio editor in Rust, on the side.",
+      "Building the agent platform and regulatory data service at DoorFeed. Shipping edytlab, a conversational audio editor in Rust, on the side.",
   },
 };
 
@@ -186,12 +203,12 @@ export const story = {
     {
       key: "lab",
       heading: "Four more, on my own time.",
-      body: "MemryLab, XpenseLab, HyredLab and EdytLab, all live under LabyNator. One person from ideation through deployment and support.",
+      body: "MemryLab, XpenseLab, HyredLab and edytlab, all live under LabyNator. One person from ideation through deployment and support.",
       figures: [
         {
           value: "4",
           label: "products live",
-          source: "memrylab.com, xpenselab.com, hyredlab.com and edytlab.com all resolve.",
+          source: "memrylab.com, xpenselab.com, hyredlab.com and edytlab.com all answered on 10 October 2026.",
         },
       ],
     },
@@ -201,6 +218,7 @@ export const story = {
 export const lab = {
   name: "LabyNator",
   domain: "labynator.com",
+  url: family.studio.url,
   blurb:
     "Four products, built and shipped alone as the ideas arrive. Not a company: somewhere to take an idea the whole way, from empty repository through to the people using it.",
 };
@@ -210,6 +228,9 @@ export const products: Product[] = [
     slug: "doorfeed-regulatory-data",
     name: "The rent-regulation service",
     tagline: "What can this property legally charge?",
+    metaTitle: "Rent-regulation data service at DoorFeed, a case study",
+    metaDescription:
+      "How Tushar Laad built a service that answers what rent a property can legally charge in France and England, from empty repository to production in 27 days.",
     summary:
       "A service answering a question with no clean data source anywhere, built at DoorFeed. Rent ceilings across French rent-control sectors and English affordable-rent schemes, with every figure traceable to the decree behind it.",
     status: "shipped",
@@ -242,6 +263,10 @@ export const products: Product[] = [
     status: "shipped",
     owner: "treacle",
     domain: "mytreacle.com",
+    url: "https://www.mytreacle.com",
+    metaTitle: "Treacle, an AI dating app with no swiping: a case study",
+    metaDescription:
+      "Treacle replaces the profile form with a voice conversation. How Tushar Laad architected and shipped the AI dating app alone, from voice stack to matching.",
     playStore: "https://play.google.com/store/apps/details?id=com.mytreacle.app",
     stack: ["Next.js", "React Native", "ElevenLabs", "WebRTC", "Neo4j", "pgvector", "AWS"],
     metrics: [
@@ -269,16 +294,20 @@ export const products: Product[] = [
     },
     tagline: "A searchable timeline of how your thinking changed.",
     summary:
-      "Point it at your journals, chat exports, notes and archives. It builds a visual timeline of how your beliefs and interests moved over years. Everything stays on the machine.",
+      "Point it at your journals, chat exports, notes and archives. It builds a visual timeline of how your beliefs and interests moved over years. Everything stays on the machine by default.",
     status: "shipped",
     owner: "labynator",
     domain: "memrylab.com",
+    url: familyUrl("memrylab"),
+    metaTitle: "MemryLab: a searchable timeline of how your thinking changed",
+    metaDescription:
+      "Case study of MemryLab, a local-first desktop app that turns journals, chats and notes into a searchable timeline, with no vector database and zero telemetry.",
     repo: "https://github.com/laadtushar/MemryLab",
     stack: ["Rust", "Tauri 2", "React 19", "SQLite FTS5", "D3", "Ollama"],
     metrics: [
       { value: "30+", label: "import formats", source: "Obsidian, Notion, Evernote, social archives and messaging exports, behind one detection layer." },
-      { value: "4.3 MB", label: "installer", source: "The whole app, including the search index, with no vector database." },
-      { value: "0", label: "telemetry calls", source: "Nothing leaves the machine. No cloud dependency." },
+      { value: "5.7 MB", label: "Windows installer", source: "The setup.exe in the v0.3.6 release of 27 March 2026, 5,687,222 bytes. The whole app, including the search index, with no vector database." },
+      { value: "0", label: "telemetry calls", source: "No analytics and no phone-home. It runs fully on the machine with a local Ollama model; a cloud model is optional." },
     ],
     caseStudy: {
       problem:
@@ -286,39 +315,43 @@ export const products: Product[] = [
       approach:
         "A native desktop app under a strict hexagonal architecture, so the domain has no knowledge of which database, which LLM provider, or which UI is attached. Nine port interfaces, seven SQLite-backed stores, and more than thirty source adapters behind one detection layer.",
       hard:
-        "Semantic search with no vector database. Cosine similarity runs inside SQLite alongside BM25 keyword search, and the two are fused with reciprocal rank fusion, which keeps the whole index in one file and the whole app under a five megabyte installer.",
+        "Semantic search with no vector database. Cosine similarity runs inside SQLite alongside BM25 keyword search, and the two are fused with reciprocal rank fusion, which keeps the whole index in one file and the Windows installer under six megabytes.",
       outcome:
-        "Shipped with a Windows installer. Eight-stage analysis pipeline covering themes, sentiment, beliefs, entities, contradictions and narrative evolution, ten interactive views, and a RAG chat interface that cites its sources. Zero telemetry, zero cloud dependency, MIT licensed.",
+        "Shipped, with installers for Windows, macOS and Linux (latest release v0.3.6, 27 March 2026). Eight-stage analysis pipeline covering themes, sentiment, beliefs, entities, contradictions and narrative evolution, ten interactive views, and a RAG chat interface that cites its sources. Zero telemetry, zero cloud dependency, MIT licensed.",
     },
   },
   {
     slug: "edytlab",
-    name: "EdytLab",
+    name: "edytlab",
     image: {
       src: "/shots/edytlab.webp",
-      alt: "The EdytLab editor: four audio tracks with waveforms, markers and a volume envelope on the left, and on the right an agent turn that ran three editing tools and reported what it changed",
+      alt: "The edytlab editor: four audio tracks with waveforms, markers and a volume envelope on the left, and on the right an agent turn that ran three editing tools and reported what it changed",
     },
     tagline: "Describe an audio edit in English. It renders.",
     summary:
-      "Drop in stems and ask for the mashup you want. An agent plans the operations, the DSP runs locally in Rust, and stem separation and transcription happen on your own machine.",
+      "Drop in your tracks and ask for the mashup you want. An agent plans the operations, the DSP runs locally in Rust, and only the chat goes to the model you pick.",
     status: "shipped",
     owner: "labynator",
     domain: "edytlab.com",
+    url: familyUrl("edytlab"),
+    metaTitle: "edytlab: describe an audio edit in English and it renders",
+    metaDescription:
+      "Case study of edytlab, a free, open-source desktop audio editor where an AI agent plans edits across 93 tools and a Rust engine renders them locally.",
     repo: "https://github.com/laadtushar/edytlab",
-    stack: ["Rust", "Tauri 2", "symphonia", "fundsp", "ONNX", "Demucs", "Whisper"],
+    stack: ["Rust", "Tauri 2", "React 19", "symphonia", "rubato", "Ollama"],
     metrics: [
-      { value: "237", label: "commits", source: "Pure Rust DSP with ONNX running Demucs and Whisper on device." },
-      { value: "20", label: "editing tools exposed to the agent", source: "The agent plans a sequence over them; session state lives in a branchable graph." },
+      { value: "451", label: "commits", source: "Commits on the main branch of laadtushar/edytlab, counted 10 October 2026." },
+      { value: "93", label: "tools the agent can call", source: "The count in docs/tools-reference.md, generated from the tool registry. The agent plans a sequence over them; session state lives in a branchable graph." },
     ],
     caseStudy: {
       problem:
         "Audio editing has a vocabulary problem. You can hear the edit you want long before you can find the six menu operations that produce it, and that gap is where most people give up.",
       approach:
-        "A conversational layer over a modular Rust DSP engine. Around twenty editing operations are exposed as tools, an agent plans a sequence, and session state lives in a branchable DAG so any plan can be undone or compared against an alternative.",
+        "A conversational layer over a modular Rust DSP engine. 93 deterministic tools are exposed to the agent, which plans a sequence, and session state lives in a branchable DAG so any plan can be undone or compared against an alternative.",
       hard:
-        "Keeping it local. Stem separation via Demucs and transcription via Whisper both run through ONNX Runtime on device, so the only thing that leaves the machine is the language model request. Decode, routing, effects, resampling and IO are all pure Rust.",
+        "Keeping it local. Decode, routing, effects, resampling and IO are all pure Rust, with the time and pitch work on a phase vocoder written in-house, so the only thing that leaves the machine is the language model request. Stem separation with Demucs and transcription with Whisper are wired in as tools, but their model inference has not shipped yet.",
       outcome:
-        "Phase one and two complete, single-track editing and mashups, with conversational mixing next. Branchable session graphs, A/B comparison and multi-provider model switching all working.",
+        "Free and open source under the MIT licence, with installers for macOS, Windows and Linux. The latest release is v0.4.0, of 9 October 2026, and the installers are unsigned, so macOS and Windows warn on first launch. Branchable session graphs, A/B comparison and switching between six model providers all work.",
     },
   },
   {
@@ -334,6 +367,10 @@ export const products: Product[] = [
     status: "shipped",
     owner: "labynator",
     domain: "hyredlab.com",
+    url: familyUrl("hyredlab"),
+    metaTitle: "HyredLab: a job tracker that reads your Gmail inbox for you",
+    metaDescription:
+      "Case study of HyredLab, a job-hunt dashboard that syncs with Gmail and turns application emails into a tracked pipeline, checked by a reflexion loop.",
     repo: "https://github.com/laadtushar/job-hunt-dashboard",
     stack: ["Next.js 16", "PostgreSQL", "Prisma", "Gemini 2.0 Flash", "NextAuth"],
     caseStudy: {
@@ -356,14 +393,18 @@ export const products: Product[] = [
     },
     tagline: "Personal finance that categorises itself.",
     summary:
-      "Income, expenses, budgets, loans and EMIs, with AI categorisation and optional client-side encryption. The largest codebase in the lab.",
+      "Income, expenses, budgets, loans and EMIs, with AI categorisation and optional client-side encryption.",
     status: "shipped",
     owner: "labynator",
     domain: "xpenselab.com",
+    url: familyUrl("xpenselab"),
+    metaTitle: "XpenseLab: personal finance that categorises itself",
+    metaDescription:
+      "Case study of XpenseLab, a personal finance app with AI categorisation, budgets, loans and optional client-side encryption, built with Next.js and Firebase.",
     repo: "https://github.com/laadtushar/xpenselab",
     stack: ["Next.js 16", "Firebase", "Genkit", "Gemini", "Stripe"],
     metrics: [
-      { value: "335", label: "commits", source: "The largest codebase in the lab, subscriptions and GDPR included." },
+      { value: "335", label: "commits", source: "Commits on the main branch of laadtushar/xpenselab, counted 10 October 2026." },
     ],
     caseStudy: {
       problem:
@@ -417,7 +458,7 @@ export const roles: Role[] = [
     summary:
       "Where the side projects live. Four products built and shipped alone, one at a time, as the ideas arrive.",
     points: [
-      "Built, shipped and still operate MemryLab, XpenseLab, HyredLab and EdytLab.",
+      "Built, shipped and still operate MemryLab, XpenseLab, HyredLab and edytlab.",
       "Took each one the full distance alone, from ideation through development, deployment and support.",
     ],
   },

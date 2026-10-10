@@ -4,12 +4,13 @@ import { linkedinPosts, profile, writing } from "@/lib/content";
 import { ExternalLink, Label } from "@/components/ui";
 import { Reveal, RevealRows } from "@/components/reveal";
 import { LinkedInPostRow } from "@/components/linkedin-post";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Writing",
-  description: `Essays and notes by ${profile.name}.`,
-  alternates: { canonical: "/writing" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: `Writing by ${profile.name}: essays on engineering, AI and ethics`,
+  description: `Essays by ${profile.name} on engineering under uncertainty, AI at work and the ethics of progress, plus shorter posts on LinkedIn and longer pieces on Medium.`,
+  path: "/writing",
+});
 
 export default function WritingPage() {
   return (
