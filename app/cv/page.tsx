@@ -9,12 +9,13 @@ import {
   stack,
 } from "@/lib/content";
 import { Label } from "@/components/ui";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "CV",
-  description: `Curriculum vitae for ${profile.name}: data engineer at DoorFeed, founder of LabyNator, founding engineer at Treacle.`,
-  alternates: { canonical: "/cv" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: `${profile.name} CV: data engineer, founder and founding engineer`,
+  description: `Curriculum vitae for ${profile.name}: data engineer at DoorFeed, founder of LabyNator, founding engineer at Treacle, MSc Advanced Computer Science with Distinction.`,
+  path: "/cv",
+});
 
 /**
  * The CV route is the resume file. It reads the same content object as the
@@ -49,7 +50,7 @@ export default function CvPage() {
           <a href={`mailto:${profile.email}`} className="underline decoration-ink-3">
             {profile.email}
           </a>
-          <a href={`https://${profile.domain}`} className="underline decoration-ink-3">
+          <a href={profile.url} className="underline decoration-ink-3">
             {profile.domain}
           </a>
           {profile.links.map((l) => (
@@ -100,9 +101,9 @@ export default function CvPage() {
               <span className="font-semibold">{p.name}.</span>{" "}
               <span className="text-ink-2">{p.tagline}</span>{" "}
               <span className="font-mono text-[0.7rem] text-ink-3">
-                {p.domain ? (
+                {p.domain && p.url ? (
                   <a
-                    href={`https://${p.domain}`}
+                    href={p.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline decoration-ink-3"

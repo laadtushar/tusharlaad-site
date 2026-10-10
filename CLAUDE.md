@@ -8,6 +8,14 @@ Personal site for Tushar Laad. Next 16, React 19, Tailwind v4, TypeScript.
 stylesheet that produces the PDF, and the JSON-LD `Person` block. Never hardcode a fact in a
 component. If a date, figure or link is wrong, it is wrong in `content.ts`.
 
+**The canonical host is `https://www.tusharlaad.com`** (`profile.url`). The apex 308-redirects
+to it, so a canonical, og:url, sitemap entry, JSON-LD url or link built from the apex points at a URL
+that never serves a page. `profile.domain` is display text only; build URLs from `profile.url`, and
+from `url` on a product. The LabyNator family (studio, four apps, founder) lives in `lib/family.ts`,
+copied from labynator's `src/lib/apps.ts`, and `FamilyFooter` renders it on every route. Every page's
+metadata goes through `pageMetadata()` in `lib/seo.ts`: a page that sets its own `openGraph` replaces
+the layout's, so a hand-written block silently drops og:url and og:image.
+
 **Every amber figure carries a source.** Amber (`--amber`) means "live or dated value" and nothing
 else. Any number in amber must pass through `<Figure>` with a `source`, because provenance is the
 site's whole thesis. Never use amber decoratively.

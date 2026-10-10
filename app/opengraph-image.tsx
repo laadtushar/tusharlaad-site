@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 import { profile } from "@/lib/content";
+import { ogImage } from "@/lib/seo";
 
-export const alt = `${profile.name}, software engineer`;
+export const alt = ogImage.alt;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

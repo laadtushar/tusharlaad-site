@@ -24,6 +24,18 @@ together. There is no separate resume file to keep in sync.
 | `/cv` | The CV alone. Print it to get the PDF. |
 | `/work/[slug]` | Case studies: problem, approach, the hard part, outcome |
 
+## SEO and the LabyNator family
+
+- The canonical host is `https://www.tusharlaad.com`, set once as `profile.url` in `lib/content.ts`.
+  The layout's `metadataBase`, the sitemap, robots, the JSON-LD and every page's canonical and og:url
+  all read it.
+- `lib/seo.ts` builds each inner page's whole metadata block (title, description, canonical, Open
+  Graph, Twitter). Titles and descriptions for case studies are `metaTitle` and `metaDescription` on
+  the product in `content.ts`.
+- `lib/family.ts` lists LabyNator, its four apps and the founder with their final-host URLs, copied
+  from labynator's `src/lib/apps.ts`. `components/family-footer.tsx` renders it on every route.
+- Figures that move, like a commit count, carry the date they were counted in their source.
+
 ## Design
 
 Cold slate instrument surface. Phosphor amber `#e5a03c` is the single accent and

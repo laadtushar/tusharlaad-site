@@ -40,7 +40,7 @@ so each was run locally and driven with Playwright.
 | --- | --- |
 | HyredLab | Real Next.js app against a local Postgres, seeded with twelve invented applications and an allowlisted demo user |
 | MemryLab | Tauri desktop app: the shipped React frontend served by Vite, with the Rust IPC layer answered by a seeded stub |
-| EdytLab | Same, plus four generated WAV files so the waveform lanes draw real audio, and a scripted agent turn |
+| edytlab | Same, plus four generated WAV files so the waveform lanes draw real audio, and a scripted agent turn |
 | XpenseLab | Real Next.js app with the two Firestore hooks answered from a seeded fixture, so no request reaches a live project |
 | Treacle | A mobile app, so it cannot be driven headlessly. Captured by hand on the phone, then three panels composed at native scale by `scripts/compose-treacle.mjs` |
 
